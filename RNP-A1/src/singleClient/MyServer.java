@@ -9,6 +9,8 @@ public class MyServer {
 	public static final int PORT = 444;
 	private static int overallMessageCount = 0;
 	private static long startTime = 0;
+	
+	//Not really useful in single client mode ;)
 	private static Map<Socket, Integer> messageCount = new HashMap<Socket,Integer>();
 	
 	

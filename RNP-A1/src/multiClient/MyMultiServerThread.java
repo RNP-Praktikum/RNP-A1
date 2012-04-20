@@ -6,10 +6,8 @@ import java.io.*;
 
 public class MyMultiServerThread extends Thread {
 	private static int overallMessageCount = 0;
-	private int messageC;
+	private int messageCount = 0;
 	private long startTime = 0;
-	// TODO: Warum funktioniert das mit der MAP obwohl in verschiedenen Threads gearbeitet wird? 
-	private static Map<Socket, Integer> messageCount = new HashMap<Socket, Integer>();
 	private Socket socket = null;
 
 	public MyMultiServerThread(Socket socket) {
@@ -29,21 +27,15 @@ public class MyMultiServerThread extends Thread {
 			String inputLine, outputLine;
 
 			while ((inputLine = in.readLine()) != null) {
-
-				if (messageCount.get(socket) == null) {
-					messageCount.put(socket, 1);
-				} else {
-					messageCount.put(socket, messageCount.get(socket) + 1);
-				}
-
 				overallMessageCount += 1;
+				messageCount +=1;
 				System.out.println("---------------------------------------");
 				System.out.println("Client: " + socket.toString());
 				System.out.println("aktive since " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds");
 				System.out.println(new Date(System.currentTimeMillis()));
 				System.out.println("Overall Message Count: "+  overallMessageCount);
-				System.out.println("Message Count from Client: " + messageCount.get(socket));
-				System.out.println("Message " + inputLine);
+				System.out.println("Message Count from Client: " + messageCount);
+				System.out.println("Message: " + inputLine);
 				System.out.println("---------------------------------------");
 				outputLine = inputLine.toUpperCase();
 
