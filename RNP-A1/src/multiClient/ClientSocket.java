@@ -5,6 +5,11 @@ import java.io.*;
 import java.net.*;
 
 public class ClientSocket {
+	
+	public static final String HOST_NAME = "schleppi";
+	public static final int PORT = 4444;
+	
+	
     public static void main(String[] args) throws IOException {
 
         Socket clientSocket = null;
@@ -14,16 +19,16 @@ public class ClientSocket {
         try {
         	
         
-            clientSocket = new Socket("schleppi", 444);
+            clientSocket = new Socket(HOST_NAME, PORT);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(
                                         clientSocket.getInputStream()));
         } catch (UnknownHostException e) {
-            System.err.println("Don't know about host: schleppi.");
+            System.err.println("Don't know about host: " + HOST_NAME);
             System.exit(1);
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for "
-                               + "the connection to: schleppi.");
+                               + "the connection to: " + HOST_NAME);
             System.exit(1);
         }
 
