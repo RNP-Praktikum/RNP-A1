@@ -6,7 +6,7 @@ import java.net.*;
 
 public class ClientSocket {
 	
-	public static final String HOST_NAME = "schleppi";
+	public static final String HOST_NAME = "Kaddi-PC";
 	public static final int PORT = 4444;
 	
 	
