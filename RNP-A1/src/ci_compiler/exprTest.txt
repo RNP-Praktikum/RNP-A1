@@ -1,0 +1,7 @@
+(a + b) *c
+a <= 9
+"Hallo " + "Welt"
+READ "x"
+12 * 3
+(5
+"abc

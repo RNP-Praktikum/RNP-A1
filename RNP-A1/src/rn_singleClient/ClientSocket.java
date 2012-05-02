@@ -1,4 +1,4 @@
-package singleClient;
+package rn_singleClient;
 
 
 import java.io.*;

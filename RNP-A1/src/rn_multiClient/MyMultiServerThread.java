@@ -1,4 +1,4 @@
-package multiClient;
+package rn_multiClient;
 
 import java.net.*;
 import java.util.*;

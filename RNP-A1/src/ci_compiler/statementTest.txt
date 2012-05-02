@@ -1,0 +1,16 @@
+IF i < j THEN
+	PRINT "i < j";
+	WHILE i < j DO
+		i := i+1;
+	END
+ELSIF i = j THEN
+	PRINT "i = j";
+	foo(i, j);
+	arr[0] := i;
+ELSE
+	PRINT "i > j";
+	REPEAT
+		i := i-1;
+	UNTIL i = j
+END
+	

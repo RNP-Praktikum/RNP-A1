@@ -1,0 +1,23 @@
+MODULE Sample;
+var z,a,b : int;
+	blub : ARRAY[10] OF ARRAY [1] oF int;
+	rec : RECORD zahl : int; 
+				 text : string;
+				 arr : ARRAY[123] OF string 
+				 END
+PROCEDURE Multiply(VAR z : int);
+VAR x, y : int;
+BEGIN
+x := READ "x";
+y := READ "y";
+z := 0;
+WHILE x > 0 DO
+IF (x/2)*2 # x THEN z := z + y END;
+y := 2 * y; x := x / 2
+END;
+PRINT x; PRINT y; PRINT z;
+END Multiply;
+
+BEGIN
+Multiply(z)
+END Sample.
