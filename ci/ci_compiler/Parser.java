@@ -2,6 +2,8 @@ package ci_compiler;
 
 import java.util.*;
 
+import nodes.*;
+
 public class Parser {
 
 	public final List<Yytoken> tokenList;
@@ -16,9 +18,10 @@ public class Parser {
 
 	public void parse() {
 		insymbol();
+		simpleExpression().print();
 //		statementSequence();
 //		declarations();
-		module();
+//		module();
 	}
 
 	public static void compile(String str) {
@@ -575,18 +578,23 @@ public class Parser {
 	}
 
 	static AbstractNode string() {
+		int line = nexttoken.getLine();
+		int column = nexttoken.getColumn();
+		String str = null;
 		if (nexttoken.getName().charAt(0) == '"') {
 			insymbol();
-			String str = "";
+			System.out.println("huuh");
+			str = "";
 			while (nexttoken.getName().charAt(0) != '"') {
 				str += nexttoken.getName();
 				insymbol();
+				System.out.println("bla");
 			}
-			outStr('"' + str + '"');
+			outStr(str = '"' + str + '"');
 			insymbol();
 		}
 
-		return null;
+		return new StringNode(str, line, column);
 	}
 
 	static AbstractNode selector() {
@@ -611,27 +619,33 @@ public class Parser {
 	}
 
 	static AbstractNode factor() {
+		FactorNode factorNode = new FactorNode();
+		factorNode.setLine(nexttoken.getLine());
+		factorNode.setColumn(nexttoken.getColumn());
+		System.out.println(nexttoken.getName());
 		if (nexttoken.getName().equals("(")) {
 			insymbol();
-			expression();
+			factorNode.setExpression(expression());
 			if (nexttoken.getName().equals(")")) {
 				insymbol();
 			} else {
 				error("')' expected", nexttoken.getLine(), nexttoken.getColumn());
 			}
 		} else if (nexttoken.getType().equals("Ident")) {
+			factorNode.setIdent(nexttoken.getName());
 			outStr(nexttoken.getName());
 			insymbol();
-			selector();
+			factorNode.setSelector(selector());
 		} else if (nexttoken.getType().equals("Integer")) {
 			outInt(nexttoken.getName());
+			factorNode.setInteger(nexttoken.getName());
 			insymbol();
 		} else if (nexttoken.getName().equals("READ")) {
-			read();
+			factorNode.setRead(read());
 		} else if (nexttoken.getName().charAt(0) == '"') {
-			string();
+			factorNode.setString(string());
 		}
-		return null;
+		return factorNode;
 	}
 
 	static AbstractNode read() {
@@ -651,31 +665,51 @@ public class Parser {
 	}
 
 	static AbstractNode term() {
-		factor();
+		AbstractNode factor1 = null, factor2 = null;
+		String operator = null;
+		int line = nexttoken.getLine();
+		int column = nexttoken.getColumn();
+		factor1 = factor();
 		if (nexttoken.getName().equals("*") || nexttoken.getName().equals("/")) {
-			outOp(nexttoken.getName() + " ");
+			outOp((operator = nexttoken.getName()) + " ");
 			insymbol();
-			term();
+			factor2 = term();
 		}
-		return null;
+		return new TermNode(operator, factor1, factor2, line, column);
 	}
 
 	static AbstractNode simpleExpression() {
-		String lastsymbol = "";
+		String sign = null;
+		String operator = null;
+		AbstractNode term2 = null;
+		SimpleExpressionNode result = new SimpleExpressionNode();
+		result.setLine(nexttoken.getLine());
+		result.setColumn(nexttoken.getColumn());
+		
 		if (nexttoken.getName().equals("-")) {
-			lastsymbol = nexttoken.getName();
+			result.setSign(sign = nexttoken.getName());
 			insymbol();
 		}
-		term();
-		if (lastsymbol.equals("-")) {
+		result.setTerm1(term());
+		if (sign != null && sign.equals("-")) {
 			outOp("- ");
+			
 		}
-		if (nexttoken.getName().equals("-") || nexttoken.getName().equals("+")) {
+		
+		
+		while (nexttoken.getName().equals("-") || nexttoken.getName().equals("+")) {
 			outOp(nexttoken.getName() + " ");
+			operator = nexttoken.getName();
+			result.setOperator(operator);
 			insymbol();
-			simpleExpression();
+			if(term2 == null) {
+				result.setTerm2(term2 = term());
+			} else {
+				result = new SimpleExpressionNode(null, operator, result, term2 = term(), nexttoken.getLine(), nexttoken.getColumn());
+			}
 		}
-		return null;
+		
+		return result;
 	}
 
 	static AbstractNode expression() {
