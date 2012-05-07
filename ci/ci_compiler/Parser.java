@@ -13,12 +13,16 @@ public class Parser {
 
 	public Parser(List<Yytoken> tokenList) {
 		this.tokenList = tokenList;
-		this.tokenIt = tokenList.iterator();
+		tokenIt = tokenList.iterator();
 	}
 
 	public void parse() {
 		insymbol();
-		simpleExpression().print();
+		while (tokenIt.hasNext()){
+			expression().print();
+		}
+//		term().print();
+//		simpleExpression().print();
 //		statementSequence();
 //		declarations();
 //		module();
@@ -583,167 +587,194 @@ public class Parser {
 		String str = null;
 		if (nexttoken.getName().charAt(0) == '"') {
 			insymbol();
-			System.out.println("huuh");
 			str = "";
 			while (nexttoken.getName().charAt(0) != '"') {
 				str += nexttoken.getName();
 				insymbol();
-				System.out.println("bla");
 			}
 			outStr(str = '"' + str + '"');
 			insymbol();
 		}
-
 		return new StringNode(str, line, column);
 	}
 
-	static AbstractNode selector() {
+	static OperatorNode selector() {
+		OperatorNode node = null;
+		int line = nexttoken.getLine();
+		int column = nexttoken.getColumn();
 		if (nexttoken.getName().equals(".")) {
 			insymbol();
 			if (nexttoken.getType().equals("Ident")) {
 				outStr("." + nexttoken.getName());
+				node = new OperatorNode(".", null, new IdentNode(nexttoken.getName(),line, column), line, column);
 				insymbol();
 			} else {
 				error("identifier expected", nexttoken.getLine(), nexttoken.getColumn());
 			}
 		} else if (nexttoken.getName().equals("[")) {
 			insymbol();
-			expression();
+			node = new OperatorNode("[", null, expression(), line, column);
 			if (nexttoken.getName().equals("]")) {
 				insymbol();
 			} else {
 				error("']' expected", nexttoken.getLine(), nexttoken.getColumn());
 			}
 		}
-		return null;
+		return node;
 	}
 
 	static AbstractNode factor() {
-		FactorNode factorNode = new FactorNode();
-		factorNode.setLine(nexttoken.getLine());
-		factorNode.setColumn(nexttoken.getColumn());
-		System.out.println(nexttoken.getName());
+		AbstractNode node = null;;
+		int line = nexttoken.getLine();
+		int column = nexttoken.getColumn();
 		if (nexttoken.getName().equals("(")) {
 			insymbol();
-			factorNode.setExpression(expression());
+			node = expression();
 			if (nexttoken.getName().equals(")")) {
 				insymbol();
 			} else {
 				error("')' expected", nexttoken.getLine(), nexttoken.getColumn());
 			}
 		} else if (nexttoken.getType().equals("Ident")) {
-			factorNode.setIdent(nexttoken.getName());
+			node = new IdentNode(nexttoken.getName(), line, column);
 			outStr(nexttoken.getName());
 			insymbol();
-			factorNode.setSelector(selector());
+			OperatorNode selectorNode = selector();
+			if (selectorNode != null) {
+				selectorNode.setLeft(node);
+				node = selectorNode;
+			}
 		} else if (nexttoken.getType().equals("Integer")) {
 			outInt(nexttoken.getName());
-			factorNode.setInteger(nexttoken.getName());
+			node = new IntegerNode(nexttoken.getName(), line, column); 
 			insymbol();
 		} else if (nexttoken.getName().equals("READ")) {
-			factorNode.setRead(read());
+			node = read();
 		} else if (nexttoken.getName().charAt(0) == '"') {
-			factorNode.setString(string());
+			node = string();
 		}
-		return factorNode;
+		return node;
 	}
 
 	static AbstractNode read() {
+		AbstractNode node = null;
 		if (nexttoken.getName().equals("READ")) {
 			insymbol();
 			outStr("READ ");
 			if (nexttoken.getName().charAt(0) == '"') {
-				prompt();
+				node = prompt();
 			}
 		}
-		return null;
+		return node;
 	}
 
 	static AbstractNode prompt() {
-		string();
-		return null;
+		return string();
 	}
 
 	static AbstractNode term() {
-		AbstractNode factor1 = null, factor2 = null;
+		AbstractNode left = null, right = null;
 		String operator = null;
 		int line = nexttoken.getLine();
 		int column = nexttoken.getColumn();
-		factor1 = factor();
+		left = factor();
 		if (nexttoken.getName().equals("*") || nexttoken.getName().equals("/")) {
 			outOp((operator = nexttoken.getName()) + " ");
 			insymbol();
-			factor2 = term();
+			right = term();
 		}
-		return new TermNode(operator, factor1, factor2, line, column);
+		if (operator != null) {
+			return new OperatorNode(operator, left, right, line, column);
+		} else {
+			return left;
+		}
 	}
 
 	static AbstractNode simpleExpression() {
 		String sign = null;
 		String operator = null;
-		AbstractNode term2 = null;
-		SimpleExpressionNode result = new SimpleExpressionNode();
-		result.setLine(nexttoken.getLine());
-		result.setColumn(nexttoken.getColumn());
+		AbstractNode left = null;
+		AbstractNode node = null;
+		int line = nexttoken.getLine();
+		int column = nexttoken.getColumn(); 
 		
 		if (nexttoken.getName().equals("-")) {
-			result.setSign(sign = nexttoken.getName());
+			sign = nexttoken.getName();
 			insymbol();
 		}
-		result.setTerm1(term());
+		left = term();
 		if (sign != null && sign.equals("-")) {
 			outOp("- ");
-			
+			left = new OperatorNode("-", null, left, line, column);
 		}
-		
 		
 		while (nexttoken.getName().equals("-") || nexttoken.getName().equals("+")) {
 			outOp(nexttoken.getName() + " ");
 			operator = nexttoken.getName();
-			result.setOperator(operator);
 			insymbol();
-			if(term2 == null) {
-				result.setTerm2(term2 = term());
+			if (node == null){
+				node = new OperatorNode(operator, left, term(), line, column);
 			} else {
-				result = new SimpleExpressionNode(null, operator, result, term2 = term(), nexttoken.getLine(), nexttoken.getColumn());
+				node = new OperatorNode(operator, node, term(), line, column);
 			}
 		}
-		
-		return result;
+		if (node == null){
+			return left;
+		} else {
+			return node;
+		}
 	}
 
 	static AbstractNode expression() {
-		simpleExpression();
+		AbstractNode right = null;
+		AbstractNode left = null;
+		String operator = null;
+		int line = nexttoken.getLine();
+		int column = nexttoken.getColumn(); 
+		left = simpleExpression();
 		if (nexttoken.getName().equals("=") || nexttoken.getName().equals("#")
 				|| nexttoken.getName().equals("<")
 				|| nexttoken.getName().equals("<=")
 				|| nexttoken.getName().equals(">")
 				|| nexttoken.getName().equals(">=")) {
 			outOp(nexttoken.getName() + " ");
+			operator = nexttoken.getName();
 			insymbol();
-			simpleExpression();
+			right = simpleExpression();
 		}
-		return null;
+		if (operator != null){
+			return new OperatorNode(operator, left, right, line, column);
+		} else {
+			return left;
+		}
 	}
 
 	static AbstractNode indexExpression() {
+		AbstractNode node = null;
+		int line = nexttoken.getLine();
+		int column = nexttoken.getColumn(); 
 		if (nexttoken.getType().equals("Integer")) {
 			outInt(nexttoken.getName());
+			node = new IntegerNode(nexttoken.getName(), line, column);
 			insymbol();
 		} else {
-			constIdent();
+			node = constIdent();
 		}
-		return null;
+		return node;
 	}
 
 	static AbstractNode constIdent() {
+		AbstractNode node = null;
+		int line = nexttoken.getLine();
+		int column = nexttoken.getColumn(); 
 		if (nexttoken.getType().equals("Ident")) {
 			outStr(nexttoken.getName());
+			node = new IdentNode(nexttoken.getName(), line, column);
 			insymbol();
 		} else {
 			error("ConstIdent Error", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return node;
 	}
 
 }

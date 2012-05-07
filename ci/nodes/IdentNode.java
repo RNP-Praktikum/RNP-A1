@@ -4,18 +4,18 @@ import java.util.HashMap;
 
 import ci_compiler.AbstractDescr;
 
-public class StringNode extends AbstractNode {
+public class IdentNode extends AbstractNode {
 	
-	String string;
+	String ident;
 
-	public StringNode() {
+	public IdentNode() {
 		super();
-		this.string = null;
+		this.ident = null;
 	}
 
-	public StringNode(String string, int line, int column) {
+	public IdentNode(String ident, int line, int column) {
 		super(line, column);
-		this.string = string;
+		this.ident = ident;
 	}
 
 	@Override
@@ -26,17 +26,18 @@ public class StringNode extends AbstractNode {
 
 	@Override
 	public void print() {
-//		trace("String ");
-		trace(string);
+		trace(ident);
 		unindent();
 	}
 
-	public String getString() {
-		return string;
+	public String getIdent() {
+		return ident;
 	}
 
-	public void setString(String string) {
-		this.string = string;
+	public void setIdent(String ident) {
+		this.ident = ident;
 	}
+	
+	
 
 }

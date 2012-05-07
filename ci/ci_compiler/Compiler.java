@@ -15,6 +15,7 @@ public class Compiler {
 		} else {
 			for (int i = 0; i < argv.length; i++) {
 				Scanner scanner = null;
+				System.out.println("Scanner:");
 				try {
 					scanner = new Scanner(new java.io.FileReader(argv[i]));
 //					 scanner = new Scanner( new java.io.FileReader("t2.txt"));
@@ -40,8 +41,9 @@ public class Compiler {
 				}
 			}
 		}
-
+		System.out.println("Parser:");
 		Parser parser = new Parser(tokenList);
+		System.out.println("AbstractTree:");
 		parser.parse();
 	}
 
