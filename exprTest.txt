@@ -1,4 +1,5 @@
 -a + 2 + 3
+abc[abc]
 "Hallo " + "Welt"
 12 * 3
 READ "x"

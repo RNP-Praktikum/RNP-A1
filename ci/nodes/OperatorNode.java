@@ -6,6 +6,10 @@ import ci_compiler.AbstractDescr;
 
 public class OperatorNode extends AbstractNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2450404640425774491L;
 	String operator;
 	AbstractNode left, right;
 	

@@ -6,6 +6,10 @@ import ci_compiler.AbstractDescr;
 
 public class IntegerNode extends AbstractNode {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1789097387058308869L;
 	int value;
 
 	public IntegerNode() {

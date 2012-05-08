@@ -6,6 +6,10 @@ import ci_compiler.AbstractDescr;
 
 public class StringNode extends AbstractNode {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2894749233320105022L;
 	String string;
 
 	public StringNode() {

@@ -6,6 +6,10 @@ import ci_compiler.AbstractDescr;
 
 public class IdentNode extends AbstractNode {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String ident;
 
 	public IdentNode() {
