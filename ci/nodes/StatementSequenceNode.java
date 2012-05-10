@@ -48,8 +48,10 @@ public class StatementSequenceNode extends AbstractNode {
 	@Override
 	public void print() {
 		// trace(StatementSequence);
-		for(AbstractNode statement : statements) {
-			if(statement != null) statement.print();
+		if(statements != null) {
+			for(AbstractNode statement : statements) {
+				if(statement != null) statement.print();
+			}
 		}
 		//unindent();
 	}

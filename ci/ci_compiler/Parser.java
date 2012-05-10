@@ -19,13 +19,14 @@ public class Parser {
 	public void parse() {
 		insymbol();
 		while (tokenIt.hasNext()){
-			expression().print();
+			module().print();
+//			expression().print();
 		}
 //		term().print();
 //		simpleExpression().print();
 //		statementSequence();
 //		declarations();
-//		module();
+		
 	}
 
 	public static void compile(String str) {
@@ -423,29 +424,34 @@ public class Parser {
 		return null;
 	}
 
-	static AbstractNode assignment() {
+	static AbstractNode assignment(Yytoken ident) {
 		//Ident bereits in statement() abgearbeitet
-		selector();
+		AbstractNode selectorNode = selector();
+		AbstractNode expressionNode = null;
+		int line = 0, column = 0;
 		if (nexttoken.getName().equals(":=")) {
+			line = nexttoken.getLine();
+			column = nexttoken.getColumn();
 			outStr(":=");
 			insymbol();
-			expression();
+			expressionNode = expression();
 		} else {
 			error("':=' expected", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new AssignmentNode(new IdentNode(ident.getName(), ident.getLine(), ident.getColumn()), selectorNode, expressionNode, line, column);
 	}
 
 	static AbstractNode actualParameters() {
+		
 		expression();
-		if (nexttoken.getName().equals(",")) {
+		while(nexttoken.getName().equals(",")){
 			insymbol();
-			actualParameters();
+			expression();
 		}
 		return null;
 	}
 
-	static AbstractNode procedureCall() {
+	static AbstractNode procedureCall(Yytoken ident) {
 		// Ident bereits in statement() abgearbeitet
 		if (nexttoken.getName().equals("(")) {
 			insymbol();
@@ -550,12 +556,13 @@ public class Parser {
 
 	static AbstractNode statement(){
 		if (nexttoken.getType().equals("Ident")){
-			outStr(nexttoken.getName());
+			Yytoken ident = nexttoken;
+			outStr(ident.getName());
 			insymbol();
 			if (nexttoken.getName().equals("(")){
-				procedureCall();
+				procedureCall(ident);
 			} else {
-				assignment();
+				assignment(ident);
 			}
 		} else if (nexttoken.getName().equals("IF")){
 			ifStatement();

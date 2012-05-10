@@ -50,7 +50,9 @@ public class RepeatNode extends AbstractNode {
 	@Override
 	public void print() {
 		trace("RepeatNode ");
+		if(condition != null) {
 		condition.print();
+		}
 		if (repeatPart!= null)
 			repeatPart.print();
 		unindent();
