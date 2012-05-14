@@ -11,12 +11,12 @@ public class ProcedureCallNode extends AbstractNode {
 	 */
 	private static final long serialVersionUID = 1L;
 	AbstractNode ident;
-	List<AbstractNode> parameterList;
+	AbstractNode parameterList;
 	
-	public ProcedureCallNode(AbstractNode ident, List<AbstractNode> expression, int line, int column) {
+	public ProcedureCallNode(AbstractNode ident, AbstractNode expressionList, int line, int column) {
 		super(line,column);
 		this.ident = ident;
-		this.parameterList = expression;
+		this.parameterList = expressionList;
 	}
 
 	public ProcedureCallNode() {
@@ -34,12 +34,12 @@ public class ProcedureCallNode extends AbstractNode {
 		this.ident = ident;
 	}
 
-	public List<AbstractNode> getExpression() {
+	public AbstractNode getExpressionList() {
 		return parameterList;
 	}
 
-	public void setExpression(List<AbstractNode> expression) {
-		this.parameterList = expression;
+	public void setExpressionList(AbstractNode expressionList) {
+		this.parameterList = expressionList;
 	}
 
 	@Override
@@ -55,9 +55,7 @@ public class ProcedureCallNode extends AbstractNode {
 			ident.print();
 		}
 		if(parameterList != null) {
-		for(AbstractNode expression : parameterList) {
-			expression.print();
-		}
+		parameterList.print();
 		}
 		unindent();
 	}

@@ -1,6 +1,7 @@
 package nodes;
 
 import java.util.HashMap;
+import java.util.List;
 
 import ci_compiler.AbstractDescr;
 
@@ -14,24 +15,35 @@ public class IfNode extends AbstractNode {
 
 	AbstractNode condition;
 	AbstractNode thenPart, elsePart;
+	List<AbstractNode> elsifList;
 
 	public IfNode() {
 		super(0,0);
 		condition = null;
 		thenPart = null;
 		elsePart = null;
+		elsifList = null;
 	};
 
-	public IfNode(AbstractNode fe, AbstractNode fst1, AbstractNode fst2, int line, int column) {
+	public IfNode(AbstractNode fe, AbstractNode fst1,List<AbstractNode>elsif, AbstractNode fst2, int line, int column) {
 		super(line, column);
 		condition = fe;
 		thenPart = fst1;
 		elsePart = fst2;
+		elsifList = elsif;
 	};
 
 	public void setCondition(AbstractNode fe) {
 		condition = fe;
 	};
+
+	public List<AbstractNode> getElsifList() {
+		return elsifList;
+	}
+
+	public void setElsifList(List<AbstractNode> elsifList) {
+		this.elsifList = elsifList;
+	}
 
 	public void setThenPart(AbstractNode fst1) {
 		thenPart = fst1;
@@ -75,10 +87,22 @@ public class IfNode extends AbstractNode {
 	public void print() {
 		trace("IfNode ");
 		condition.print();
-		if (thenPart != null)
+		if (thenPart != null){
+			trace("then");
 			thenPart.print();
-		if (elsePart != null)
+			unindent();}
+		if(elsifList != null) {
+			trace("elsif");
+			for(AbstractNode node : elsifList) {
+				
+				node.print();
+			}
+			unindent();
+		}
+		if (elsePart != null) {
+			trace("else");
 			elsePart.print();
+			unindent();}
 		unindent();
 	};
 }

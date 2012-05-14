@@ -442,23 +442,28 @@ public class Parser {
 	}
 
 	static AbstractNode actualParameters() {
-		
-		expression();
+		//TODO epxression Nodes????
+		List<AbstractNode> params = new LinkedList<AbstractNode>();
+		int line = nexttoken.getLine();
+		int column = nexttoken.getColumn();
+		params.add(expression());
 		while(nexttoken.getName().equals(",")){
 			insymbol();
-			expression();
+			params.add(expression());
 		}
-		return null;
+		return new ListNode(params, line, column);
 	}
 
 	static AbstractNode procedureCall(Yytoken ident) {
+		AbstractNode actualParameters = null;
+		AbstractNode identNode = new IdentNode(ident.getName(), ident.getLine(), ident.getColumn());
 		// Ident bereits in statement() abgearbeitet
 		if (nexttoken.getName().equals("(")) {
 			insymbol();
 			if (nexttoken.getName().equals(")")) {
 				insymbol();
 			} else {
-				actualParameters();
+				actualParameters = actualParameters();
 				if (nexttoken.getName().equals(")")) {
 					insymbol();
 				} else {
@@ -468,34 +473,42 @@ public class Parser {
 		} else {
 			error("ProcedureCall error", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new ProcedureCallNode(identNode, actualParameters, ident.getLine(), ident.getColumn());
 	}
 
 	static AbstractNode ifStatement() {
+		AbstractNode conditionNode = null, thenNode = null, elseNode = null;
+		List<AbstractNode> elsifList = new LinkedList<AbstractNode>();
+		int l = 0, c = 0;
 		if (nexttoken.getName().equals("IF")) {
 			outStr("IF");
 			insymbol();
-			expression();
+			l = nexttoken.getLine(); 
+			c = nexttoken.getColumn();
+			conditionNode = expression();
 			if (nexttoken.getName().equals("THEN")) {
 				outStr("THEN");
 				insymbol();
-				statementSequence();
+				thenNode = statementSequence();
 				while (nexttoken.getName().equals("ELSIF")) {
+					AbstractNode cond1 = null, then1 = null;
 					outStr("ELSIF");
 					insymbol();
-					expression();
+					int column = nexttoken.getColumn(), line = nexttoken.getLine();
+					cond1 = expression();
 					if (nexttoken.getName().equals("THEN")) {
 						outStr("THEN");
 						insymbol();
-						statementSequence();
+						then1 = statementSequence();
 					} else {
 						error("'THEN' expected", nexttoken.getLine(), nexttoken.getColumn());
 					}
+					elsifList.add(new IfNode(cond1, then1, null, null, line, column));
 				}
 				if (nexttoken.getName().equals("ELSE")) {
 					outStr("ELSE");
 					insymbol();
-					statementSequence();
+					elseNode = statementSequence();
 				}
 				if (nexttoken.getName().equals("END")) {
 					outStr("END");
@@ -509,7 +522,7 @@ public class Parser {
 		} else {
 			error("IfStatement error", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new IfNode(conditionNode, thenNode, elsifList, elseNode, l,c);
 	}
 
 	static AbstractNode whileStatement() {
