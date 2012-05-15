@@ -227,22 +227,26 @@ public class Parser {
 	}
 	
 	static AbstractNode procedureDeclaration(){
-		procedureHeading();
+		AbstractNode heading = null, body = null, ident = null;
+		int line = nexttoken.getLine(), column = nexttoken.getColumn();
+		heading = procedureHeading();
 		if(nexttoken.getName().equals(";")) {
 			outStr(";");
 			insymbol();
-			procedureBody();
+			body = procedureBody();
 			if(nexttoken.getType().equals("Ident")) {
 				outStr("Ident");
+				ident = new IdentNode(nexttoken.getName(), nexttoken.getLine(), nexttoken.getColumn());
 				insymbol();
 			} else {
 				error("'Ident' expected", nexttoken.getLine(), nexttoken.getColumn());
 			}
 		}
-		return null;
+		return new ProcedureDeclarationNode(heading, body, ident,line,column);
 	}
 	
 	static AbstractNode declarations(){
+		//TODO DECLARATIONS!!!!!
 		if(nexttoken.getName().equals("CONST")) {
 			outStr("CONST");
 			insymbol();
@@ -379,24 +383,28 @@ public class Parser {
 	}
 	
 	static AbstractNode module(){
+		AbstractNode ident = null, decl = null, statementSeq = null; 
+		int line = 0, column = 0;
+		String identName = "";
 		if(nexttoken.getName().equals("MODULE")) {
 			outStr("MODULE");
 			insymbol();
 			if(nexttoken.getType().equals("Ident")) {
-				outStr(nexttoken.getName());
+				outStr(identName = nexttoken.getName());
+				ident = new IdentNode(nexttoken.getName(), nexttoken.getLine(), nexttoken.getColumn());
 				insymbol();
 				if(nexttoken.getName().equals(";")) {
 					outStr(";");
 					insymbol();
-					declarations();
+					decl = declarations();
 					if(nexttoken.getName().equals("BEGIN")) {
 						outStr("BEGIN MODULE");
 						insymbol();
-						statementSequence();
+						statementSeq = statementSequence();
 						if(nexttoken.getName().equals("END")) {
 							outStr("END MODULE");
 							insymbol();
-							if(nexttoken.getType().equals("Ident")) {
+							if(nexttoken.getType().equals("Ident") && identName.equals(nexttoken.getName())) {
 								outStr(nexttoken.getName());
 								insymbol();
 								if(nexttoken.getName().equals(".")) {
@@ -421,7 +429,7 @@ public class Parser {
 				error("'Ident' expected", nexttoken.getLine(), nexttoken.getColumn());
 			}
 		}
-		return null;
+		return new ModuleNode(ident,decl,statementSeq,line,column);
 	}
 
 	static AbstractNode assignment(Yytoken ident) {
@@ -526,14 +534,18 @@ public class Parser {
 	}
 
 	static AbstractNode whileStatement() {
+		AbstractNode doPart=null, cond=null;
+		int line = 0, column = 0;
 		if (nexttoken.getName().equals("WHILE")) {
 			outStr("WHILE");
 			insymbol();
-			expression();
+			line = nexttoken.getLine();
+			column = nexttoken.getColumn();
+			cond = expression();
 			if (nexttoken.getName().equals("DO")) {
 				outStr("DO");
 				insymbol();
-				statementSequence();
+				doPart = statementSequence();
 				if (nexttoken.getName().equals("END")) {
 					outStr("END");
 					insymbol();
@@ -546,59 +558,70 @@ public class Parser {
 		} else {
 			error("WhileStatementError", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new WhileNode(cond, doPart,line, column);
 	}
 
 	static AbstractNode repeatStatement() {
+		AbstractNode cond=null, repeatPart=null;
+		int line = 0, column = 0;
 		if (nexttoken.getName().equals("REPEAT")) {
 			outStr("REPEAT");
 			insymbol();
-			statementSequence();
+			line = nexttoken.getLine();
+			column = nexttoken.getColumn();
+			repeatPart = statementSequence();
 			if (nexttoken.getName().equals("UNTIL")) {
 				outStr("UNTIL");
 				insymbol();
-				expression();
+				cond = expression();
 			} else {
 				error("'UNTIL' expected", nexttoken.getLine(), nexttoken.getColumn());
 			}
 		} else {
 			error("RepeatStatement error", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new RepeatNode(cond, repeatPart,line,column);
 	}
 
 	static AbstractNode statement(){
+		AbstractNode statement = null;
+		int line = 0, column = 0;
 		if (nexttoken.getType().equals("Ident")){
 			Yytoken ident = nexttoken;
+			line = nexttoken.getLine();
+			column = nexttoken.getColumn();
 			outStr(ident.getName());
 			insymbol();
 			if (nexttoken.getName().equals("(")){
-				procedureCall(ident);
+				statement = procedureCall(ident);
 			} else {
-				assignment(ident);
+				statement = assignment(ident);
 			}
 		} else if (nexttoken.getName().equals("IF")){
-			ifStatement();
+			statement = ifStatement();
 		} else if (nexttoken.getName().equals("PRINT")){
 			outStr("PRINT");
 			insymbol();
-			expression();
+			statement = expression();
 		} else if (nexttoken.getName().equals("WHILE")){
-			whileStatement();
+			statement = whileStatement();
 		} else if (nexttoken.getName().equals("REPEAT")){
-			repeatStatement();
+			statement = repeatStatement();
 		}
-		return null;
+		return new StatementNode(statement, line, column);
 	}
 
 	static AbstractNode statementSequence() {
-		statement();
-		if (nexttoken.getName().equals(";")){
+		List<AbstractNode> statementList = new LinkedList<AbstractNode>();
+		int line = nexttoken.getLine();
+		int column = nexttoken.getColumn();
+		statementList.add(statement());
+		while (nexttoken.getName().equals(";")){
 			outStr(";");
 			insymbol();
-			statementSequence();
+			statementList.add(statement());
 		}
-		return null;
+		return new StatementSequenceNode(statementList, line, column);
 	}
 
 	static AbstractNode string() {
