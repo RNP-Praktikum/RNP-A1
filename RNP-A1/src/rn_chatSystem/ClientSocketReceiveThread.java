@@ -6,33 +6,36 @@ import java.io.InputStreamReader;
 import java.net.*;
 
 public class ClientSocketReceiveThread extends Thread {
-
+	
+	DatagramSocket socket;
+	public ClientSocketReceiveThread(DatagramSocket socket) {
+		this.socket = socket;
+	}
 	
 	public void run() {
-		DatagramSocket socket = null;
+		
 		 BufferedReader in = null;
 		 DatagramPacket packet = null;
 		 byte[] buf = new byte[60];
 		 
-		try {
-			socket = new DatagramSocket(50001);
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		while(true) {
 			
 			packet = new DatagramPacket(buf, buf.length);
 			try {
 				socket.receive(packet);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				this.interrupt();
 			}
 			
 			//TODO Ausgabe in GUI
-			System.out.println(packet.getData());
+			
+			System.out.println(packet.getData().toString());
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		

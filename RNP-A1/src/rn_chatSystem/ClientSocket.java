@@ -50,7 +50,7 @@ public class ClientSocket {
     }
 	
 	new ClientSocketListThread(chatName, tcpSocket).start();
-	
+	new ClientSocketReceiveThread(clientSocket).start();
 	
 	while ((userInput = stdIn.readLine()) != null) {
 		if(userInput.equals("BYE")) {
@@ -68,7 +68,7 @@ public class ClientSocket {
 		buf = userInput.getBytes();
 
 			for(int i = 0; i < users.size(); i = i + 2) {
-				InetAddress ip = InetAddress.getByName(users.get(i));
+				InetAddress ip = InetAddress.getByName(users.get(i).substring(1));
 				packet = new DatagramPacket(buf, buf.length,ip, 50001);
 				clientSocket.send(packet);
 			}
@@ -79,6 +79,7 @@ public class ClientSocket {
 	tcpOut.close();
 	tcpIn.close();
 	stdIn.close();
+	
 	clientSocket.close();
 	tcpSocket.close();
     }

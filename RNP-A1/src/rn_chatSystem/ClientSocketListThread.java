@@ -66,7 +66,7 @@ public class ClientSocketListThread extends Thread {
 			
 		        if(input.startsWith("LIST")) {
 		    		userCount = Integer.parseInt(input.split(" ")[1]);
-		    		System.out.println(input);
+//		    		System.out.println(input);
 		    		users.clear();
 		    		for(int i = 0; i < userCount; i++) {
 		    			try {
@@ -78,12 +78,12 @@ public class ClientSocketListThread extends Thread {
 		    			String[] entry = input.split(" ");
 		    			users.add(entry[0]);
 		    			users.add(entry[1]);
-		    			System.out.println(users);
+//		    			System.out.println(users);
 		    		}
 		   
 			}
 		    try {
-				Thread.sleep(100);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
