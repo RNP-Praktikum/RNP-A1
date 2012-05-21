@@ -10,8 +10,8 @@ public class MyMultiServer {
 	
 	//Port for communication, 
 	//must be same as Client
-	public static final int PORT = 4446;
-	public static List<String> users = new LinkedList<String>();
+	public static final int PORT = 50000;
+	public static Map<String,String> userMap = new HashMap<String,String>();
 	public static int userCount = 0;
 	/**
 	 * @param args

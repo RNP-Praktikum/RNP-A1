@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import static rn_chatSystem.ClientSocket.*;
 
 public class ClientSocketReceiveThread extends Thread {
 	
@@ -16,28 +17,25 @@ public class ClientSocketReceiveThread extends Thread {
 		
 		 BufferedReader in = null;
 		 DatagramPacket packet = null;
-		 byte[] buf = new byte[60];
+		 byte[] buf = new byte[83];
 		 
-		while(true) {
-			
+		while(loggedIn) {
 			packet = new DatagramPacket(buf, buf.length);
 			try {
 				socket.receive(packet);
+//				System.out.println("Packet received");
 			} catch (IOException e) {
-				this.interrupt();
+				break;
 			}
 			
 			//TODO Ausgabe in GUI
 			
-			System.out.println(packet.getData().toString());
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			String message = new String(packet.getData());
+			int endIndex = message.indexOf('\n');
+			System.out.println(message.substring(0, endIndex));
 		}
-		
+		this.interrupt();
 		
 	}
 }
