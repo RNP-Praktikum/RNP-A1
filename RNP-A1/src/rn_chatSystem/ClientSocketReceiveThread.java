@@ -7,10 +7,11 @@ import java.net.*;
 import static rn_chatSystem.ClientSocket.*;
 
 public class ClientSocketReceiveThread extends Thread {
-	
+	Chat gui;
 	DatagramSocket socket;
-	public ClientSocketReceiveThread(DatagramSocket socket) {
+	public ClientSocketReceiveThread(DatagramSocket socket, Chat gui) {
 		this.socket = socket;
+		this.gui = gui;
 	}
 	
 	public void run() {
@@ -33,6 +34,10 @@ public class ClientSocketReceiveThread extends Thread {
 			
 			String message = new String(packet.getData());
 			int endIndex = message.indexOf('\n');
+			String messages = gui.getMessages().getText();
+			System.out.println(messages);
+			System.out.println(message.substring(0, endIndex));
+			gui.getMessages().setText(message.substring(0, endIndex));
 			System.out.println(message.substring(0, endIndex));
 		}
 		this.interrupt();

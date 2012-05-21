@@ -34,13 +34,13 @@ public class MyMultiServerThread extends Thread {
 			while ((inputLine = in.readLine()) != null) {
 				overallMessageCount += 1;
 				messageCount +=1;
-//				System.out.println("---------------------------------------");
-//				System.out.println("Client: " + socket.toString());
-//				System.out.println("aktive since " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds");
-//				System.out.println(new Date(System.currentTimeMillis()));
-//				System.out.println("Overall Message Count: "+  overallMessageCount);
-//				System.out.println("Message Count from Client: " + messageCount);
-//				System.out.println("---------------------------------------");
+				System.out.println("---------------------------------------");
+				System.out.println("Client: " + socket.toString());
+				System.out.println("aktive since " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds");
+				System.out.println(new Date(System.currentTimeMillis()));
+				System.out.println("Overall Message Count: "+  overallMessageCount);
+				System.out.println("Message Count from Client: " + messageCount);
+				System.out.println("---------------------------------------");
 				
 				if (inputLine.startsWith("NEW")) {
 					try {

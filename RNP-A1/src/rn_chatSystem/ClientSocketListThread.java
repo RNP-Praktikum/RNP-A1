@@ -2,12 +2,12 @@ package rn_chatSystem;
 
 import static rn_chatSystem.ClientSocket.*;
 
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class ClientSocketListThread extends Thread {
 
@@ -15,11 +15,13 @@ public class ClientSocketListThread extends Thread {
 	Socket socket;
 	PrintWriter out = null;
 	BufferedReader in = null;
+	Chat gui;
 
-	public ClientSocketListThread(String chatName, Socket socket) {
+	public ClientSocketListThread(String chatName, Socket socket, Chat gui) {
 		// super("MyServerThread");
 		this.chatName = chatName;
 		this.socket = socket;
+		this.gui = gui;
 	}
 
 	public void disconnect() {
@@ -67,6 +69,7 @@ public class ClientSocketListThread extends Thread {
 				userCount = Integer.parseInt(input.split(" ")[1]);
 				// System.out.println(input);
 				users.clear();
+				String allClients = "";
 				for (int i = 0; i < userCount; i++) {
 					try {
 						input = in.readLine();
@@ -77,9 +80,10 @@ public class ClientSocketListThread extends Thread {
 					String[] entry = input.split(" ");
 					users.add(entry[0]);
 					users.add(entry[1]);
+					allClients = allClients + entry[1] + "\n";
 					// System.out.println(users);
 				}
-//				System.out.println(users);
+				gui.getMember().setText(allClients);
 			}
 			try {
 				Thread.sleep(5000);
