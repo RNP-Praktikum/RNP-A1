@@ -29,6 +29,7 @@ public class ClientSocketReceiveThread extends Thread {
 			
 			//TODO Ausgabe in GUI
 			
+			
 			System.out.println(packet.getData().toString());
 			try {
 				Thread.sleep(100);

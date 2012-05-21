@@ -15,9 +15,8 @@ public class ClientSocket {
 	public static List<String> users = new LinkedList<String>();
 	
 	
-    @SuppressWarnings("unchecked")
+  
 	public static void main(String[] args) throws IOException {
-
         DatagramSocket clientSocket = new DatagramSocket(50001);
         PrintWriter out = null;
         BufferedReader in = null;
