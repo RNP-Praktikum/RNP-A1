@@ -2,6 +2,7 @@ package rn_chatSystem;
 
 import java.net.*;
 import java.util.*;
+import java.util.Map.Entry;
 import java.io.*;
 import static rn_chatSystem.MyMultiServer.*;
 
@@ -33,46 +34,53 @@ public class MyMultiServerThread extends Thread {
 			while ((inputLine = in.readLine()) != null) {
 				overallMessageCount += 1;
 				messageCount +=1;
-				System.out.println("---------------------------------------");
-				System.out.println("Client: " + socket.toString());
-				System.out.println("aktive since " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds");
-				System.out.println(new Date(System.currentTimeMillis()));
-				System.out.println("Overall Message Count: "+  overallMessageCount);
-				System.out.println("Message Count from Client: " + messageCount);
-				System.out.println("---------------------------------------");
+//				System.out.println("---------------------------------------");
+//				System.out.println("Client: " + socket.toString());
+//				System.out.println("aktive since " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds");
+//				System.out.println(new Date(System.currentTimeMillis()));
+//				System.out.println("Overall Message Count: "+  overallMessageCount);
+//				System.out.println("Message Count from Client: " + messageCount);
+//				System.out.println("---------------------------------------");
 				
 				if (inputLine.startsWith("NEW")) {
 					try {
 						if(!loggedIn) {
-						MyMultiServer.userCount += 1;
-						MyMultiServer.users.add(socket.getInetAddress().toString());
-						MyMultiServer.users.add(inputLine.split(" ")[1]);
+						userCount += 1;
 						name = inputLine.split(" ")[1];
 						ip = socket.getInetAddress().toString();
+						if(userMap.containsKey(name)){
+							out.println("ERROR chatname already assigned");
+							break;
+						} else {
+							userMap.put(name, ip);
+						}
 						out.println("OK");
 						out.flush();
 						loggedIn = true;
 						} else {
 							out.println("ERROR user already logged in");
+							break;
 						}
 					} catch (RuntimeException e) {
 						out.println("ERROR cannot Add User");
+						break;
 					}
 				} else if(inputLine.equals("INFO")) {
 					try {
 					out.println("LIST " + MyMultiServer.userCount);
 					out.flush();
-					for(int i = 0; i < users.size(); i = i + 2) {
-						out.println(users.get(i) + " " + users.get(i + 1));
+					for(Entry<String,String> e: userMap.entrySet()){
+						out.println(e.getValue() + " " + e.getKey());
 					}
 					} catch (RuntimeException e) {
 						out.println("ERROR Incorrect UserList");
+						break;
 					}
 				} else if (inputLine.equals("BYE")) {
 					out.println("BYE");
-//					userCount--;
-//					deleteUser(name, ip);
-//					loggedIn = false;
+					userCount--;
+					deleteUser(name, ip);
+					loggedIn = false;
 					break;
 				} else {
 					out.println("ERROR Incorrect Argument");
@@ -98,13 +106,7 @@ public class MyMultiServerThread extends Thread {
 	//TODO Gleiche namen????
 	private boolean deleteUser(String name, String ip) {
 		boolean result = false;
-		for(int i = 0; i < users.size(); i = i + 2) {
-			if(users.get(i).equals(ip) && users.get(i + 1).equals(name)) {
-				users.remove(i + 1);
-				users.remove(i);
-				result = true;
-			}
-		}
+		userMap.remove(name);
 		
 		return result;
 	}
