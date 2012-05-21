@@ -31,7 +31,6 @@ public class ClientSocketReceiveThread extends Thread {
 			//TODO Ausgabe in GUI
 			
 			
-			
 			String message = new String(packet.getData());
 			int endIndex = message.indexOf('\n');
 			System.out.println(message.substring(0, endIndex));
