@@ -11,7 +11,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
-import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
 
@@ -63,10 +62,12 @@ public class Chat extends javax.swing.JFrame {
 			GroupLayout thisLayout = new GroupLayout((JComponent)getContentPane());
 			getContentPane().setLayout(thisLayout);
 			this.addWindowListener(new WindowAdapter() {
-				public void windowClosed(WindowEvent evt) {
-					System.out.println("this.windowClosed, event="+evt);
+				public void windowClosing(WindowEvent evt) {
+					System.out.println("this.windowClosing, event="+evt);
+					System.out.println("versuche zu beenden");
 					client.send("BYE");
 				}
+				
 			});
 			{
 				anmeldeBtn = new JButton();
