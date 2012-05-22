@@ -85,8 +85,7 @@ public class ClientSocket {
 		for (int i = 0; i < users.size(); i = i + 2) {
 			InetAddress ip;
 			try {
-				ip = InetAddress.getByName(users.get(i)
-						.substring(1));
+				ip = InetAddress.getByName(users.get(i));
 				packet = new DatagramPacket(buf, buf.length, ip, 50001);
 				clientSocket.send(packet);
 			} catch (UnknownHostException e) {

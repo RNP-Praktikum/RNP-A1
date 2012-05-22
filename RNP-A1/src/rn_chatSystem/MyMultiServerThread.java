@@ -47,7 +47,7 @@ public class MyMultiServerThread extends Thread {
 						if(!loggedIn) {
 						userCount += 1;
 						name = inputLine.split(" ")[1];
-						ip = socket.getInetAddress().toString();
+						ip = socket.getInetAddress().toString().substring(1);
 						if(userMap.containsKey(name)){
 							out.println("ERROR chatname already assigned");
 							break;
