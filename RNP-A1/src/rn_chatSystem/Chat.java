@@ -65,10 +65,15 @@ public class Chat extends javax.swing.JFrame {
 				anmeldeBtn.setText("anmelden");
 				anmeldeBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
-						System.out.println("anmeldeBtn.actionPerformed, event="+evt);
-						anmeldeBtn.setEnabled(false);
-						client = new ClientSocket(chatNameText.getText(), inst);
-						send.setEnabled(true);
+						if (chatNameText.getText().length() <= 20){
+							System.out.println("anmeldeBtn.actionPerformed, event="+evt);
+							anmeldeBtn.setEnabled(false);
+							client = new ClientSocket(chatNameText.getText(), inst);
+							send.setEnabled(true);
+							error.setText("");
+						} else {
+							error.setText("ERROR chatname can only contain 20 letters");
+						}
 						
 					}
 				});
@@ -106,6 +111,7 @@ send.addActionListener(new ActionListener() {
 		System.out.println("send.actionPerformed, event="+evt);
 		String text = message.getText();
 		client.send(message.getText());
+		message.setText("");
 		error.setText(text);
 	}
 });
