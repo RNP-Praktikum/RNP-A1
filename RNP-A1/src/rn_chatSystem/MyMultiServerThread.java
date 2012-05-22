@@ -97,7 +97,7 @@ public class MyMultiServerThread extends Thread {
 			System.out.println("All Closed");
 		} catch (IOException e) {
 			System.out.println("Something went wrong!");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 
 	}

@@ -26,7 +26,7 @@ public class ClientSocket {
 
 
 		try {
-			tcpSocket = new Socket(HOST_NAME, PORT);
+			tcpSocket = new Socket(InetAddress.getByName("141.22.27.104"), PORT);
 			tcpOut = new PrintWriter(tcpSocket.getOutputStream(), true);
 			tcpIn = new BufferedReader(new InputStreamReader(
 					tcpSocket.getInputStream()));

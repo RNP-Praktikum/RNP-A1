@@ -110,9 +110,9 @@ send.addActionListener(new ActionListener() {
 	public void actionPerformed(ActionEvent evt) {
 		System.out.println("send.actionPerformed, event="+evt);
 		String text = message.getText();
-		client.send(message.getText());
+		client.send(text);
 		message.setText("");
-		error.setText(text);
+//		error.setText(text);
 	}
 });
 			}
