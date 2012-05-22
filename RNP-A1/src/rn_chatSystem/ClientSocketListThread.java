@@ -70,7 +70,7 @@ public class ClientSocketListThread extends Thread {
 				String[] entry = input.split(" ");
 				userCount = Integer.parseInt(entry[1]);
 //				System.out.println(userCount);
-				for (int i = 2; i < userCount + 2; i = i+2) {
+				for (int i = 2; i < userCount * 2 + 2; i = i+2) {
 					
 					users.add(entry[i]);
 					users.add(entry[i + 1]);
