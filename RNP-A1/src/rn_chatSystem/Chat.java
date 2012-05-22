@@ -30,6 +30,7 @@ public class Chat extends javax.swing.JFrame {
 	private JButton anmeldeBtn;
 	private JTextField message;
 	private JTextArea member;
+	private JTextField serverName;
 	private JTextArea messages;
 	private JScrollPane jScrollPane1;
 	private JLabel error;
@@ -77,7 +78,7 @@ public class Chat extends javax.swing.JFrame {
 						if (chatNameText.getText().length() <= 20){
 							System.out.println("anmeldeBtn.actionPerformed, event="+evt);
 							anmeldeBtn.setEnabled(false);
-							client = new ClientSocket(chatNameText.getText(), inst);
+							client = new ClientSocket(chatNameText.getText(),serverName.getText(), inst);
 							send.setEnabled(true);
 							error.setText("");
 						} else {
@@ -89,11 +90,15 @@ public class Chat extends javax.swing.JFrame {
 			}
 			{
 				chatNameText = new JTextField();
-				chatNameText.setText("Test");
+				chatNameText.setText("Chatname");
 			}
 			{
 				error = new JLabel();
 				error.setFont(new java.awt.Font("Segoe UI",1,12));
+			}
+			{
+				serverName = new JTextField();
+				serverName.setText("LAB25");
 			}
 			{
 				member = new JTextArea();
@@ -129,12 +134,13 @@ send.addActionListener(new ActionListener() {
 				.addContainerGap()
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				    .addComponent(anmeldeBtn, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				    .addComponent(chatNameText, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+				    .addComponent(chatNameText, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(serverName, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				.addGroup(thisLayout.createParallelGroup()
 				    .addComponent(member, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE))
-				.addGap(0, 18, Short.MAX_VALUE)
+				.addGap(0, 32, Short.MAX_VALUE)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				    .addComponent(send, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(message, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -145,26 +151,27 @@ send.addActionListener(new ActionListener() {
 				.addGroup(thisLayout.createParallelGroup()
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addComponent(error, 0, 360, Short.MAX_VALUE)
-				        .addGap(0, 12, GroupLayout.PREFERRED_SIZE))
+				        .addGap(12))
 				    .addGroup(thisLayout.createSequentialGroup()
 				        .addPreferredGap(error, message, LayoutStyle.ComponentPlacement.INDENT)
 				        .addGroup(thisLayout.createParallelGroup()
-				            .addGroup(thisLayout.createSequentialGroup()
-				                .addGroup(thisLayout.createParallelGroup()
-				                    .addComponent(message, GroupLayout.Alignment.LEADING, 0, 205, Short.MAX_VALUE)
-				                    .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, 0, 205, Short.MAX_VALUE))
-				                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-				                .addGroup(thisLayout.createParallelGroup()
-				                    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                        .addComponent(send, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-				                        .addGap(73))
-				                    .addComponent(member, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)))
+				            .addComponent(message, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE)
+				            .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE)
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(anmeldeBtn, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
 				                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-				                .addComponent(chatNameText, 0, 255, Short.MAX_VALUE))))));
+				                .addComponent(chatNameText, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)))
+				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				        .addGroup(thisLayout.createParallelGroup()
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(send, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+				                .addGap(0, 73, Short.MAX_VALUE))
+				            .addComponent(member, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(serverName, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
+				                .addGap(0, 81, Short.MAX_VALUE))))));
 			pack();
-			setSize(400, 300);
+			this.setSize(400, 314);
 		} catch (Exception e) {
 		    error.setText("ERROR Gui Problem");
 		}
