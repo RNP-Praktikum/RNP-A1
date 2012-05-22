@@ -64,20 +64,18 @@ public class ClientSocketListThread extends Thread {
 			}
 
 			if (input.startsWith("LIST")) {
-				userCount = Integer.parseInt(input.split(" ")[1]);
-				// System.out.println(input);
+//				 System.out.println(input);
 				users.clear();
 				String allClients = "";
-				for (int i = 0; i < userCount; i++) {
-					try {
-						input = in.readLine();
-					} catch (IOException e) {
-						gui.getError().setText("ERROR cannot READ");
-					}
-					String[] entry = input.split(" ");
-					users.add(entry[0]);
-					users.add(entry[1]);
-					allClients = allClients + entry[1] + "\n";
+				String[] entry = input.split(" ");
+				userCount = Integer.parseInt(entry[1]);
+//				System.out.println(userCount);
+				for (int i = 2; i < userCount + 2; i = i+2) {
+					
+					users.add(entry[i]);
+					users.add(entry[i + 1]);
+//					System.out.println(users);
+					allClients = allClients + entry[i + 1] + "\n";
 					// System.out.println(users);
 				}
 				gui.getMember().setText(allClients);

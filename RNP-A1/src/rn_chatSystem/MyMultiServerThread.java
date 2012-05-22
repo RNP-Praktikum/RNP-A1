@@ -67,11 +67,14 @@ public class MyMultiServerThread extends Thread {
 					}
 				} else if(inputLine.equals("INFO")) {
 					try {
-					out.println("LIST " + MyMultiServer.userCount);
-					out.flush();
+					String list;
+					list = "LIST " + MyMultiServer.userCount;
 					for(Entry<String,String> e: userMap.entrySet()){
-						out.println(e.getValue() + " " + e.getKey());
+						list = list + " " + e.getValue() + " " + e.getKey();
+						
 					}
+					System.out.println(list);
+					out.println(list);
 					} catch (RuntimeException e) {
 						out.println("ERROR Incorrect UserList");
 						break;
