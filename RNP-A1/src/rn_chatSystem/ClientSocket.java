@@ -1,8 +1,5 @@
 package rn_chatSystem;
 
-import static rn_chatSystem.ClientSocket.HOST_NAME;
-import static rn_chatSystem.ClientSocket.PORT;
-
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -23,18 +20,10 @@ public class ClientSocket {
 	String userInput;
 	DatagramSocket clientSocket;
 	Chat gui;
-	@SuppressWarnings("unchecked")
 	public ClientSocket(String chatName, Chat gui) {
 		this.chatName = chatName;
 		this.gui = gui;
-		try {
-			clientSocket = new DatagramSocket(50001);
-			new ClientSocketReceiveThread(clientSocket, gui).start();
-			System.out.println("Socket establisched, waitign thread started");
-		} catch (SocketException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+
 
 		try {
 			tcpSocket = new Socket(HOST_NAME, PORT);
@@ -52,10 +41,39 @@ public class ClientSocket {
 		}
 
 		new ClientSocketListThread(chatName, tcpSocket, gui).start();
-		System.out.println("ALL INITIALIZED");
+		
+		//Waiting for SocketListThread to log in
+		while(!loggedIn){try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			gui.getError().setText("ERROR cannot wait for Login");
+		}};
+		try {
+			clientSocket = new DatagramSocket(50001);
+			new ClientSocketReceiveThread(clientSocket, gui).start();
+		} catch (SocketException e1) {
+			gui.getError().setText("ERROR start Receive Thread");
+		}
+	
 	}
 	
 	public void send(String userInput) {
+		if (userInput.equals("BYE")) {
+			tcpOut.println("BYE");
+		
+				try {
+					if (tcpIn.readLine().equals("BYE")) {
+						disconnect();
+					} else {
+						gui.getError().setText("ERROR Server didnt send disconnect message");
+					}
+				} catch (IOException e) {
+					gui.getError().setText("ERROR cannot Disconnect");
+				}
+		
+
+		} else {
+		
 		buf = new byte[83];
 		if (userInput.length() > 60) {
 			userInput = userInput.substring(0,60);
@@ -71,15 +89,32 @@ public class ClientSocket {
 				packet = new DatagramPacket(buf, buf.length, ip, 50001);
 				clientSocket.send(packet);
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				gui.getError().setText("ERROR cannot SEND via UDP");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				gui.getError().setText("ERROR cannot SEND via UDP");
 			}
 			
 			
+		}}
+	}
+	
+	private void disconnect(){
+		loggedIn = false;
+		tcpOut.close();
+		try {
+			tcpIn.close();
+		} catch (IOException e) {
+			gui.getError().setText("ERROR cannot close TCP in Stream");
 		}
+//	stdIn.close();
+
+		clientSocket.close();
+		try {
+			tcpSocket.close();
+		} catch (IOException e) {
+			gui.getError().setText("ERROR cannot close TCP Socket");
+		}
+		System.exit(0);
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -110,8 +145,9 @@ public class ClientSocket {
 					+ HOST_NAME);
 			System.exit(1);
 		}
-
+		System.out.println("Start List Thread");
 		new ClientSocketListThread(chatName, tcpSocket, gui).start();
+		System.out.println("Start Receive Thread");
 		new ClientSocketReceiveThread(clientSocket, gui).start();
 
 		while ((userInput = stdIn.readLine()) != null) {

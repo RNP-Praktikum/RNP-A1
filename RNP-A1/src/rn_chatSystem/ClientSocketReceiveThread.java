@@ -21,23 +21,21 @@ public class ClientSocketReceiveThread extends Thread {
 		 byte[] buf = new byte[83];
 		 
 		while(loggedIn) {
+			System.out.println("Starting Receive Thread");
 			packet = new DatagramPacket(buf, buf.length);
 			try {
+				System.out.println("try receive package");
 				socket.receive(packet);
 //				System.out.println("Packet received");
 			} catch (IOException e) {
+				gui.getError().setText("ERROR cannot receive udp Package");
 				break;
 			}
-			
-			//TODO Ausgabe in GUI
-			
 			
 			String message = new String(packet.getData());
 			int endIndex = message.indexOf('\n');
 			String messages = gui.getMessages().getText();
-			System.out.println(messages);
-			System.out.println(message.substring(0, endIndex));
-			gui.getMessages().setText(message.substring(0, endIndex));
+			gui.getMessages().setText(messages.concat(message.substring(0, endIndex) + "\n"));
 			System.out.println(message.substring(0, endIndex));
 		}
 		this.interrupt();

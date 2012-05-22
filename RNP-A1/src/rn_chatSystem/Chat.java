@@ -1,17 +1,14 @@
 package rn_chatSystem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
-import javax.swing.ListModel;
-
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
@@ -32,9 +29,10 @@ public class Chat extends javax.swing.JFrame {
 	private JButton anmeldeBtn;
 	private JTextField message;
 	private JTextArea member;
+	private JTextArea messages;
+	private JScrollPane jScrollPane1;
 	private JLabel error;
 	private JButton send;
-	private JTextArea messages;
 	private JTextField chatNameText;
 	private ClientSocket client = null;
 	public static Chat inst;
@@ -70,6 +68,7 @@ public class Chat extends javax.swing.JFrame {
 						System.out.println("anmeldeBtn.actionPerformed, event="+evt);
 						anmeldeBtn.setEnabled(false);
 						client = new ClientSocket(chatNameText.getText(), inst);
+						send.setEnabled(true);
 						
 					}
 				});
@@ -80,78 +79,79 @@ public class Chat extends javax.swing.JFrame {
 			}
 			{
 				error = new JLabel();
+				error.setFont(new java.awt.Font("Segoe UI",1,12));
 			}
 			{
 				member = new JTextArea();
-			}
-			{
-				messages = new JTextArea();
-				messages.setEditable(false);
+				member.setEditable(false);
 			}
 			{
 				message = new JTextField();
 			}
 			{
+				jScrollPane1 = new JScrollPane();
+				{
+					messages = new JTextArea();
+					jScrollPane1.setViewportView(getMessages());
+					messages.setEditable(false);
+				}
+			}
+			{
 				send = new JButton();
 				send.setText("send");
-				send.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent evt) {
-						System.out.println("send.actionPerformed, event="+evt);
-						String text = message.getText();
-						client.send(message.getText());
-						error.setText(text);
-					}
-				});
+				send.setEnabled(false);
+				
+send.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent evt) {
+		System.out.println("send.actionPerformed, event="+evt);
+		String text = message.getText();
+		client.send(message.getText());
+		error.setText(text);
+	}
+});
 			}
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap()
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				    .addComponent(anmeldeBtn, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				    .addComponent(chatNameText, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
+				    .addComponent(chatNameText, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				.addGroup(thisLayout.createParallelGroup()
-				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				        .addComponent(messages, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)
-				        .addGap(0, 7, Short.MAX_VALUE))
-				    .addComponent(member, GroupLayout.Alignment.LEADING, 0, 146, Short.MAX_VALUE))
-				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+				    .addComponent(member, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE))
+				.addGap(0, 18, Short.MAX_VALUE)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-				    .addComponent(message, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				    .addComponent(send, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+				    .addComponent(send, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(message, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-				.addComponent(error, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap());
+				.addComponent(error, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
-				.addContainerGap(18, 18)
+				.addContainerGap()
 				.addGroup(thisLayout.createParallelGroup()
-				    .addGroup(thisLayout.createSequentialGroup()
-				        .addGroup(thisLayout.createParallelGroup()
-				            .addComponent(message, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 177, GroupLayout.PREFERRED_SIZE)
-				            .addComponent(messages, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 177, GroupLayout.PREFERRED_SIZE))
-				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-				        .addGroup(thisLayout.createParallelGroup()
-				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(send, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-				                .addGap(0, 85, Short.MAX_VALUE))
-				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addPreferredGap(send, member, LayoutStyle.ComponentPlacement.INDENT)
-				                .addComponent(member, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
-				                .addGap(0, 0, Short.MAX_VALUE))))
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				        .addComponent(error, 0, 360, Short.MAX_VALUE)
+				        .addGap(0, 12, GroupLayout.PREFERRED_SIZE))
+				    .addGroup(thisLayout.createSequentialGroup()
+				        .addPreferredGap(error, message, LayoutStyle.ComponentPlacement.INDENT)
 				        .addGroup(thisLayout.createParallelGroup()
-				            .addComponent(anmeldeBtn, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+				            .addGroup(thisLayout.createSequentialGroup()
+				                .addGroup(thisLayout.createParallelGroup()
+				                    .addComponent(message, GroupLayout.Alignment.LEADING, 0, 205, Short.MAX_VALUE)
+				                    .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, 0, 205, Short.MAX_VALUE))
+				                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				                .addGroup(thisLayout.createParallelGroup()
+				                    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                        .addComponent(send, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+				                        .addGap(73))
+				                    .addComponent(member, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(error, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-				                .addGap(57)))
-				        .addGap(21)
-				        .addComponent(chatNameText, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE)
-				        .addGap(0, 0, Short.MAX_VALUE)))
-				.addContainerGap(22, 22));
+				                .addComponent(anmeldeBtn, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+				                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				                .addComponent(chatNameText, 0, 255, Short.MAX_VALUE))))));
 			pack();
 			setSize(400, 300);
 		} catch (Exception e) {
-		    //add your error handling code here
-			e.printStackTrace();
+		    error.setText("ERROR Gui Problem");
 		}
 	}
 	
@@ -161,6 +161,11 @@ public class Chat extends javax.swing.JFrame {
 	
 	public JTextArea getMessages() {
 		return messages;
+	}
+	
+	
+	public JLabel getError() {
+		return error;
 	}
 
 }

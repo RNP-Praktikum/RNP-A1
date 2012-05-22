@@ -34,8 +34,7 @@ public class ClientSocketListThread extends Thread {
 			in = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			gui.getError().setText("ERROR cannot create BUFFER");
 		}
 
 		String input = "";
@@ -53,7 +52,7 @@ public class ClientSocketListThread extends Thread {
 			loggedIn = true;
 //			System.out.println(chatName + " is logged in");
 		} else {
-			System.out.println("ERROR cannot log in");
+			gui.getError().setText("ERROR cannot LOGIN");
 		}
 
 		while (loggedIn) {
@@ -61,8 +60,7 @@ public class ClientSocketListThread extends Thread {
 			try {
 				input = in.readLine();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				gui.getError().setText("ERROR cannot READ");
 			}
 
 			if (input.startsWith("LIST")) {
@@ -74,8 +72,7 @@ public class ClientSocketListThread extends Thread {
 					try {
 						input = in.readLine();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						gui.getError().setText("ERROR cannot READ");
 					}
 					String[] entry = input.split(" ");
 					users.add(entry[0]);
@@ -88,8 +85,7 @@ public class ClientSocketListThread extends Thread {
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				gui.getError().setText("ERROR cannot Wait to update List");
 			}
 
 		}
