@@ -58,32 +58,39 @@ public class Parser {
 	}
 	
 	static AbstractNode identList(){
+		int line = nexttoken.getLine(); int column = nexttoken.getColumn();
+		List<AbstractNode> list = new LinkedList<AbstractNode>();
 		if (nexttoken.getType().equals("Ident")){
 			outStr(nexttoken.getName());
+			list.add(new IdentNode(nexttoken.getName(), nexttoken.getLine(), nexttoken.getColumn()));
 			insymbol();
-			if (nexttoken.getName().equals(",")){
+			while (nexttoken.getName().equals(",")){
 				outStr(",");
+				outStr(nexttoken.getName());
+				list.add(new IdentNode(nexttoken.getName(), nexttoken.getLine(), nexttoken.getColumn()));
 				insymbol();
-				identList();
 			}
+			
 		} else {
 			error("IdentList Error", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new ListNode(list, line, column);
 	}
 	
 	static AbstractNode arrayType(){
+		int line = nexttoken.getLine(); int column = nexttoken.getColumn();
+		AbstractNode indexEx = null, type = null;
 		if (nexttoken.getName().equals("ARRAY")){
 			insymbol();
 			outStr("ARRAY");
 			if (nexttoken.getName().equals("[")){
 				insymbol();
-				indexExpression();
+				indexEx = indexExpression();
 				if (nexttoken.getName().equals("]")){
 					insymbol();
 					if (nexttoken.getName().equals("OF")){
 						insymbol();
-						type();
+						type = type();
 					} else {
 						error("'OF' expected", nexttoken.getLine(), nexttoken.getColumn());
 					}
@@ -96,33 +103,37 @@ public class Parser {
 		} else {
 			error("ArrayType Error", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new ArrayNode(indexEx, type, line, column);
 	}
 	
 	static AbstractNode fieldList(){
+		int line = nexttoken.getLine(); int column = nexttoken.getColumn();
+		AbstractNode identList = null, type = null;
 		if (nexttoken.getType().equals("Ident")){
-			identList();
+			identList = identList();
 			if (nexttoken.getName().equals(":")){
 				insymbol();
-				type();
+				type = type();
 			} else {
 				error("':' expected", nexttoken.getLine(), nexttoken.getColumn());
 			}
 		} else {
 			error("FieldList Error", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new FieldListNode(identList, type, line, column);
 	}
 	
 	static AbstractNode recordType(){
+		int line = nexttoken.getLine(); int column = nexttoken.getColumn();
+		List<AbstractNode> lists = new LinkedList<AbstractNode>();
 		if (nexttoken.getName().equals("RECORD")){
 			outStr("RECORD");
 			insymbol();
-			fieldList();
+			lists.add(fieldList());
 			while (nexttoken.getName().equals(";")){
 				outStr(";");
 				insymbol();
-				fieldList();
+				lists.add(fieldList());
 			}
 			if (nexttoken.getName().equals("END")){
 				insymbol();
@@ -133,66 +144,77 @@ public class Parser {
 		} else {
 			error("RecordType Error", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new RecordNode(new ListNode(lists,line,column), line, column);
 	}
 	
 	static AbstractNode type(){
+		AbstractNode node = null;
 		System.out.println(nexttoken.getName());
 		System.out.println(nexttoken.getType());
 		if (nexttoken.getType().equals("Ident")){
+			node = new IdentNode(nexttoken.getName(), nexttoken.getLine(), nexttoken.getColumn());
 			outStr(nexttoken.getName());
 			insymbol();
 		} else if ( nexttoken.getName().equals("ARRAY")){
-			arrayType();
+			node = arrayType();
 		} else if (nexttoken.getName().equals("RECORD")){
-			recordType();
+			node = recordType();
 		} else {
 			error("Type Error", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return node;
 	}
 	
 	static AbstractNode fpSection(){
+		int line = nexttoken.getLine(); int column = nexttoken.getColumn();
+		boolean isVar = false;
+		AbstractNode identList = null, type = null;
 		if (nexttoken.getName().equals("VAR")){
 			outStr("VAR");
+			isVar = true;
 			insymbol();
 		} 
 		if (nexttoken.getType().equals("Ident")){
-			identList();
+			identList = identList();
 		} else {
 			error("'IDENT' expected", nexttoken.getLine(), nexttoken.getColumn());
 		}
 		if (nexttoken.getName().equals(":")) {
 			outStr(":");
 			insymbol();
-			type();
+			type = type();
 		} else {
 			error("':' expected", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new FPSectionNode(isVar, identList, type, line, column);
 	}
 	
 	static AbstractNode formalParameters(){
-		fpSection();
+		int line = nexttoken.getLine(); int column = nexttoken.getColumn();
+		List<AbstractNode> list = new LinkedList<AbstractNode>();
+		list.add(fpSection());
 		while (nexttoken.getName().equals(";")) {
 			outStr(";");
 			insymbol();
-			fpSection();
+			list.add(fpSection());
 		}
-		return null;
+		return new ListNode(list, line, column);
 	}
 	
 	static AbstractNode procedureHeading(){
+		int line = nexttoken.getLine(); int column = nexttoken.getColumn();
+		AbstractNode ident = null, formalParameters = null;
 		if(nexttoken.getName().equals("PROCEDURE")) {
 			outStr("PROCEDURE");
 			insymbol();
 			if(nexttoken.getType().equals("Ident")) {
 				outStr(nexttoken.getName());
+				ident = new IdentNode(nexttoken.getName(), nexttoken.getLine(), nexttoken.getColumn());
 				insymbol();
 				if(nexttoken.getName().equals("(")) {
 					outStr("(");
 					insymbol();
-					formalParameters();
+					formalParameters = formalParameters();
 				} else {
 					error("Missing '('", nexttoken.getLine(), nexttoken.getColumn());
 				} 
@@ -207,14 +229,16 @@ public class Parser {
 		} else {
 			error("'PROCEDURE' expected", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new ProcedureHeadingNode(ident, formalParameters, line, column);
 	}
 	
 	static AbstractNode procedureBody(){
-		declarations();
+		int line = nexttoken.getLine(); int column = nexttoken.getColumn();
+		AbstractNode statementSequence = null;
+		AbstractNode declarations = declarations();
 		if (nexttoken.getName().equals("BEGIN")) {
 			insymbol();
-			statementSequence();
+			statementSequence = statementSequence();
 			if (nexttoken.getName().equals("END")) {
 				insymbol();
 			} else {
@@ -223,7 +247,7 @@ public class Parser {
 		} else {
 			error("'BEGIN' expected", nexttoken.getLine(), nexttoken.getColumn());
 		}
-		return null;
+		return new ProcedureBodyNode(declarations, statementSequence, line, column);
 	}
 	
 	static AbstractNode procedureDeclaration(){
