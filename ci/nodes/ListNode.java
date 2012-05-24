@@ -7,6 +7,10 @@ import ci_compiler.AbstractDescr;
 
 public class ListNode extends AbstractNode {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7140857430155399928L;
 	List<AbstractNode> list;
 	
 	public ListNode(List<AbstractNode> list, int line, int column) {

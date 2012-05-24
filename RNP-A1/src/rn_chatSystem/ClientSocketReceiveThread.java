@@ -2,7 +2,6 @@ package rn_chatSystem;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.*;
 import static rn_chatSystem.ClientSocket.*;
 
@@ -16,7 +15,6 @@ public class ClientSocketReceiveThread extends Thread {
 	
 	public void run() {
 		
-		 BufferedReader in = null;
 		 DatagramPacket packet = null;
 		 byte[] buf = new byte[83];
 		 

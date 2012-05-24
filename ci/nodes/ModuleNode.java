@@ -6,6 +6,10 @@ import ci_compiler.AbstractDescr;
 
 public class ModuleNode extends AbstractNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1414274589538425495L;
 	AbstractNode ident, declarations, statementSequence;
 	//TODO Module Ident das gleiche wie end Ident????
 	

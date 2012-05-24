@@ -27,7 +27,7 @@ public class MyMultiServerThread extends Thread {
 //			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
-			String inputLine, outputLine;
+			String inputLine;
 			String name = "", ip = "";
 			boolean loggedIn = false;
 			

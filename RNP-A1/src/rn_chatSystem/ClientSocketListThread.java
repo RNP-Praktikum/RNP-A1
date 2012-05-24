@@ -2,7 +2,6 @@ package rn_chatSystem;
 
 import static rn_chatSystem.ClientSocket.*;
 
-import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

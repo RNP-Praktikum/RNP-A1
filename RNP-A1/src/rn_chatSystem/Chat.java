@@ -27,6 +27,10 @@ import javax.swing.SwingUtilities;
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
 public class Chat extends javax.swing.JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1255515754607927400L;
 	private JButton anmeldeBtn;
 	private JTextField message;
 	private JTextArea member;
