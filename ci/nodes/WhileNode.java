@@ -49,9 +49,13 @@ public class WhileNode extends AbstractNode {
 	@Override
 	public void print() {
 		trace("WhileNode ");
+		trace("Cond: ");
 		condition.print();
+		unindent();
+		trace("doPart: ");
 		if (doPart!= null)
 			doPart.print();
+		unindent();
 		unindent();
 	}
 

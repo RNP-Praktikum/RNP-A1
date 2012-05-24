@@ -35,11 +35,13 @@ public class OperatorNode extends AbstractNode {
 
 	@Override
 	public void print() {
+		trace("OpNode");
 		trace(operator);
 		if (left != null){
 			left.print();}
 		if (right != null)
 			right.print();
+		unindent();
 		unindent();
 	}
 

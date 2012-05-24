@@ -11,10 +11,10 @@ public class DeclarationsNode extends AbstractNode {
 	 */
 	private static final long serialVersionUID = 1L;
 	List<AbstractNode> constList,typeList,varList;
-	AbstractNode procedureDeclaration;
+	List<AbstractNode> procedureDeclaration;
 	
 	public DeclarationsNode(List<AbstractNode> constList,
-			List<AbstractNode> typeList, List<AbstractNode> varList, AbstractNode procedureDeclaration, int line, int column) {
+			List<AbstractNode> typeList, List<AbstractNode> varList, List<AbstractNode> procedureDeclaration, int line, int column) {
 		super(line, column);
 		this.constList = constList;
 		this.typeList = typeList;
@@ -31,11 +31,11 @@ public class DeclarationsNode extends AbstractNode {
 	}
 	
 	
-	public AbstractNode getProcedureDeclaration() {
+	public List<AbstractNode> getProcedureDeclaration() {
 		return procedureDeclaration;
 	}
 
-	public void setProcedureDeclaration(AbstractNode procedureDeclaration) {
+	public void setProcedureDeclaration(List<AbstractNode> procedureDeclaration) {
 		this.procedureDeclaration = procedureDeclaration;
 	}
 
@@ -86,8 +86,9 @@ public class DeclarationsNode extends AbstractNode {
 			node.print();
 		}
 		unindent();
-		if(procedureDeclaration != null) {
-			procedureDeclaration.print();
+		trace("Proc Decl Node");
+		for(AbstractNode node : procedureDeclaration) {
+			node.print();
 		}
 		
 		

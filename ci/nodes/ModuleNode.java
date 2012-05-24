@@ -39,14 +39,13 @@ public class ModuleNode extends AbstractNode {
 	@Override
 	public void print() {
 		trace("Module ");
+		trace("Declarations");
 			if(ident != null) {ident.print();}
 			if(declarations != null) {declarations.print();}
-			trace("BEGIN");
+		trace("Statements");
 			if(statementSequence != null){statementSequence.print();}
 			unindent();
-			trace("END");
-			unindent();
-			
+
 
 	}
 

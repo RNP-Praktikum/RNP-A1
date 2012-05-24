@@ -30,7 +30,9 @@ public class IntegerNode extends AbstractNode {
 
 	@Override
 	public void print() {
+		trace("IntNode");
 		trace(value + "");
+		unindent();
 		unindent();
 	}
 

@@ -41,6 +41,7 @@ public class Compiler {
 				}
 			}
 		}
+		System.out.println("STARTING PARSER");
 		System.out.println("Parser:");
 		Parser parser = new Parser(tokenList);
 		System.out.println("AbstractTree:");

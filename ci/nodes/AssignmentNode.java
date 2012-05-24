@@ -46,6 +46,7 @@ public class AssignmentNode extends AbstractNode {
 		if(expression != null) {
 			expression.print();
 		}
+		unindent();
 	}
 
 }

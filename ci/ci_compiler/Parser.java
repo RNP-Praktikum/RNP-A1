@@ -19,8 +19,10 @@ public class Parser {
 	public void parse() {
 		insymbol();
 		while (tokenIt.hasNext()){
+			System.out.println("Starting with module");
 			module().print();
 //			expression().print();
+			insymbol();
 		}
 //		term().print();
 //		simpleExpression().print();
@@ -270,31 +272,45 @@ public class Parser {
 	}
 	
 	static AbstractNode declarations(){
-		//TODO DECLARATIONS!!!!!
+	List<AbstractNode> constNodes  = new LinkedList<AbstractNode>();
+	List<AbstractNode> varNodes  = new LinkedList<AbstractNode>();
+	List<AbstractNode> typeNodes = new LinkedList<AbstractNode>();
+	List<AbstractNode> procDeclNodes = new LinkedList<AbstractNode>();
+	AbstractNode identNode;
+	AbstractNode expressionNode;
+	AbstractNode type;
+	int line = 0, column = 0;
 		if(nexttoken.getName().equals("CONST")) {
 			outStr("CONST");
 			insymbol();
 			if (nexttoken.getType().equals("Ident")) {
 				outStr(nexttoken.getName());
+				line = nexttoken.getLine();
+				column = nexttoken.getColumn();
+				identNode = new IdentNode(nexttoken.getName(), line, column);
+			
 				insymbol();
 				if(nexttoken.getName().equals("=")) {
 					outStr("=");
 					insymbol();
-					expression();
+					expressionNode = expression();
 					if(nexttoken.getName().equals(";")) {
 						outStr(";");
 						insymbol();
-						
+						constNodes.add(new ConstNode(identNode, expressionNode, line, column));
 						while(nexttoken.getType().equals("Ident")) {
-							
+							line = nexttoken.getLine();
+							column = nexttoken.getColumn();
+							identNode = new IdentNode(nexttoken.getName(), line, column);
 							outStr("Ident");
 							insymbol();
 							if (nexttoken.getName().equals("=")) {
 								outStr("=");
 								insymbol();
-								expression();
+								expressionNode = expression();
 								if(nexttoken.getName().equals(";")) {
 									outStr(";");
+									constNodes.add(new ConstNode(identNode, expressionNode, line, column));
 									insymbol();
 									System.out.println("iM hERE");
 								} else {
@@ -321,23 +337,31 @@ public class Parser {
 			insymbol();
 			if (nexttoken.getType().equals("Ident")) {
 				outStr(nexttoken.getName());
+				line = nexttoken.getLine();
+				column = nexttoken.getColumn();
+				identNode = new IdentNode(nexttoken.getName(), line, column);
 				insymbol();
 				if(nexttoken.getName().equals("=")) {
 					outStr("=");
 					insymbol();
-					type();
+					type = type();
 					if(nexttoken.getName().equals(";")) {
 						outStr(";");
+						typeNodes.add(new TypeNode(identNode, type , line, column));
 						insymbol();
 						while(nexttoken.getType().equals("Ident")) {
 							outStr(nexttoken.getName());
+							line = nexttoken.getLine();
+							column = nexttoken.getColumn();
+							identNode = new IdentNode(nexttoken.getName(), line, column);
 							insymbol();
 							if (nexttoken.getName().equals("=")) {
 								outStr("=");
 								insymbol();
-								type();
+								type = type();
 								if(nexttoken.getName().equals(";")) {
 									outStr(";");
+									typeNodes.add(new TypeNode(identNode, type , line, column));
 									insymbol();
 								} else {
 									error("';' expected", nexttoken.getLine(), nexttoken.getColumn());
@@ -360,22 +384,28 @@ public class Parser {
 		if(nexttoken.getName().equals("VAR")) {
 			outStr("VAR");
 			insymbol();
-			identList();
+			line = nexttoken.getLine();
+			column = nexttoken.getColumn();
+			identNode = identList();
 				if(nexttoken.getName().equals(":")) {
 					outStr(":");
 					insymbol();
-					type();
+					type = type();
 					if(nexttoken.getName().equals(";")) {
 						outStr(";");
+						varNodes.add(new VarNode(identNode, type, line, column));
 						insymbol();
 						while(nexttoken.getType().equals("Ident")) {
-							identList();
+							line = nexttoken.getLine();
+							column = nexttoken.getColumn();
+							identNode = identList();
 							if (nexttoken.getName().equals(":")) {
 								outStr(":");
 								insymbol();
-								type();
+								type = type();
 								if(nexttoken.getName().equals(";")) {
 									outStr(";");
+									varNodes.add(new VarNode(identNode, type, line, column));
 									insymbol();
 								} else {
 									error("';' expected", nexttoken.getLine(), nexttoken.getColumn());
@@ -396,14 +426,14 @@ public class Parser {
 		//Procedure ist first token in ProcedureDeclaration -> ProcedureHeading -> Procedure
 		//Direkt Access because of the while Procedure
 		while(nexttoken.getName().equals("PROCEDURE")) {
-			procedureDeclaration();
+			procDeclNodes.add(procedureDeclaration());
 			if(nexttoken.getName().equals(";")) {
 				insymbol();
 			} else {
 				error("';' expected", nexttoken.getLine(), nexttoken.getColumn());
 			}
 		}
-		return null;
+		return new DeclarationsNode(constNodes, typeNodes, varNodes, procDeclNodes, line, column);
 	}
 	
 	static AbstractNode module(){

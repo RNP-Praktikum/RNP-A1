@@ -30,8 +30,9 @@ public class StringNode extends AbstractNode {
 
 	@Override
 	public void print() {
-//		trace("String ");
+		trace("StringNode");
 		trace(string);
+		unindent();
 		unindent();
 	}
 
