@@ -1,6 +1,7 @@
 MODULE Sample;
-
-
+VAR z : int;
+PROCEDURE Multiply(VAR z : int);
+VAR x, y : int;
 BEGIN
 x := READ "x";
 y := READ "y";

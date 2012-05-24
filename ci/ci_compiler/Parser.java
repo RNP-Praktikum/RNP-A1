@@ -68,6 +68,7 @@ public class Parser {
 			insymbol();
 			while (nexttoken.getName().equals(",")){
 				outStr(",");
+				insymbol();
 				outStr(nexttoken.getName());
 				list.add(new IdentNode(nexttoken.getName(), nexttoken.getLine(), nexttoken.getColumn()));
 				insymbol();
@@ -391,9 +392,10 @@ public class Parser {
 					outStr(":");
 					insymbol();
 					type = type();
+					varNodes.add(new VarNode(identNode, type, line, column));
 					if(nexttoken.getName().equals(";")) {
 						outStr(";");
-						varNodes.add(new VarNode(identNode, type, line, column));
+						
 						insymbol();
 						while(nexttoken.getType().equals("Ident")) {
 							line = nexttoken.getLine();
@@ -426,6 +428,7 @@ public class Parser {
 		//Procedure ist first token in ProcedureDeclaration -> ProcedureHeading -> Procedure
 		//Direkt Access because of the while Procedure
 		while(nexttoken.getName().equals("PROCEDURE")) {
+			
 			procDeclNodes.add(procedureDeclaration());
 			if(nexttoken.getName().equals(";")) {
 				insymbol();
