@@ -86,7 +86,7 @@ public class DeclarationsNode extends AbstractNode {
 			node.print();
 		}
 		unindent();
-		trace("Proc Decl Node");
+		trace("PROC DECLARATIONS");
 		for(AbstractNode node : procedureDeclaration) {
 			node.print();
 		}

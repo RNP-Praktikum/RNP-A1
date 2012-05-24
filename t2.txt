@@ -8,7 +8,8 @@ y := READ "y";
 z := 0;
 WHILE x > 0 DO
 IF (x/2)*2 # x THEN z := z + y END;
-y := 2 * y; x := x / 2
+y := 2 * y; x := x / 2;
 END;
+BEGIN
 PRINT x; PRINT y; PRINT z;
-END Multiply;
+END Sample.

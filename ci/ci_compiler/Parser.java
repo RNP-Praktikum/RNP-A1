@@ -222,6 +222,7 @@ public class Parser {
 					error("Missing '('", nexttoken.getLine(), nexttoken.getColumn());
 				} 
 				if(nexttoken.getName().equals(")")) {
+					outStr(")");
 					insymbol();
 				} else {
 					error("Missing ')'", nexttoken.getLine(), nexttoken.getColumn());
@@ -240,9 +241,11 @@ public class Parser {
 		AbstractNode statementSequence = null;
 		AbstractNode declarations = declarations();
 		if (nexttoken.getName().equals("BEGIN")) {
+			outStr("BEGIN");
 			insymbol();
 			statementSequence = statementSequence();
 			if (nexttoken.getName().equals("END")) {
+				outStr("END");
 				insymbol();
 			} else {
 				error("'END' expected", nexttoken.getLine(), nexttoken.getColumn());
@@ -454,16 +457,21 @@ public class Parser {
 					outStr(";");
 					insymbol();
 					decl = declarations();
+					outStr("HELLOOO");
 					if(nexttoken.getName().equals("BEGIN")) {
 						outStr("BEGIN MODULE");
 						insymbol();
+					
 						statementSeq = statementSequence();
 						if(nexttoken.getName().equals("END")) {
 							outStr("END MODULE");
 							insymbol();
+							outStr(identName);
+							outStr(nexttoken.getName());
 							if(nexttoken.getType().equals("Ident") && identName.equals(nexttoken.getName())) {
 								outStr(nexttoken.getName());
 								insymbol();
+								
 								if(nexttoken.getName().equals(".")) {
 									outStr(".");
 									insymbol();

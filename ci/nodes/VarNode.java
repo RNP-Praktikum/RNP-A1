@@ -47,7 +47,9 @@ public class VarNode extends AbstractNode {
 	public void print() {
 		trace("VarNode");
 		identList.print();
+		trace("TypeNode: ");
 		type.print();
+		unindent();
 		unindent();
 	}
 
