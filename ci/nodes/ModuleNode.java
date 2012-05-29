@@ -1,8 +1,10 @@
 package nodes;
 
 import java.util.HashMap;
+import java.util.Map;
 
-import ci_compiler.AbstractDescr;
+import descriptors.AbstractDescr;
+import static ci_compiler.Compiler.*;
 
 public class ModuleNode extends AbstractNode {
 
@@ -16,8 +18,11 @@ public class ModuleNode extends AbstractNode {
 	
 	
 	@Override
-	public AbstractDescr compile(HashMap<String, AbstractDescr> symbolTable) {
-		// TODO Auto-generated method stub
+	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
+		symbolTable.put(ci_compiler.Compiler.level, new HashMap<String, AbstractDescr>());
+		write("PUSHS, "  + ((IdentNode)ident).getIdent());
+		declarations.compile(symbolTable);
+		statementSequence.compile(symbolTable);
 		return null;
 	}
 

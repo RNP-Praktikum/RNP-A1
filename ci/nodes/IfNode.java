@@ -1,9 +1,9 @@
 package nodes;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import ci_compiler.AbstractDescr;
+import descriptors.AbstractDescr;
 
 
 //import cip.base.CodeGen; //import cip.base.Operator;
@@ -65,7 +65,7 @@ public class IfNode extends AbstractNode {
 		return elsePart;
 	};
 
-	public AbstractDescr compile(HashMap<String, AbstractDescr> symbolTable) {
+	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
 //		int l1, l2;
 //
 //		trace("IfNode");
@@ -104,5 +104,7 @@ public class IfNode extends AbstractNode {
 			elsePart.print();
 			unindent();}
 		unindent();
-	};
+	}
+
+
 }

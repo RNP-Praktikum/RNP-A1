@@ -1,10 +1,10 @@
 package nodes;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.Map;
 
-import ci_compiler.AbstractDescr;
-
+import descriptors.AbstractDescr;
+import static ci_compiler.Compiler.*;
 /**
  * Die abstrakte Darstellung eines Knotens im abstrakten Syntaxbaum.
  * 
@@ -46,7 +46,7 @@ public abstract class AbstractNode
 	};
 
 	abstract public AbstractDescr compile(
-			HashMap<String, AbstractDescr> symbolTable);
+			Map<Integer, Map<String, AbstractDescr>> symbolTable);
 
 	abstract public void print();
 

@@ -2,7 +2,7 @@ package nodes;
 
 import java.util.*;
 
-import ci_compiler.AbstractDescr;
+import descriptors.AbstractDescr;
 
 public class StatementSequenceNode extends AbstractNode {
 
@@ -40,8 +40,11 @@ public class StatementSequenceNode extends AbstractNode {
 	
 	
 	@Override
-	public AbstractDescr compile(HashMap<String, AbstractDescr> symbolTable) {
-		// TODO Auto-generated method stub
+	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
+		
+		for(AbstractNode elem : statements) {
+			elem.compile(symbolTable);
+		}
 		return null;
 	}
 

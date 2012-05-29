@@ -16,19 +16,24 @@ public class Parser {
 		tokenIt = tokenList.iterator();
 	}
 
-	public void parse() {
+	public AbstractNode parse() {
+		// TODO Ein Modul pro file!
+		AbstractNode tree = null;
 		insymbol();
 		while (tokenIt.hasNext()){
 			System.out.println("Starting with module");
-			module().print();
-//			expression().print();
+			tree = module();
 			insymbol();
+			tree.print();
+	
 		}
 //		term().print();
 //		simpleExpression().print();
 //		statementSequence();
 //		declarations();
 		
+		
+		return tree;
 	}
 
 	public static void compile(String str) {
@@ -732,7 +737,7 @@ public class Parser {
 	}
 
 	static AbstractNode factor() {
-		AbstractNode node = null;;
+		AbstractNode node = null;
 		int line = nexttoken.getLine();
 		int column = nexttoken.getColumn();
 		if (nexttoken.getName().equals("(")) {
@@ -744,13 +749,13 @@ public class Parser {
 				error("')' expected", nexttoken.getLine(), nexttoken.getColumn());
 			}
 		} else if (nexttoken.getType().equals("Ident")) {
-			node = new IdentNode(nexttoken.getName(), line, column);
+			node = new ContNode(new IdentNode(nexttoken.getName(), line, column), line, column);
 			outStr(nexttoken.getName());
 			insymbol();
 			OperatorNode selectorNode = selector();
 			if (selectorNode != null) {
 				selectorNode.setLeft(node);
-				node = selectorNode;
+				node = new ContNode(selectorNode, line, column);
 			}
 		} else if (nexttoken.getType().equals("Integer")) {
 			outInt(nexttoken.getName());
@@ -759,7 +764,7 @@ public class Parser {
 		} else if (nexttoken.getName().equals("READ")) {
 			node = read();
 		} else if (nexttoken.getName().charAt(0) == '"') {
-			node = string();
+			node = new ContNode(string(), line, column);
 		}
 		return node;
 	}

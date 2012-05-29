@@ -1,9 +1,9 @@
 package nodes;
 
-import java.util.HashMap;
+import java.util.Map;
 
-import ci_compiler.AbstractDescr;
-
+import descriptors.AbstractDescr;
+import static ci_compiler.Compiler.*;
 public class IntegerNode extends AbstractNode {
 	
 	/**
@@ -23,8 +23,8 @@ public class IntegerNode extends AbstractNode {
 	}
 
 	@Override
-	public AbstractDescr compile(HashMap<String, AbstractDescr> symbolTable) {
-		// TODO Auto-generated method stub
+	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
+		write("PUSHI, " + value);
 		return null;
 	}
 

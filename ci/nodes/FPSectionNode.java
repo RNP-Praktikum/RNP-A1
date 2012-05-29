@@ -1,8 +1,8 @@
 package nodes;
 
-import java.util.HashMap;
+import java.util.Map;
 
-import ci_compiler.AbstractDescr;
+import descriptors.AbstractDescr;
 
 public class FPSectionNode extends AbstractNode {
 	
@@ -25,7 +25,7 @@ public class FPSectionNode extends AbstractNode {
 	}
 
 	@Override
-	public AbstractDescr compile(HashMap<String, AbstractDescr> symbolTable) {
+	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
 		// TODO Auto-generated method stub
 		return null;
 	}

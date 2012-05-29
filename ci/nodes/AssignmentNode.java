@@ -1,8 +1,10 @@
 package nodes;
 
-import java.util.HashMap;
+import java.util.Map;
+import static ci_compiler.Compiler.*;
 
-import ci_compiler.AbstractDescr;
+import descriptors.AbstractDescr;
+import descriptors.VarDescr;
 
 public class AssignmentNode extends AbstractNode {
 
@@ -29,8 +31,11 @@ public class AssignmentNode extends AbstractNode {
 	}
 
 	@Override
-	public AbstractDescr compile(HashMap<String, AbstractDescr> symbolTable) {
-		// TODO Auto-generated method stub
+	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
+		expression.compile(symbolTable);
+		//TODO selector 
+		write("PUSHI, " + ((VarDescr)symbolTable.get(level).get(((IdentNode)ident).getIdent())).getAddress());
+		write("ASSIGN, 1");
 		return null;
 	}
 

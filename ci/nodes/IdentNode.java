@@ -1,8 +1,10 @@
 package nodes;
 
-import java.util.HashMap;
+import java.util.Map;
+import static ci_compiler.Compiler.*;
+import descriptors.*;
 
-import ci_compiler.AbstractDescr;
+import descriptors.AbstractDescr;
 
 public class IdentNode extends AbstractNode {
 	
@@ -23,8 +25,8 @@ public class IdentNode extends AbstractNode {
 	}
 
 	@Override
-	public AbstractDescr compile(HashMap<String, AbstractDescr> symbolTable) {
-		// TODO Auto-generated method stub
+	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
+		write("PUSHI, " + ((VarDescr)symbolTable.get(level).get(ident)).getAddress());
 		return null;
 	}
 

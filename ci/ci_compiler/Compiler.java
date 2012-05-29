@@ -1,52 +1,63 @@
 package ci_compiler;
 
+
+import java.io.*;
 import java.util.*;
+import java.util.Map.Entry;
+
+import nodes.AbstractNode;
+
+import descriptors.AbstractDescr;
+
 
 public class Compiler {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String argv[]) {
-		Yytoken token;
-		List<Yytoken> tokenList = new LinkedList<Yytoken>();
-		if (argv.length == 0) {
-			System.out.println("Usage : java Scanner <inputfile>");
-		} else {
-			for (int i = 0; i < argv.length; i++) {
-				Scanner scanner = null;
-				System.out.println("Scanner:");
-				try {
-					scanner = new Scanner(new java.io.FileReader(argv[i]));
-//					 scanner = new Scanner( new java.io.FileReader("t2.txt"));
-					// );
+	
+	public static int address = 0;
+	public static int level = 0;
 
-					do {
-						token = scanner.yylex();
-						if (token != null) {
-							tokenList.add(token);
-							System.out.println(token);
-
-						}
-					} while (token != null);
-				} catch (java.io.FileNotFoundException e) {
-					System.out.println("File not found : \"" + argv[i] + "\"");
-				} catch (java.io.IOException e) {
-					System.out.println("IO error scanning file \"" + argv[i]
-							+ "\"");
-					System.out.println(e);
-				} catch (Exception e) {
-					System.out.println("Unexpected exception:");
-					e.printStackTrace();
-				}
+	public static FileWriter writer;
+	public static int label = 0;
+	public static Map<Integer, Map<String, AbstractDescr>> symbolTable = new HashMap<Integer, Map<String, AbstractDescr>>();
+	AbstractNode tree;
+	
+	public Compiler(AbstractNode tree) {
+		this.tree = tree;
+		
+	    	File codetxt = new File("C:/Temp/ziel.txt");
+	        
+	        try {
+				writer = new FileWriter(codetxt);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		}
-		System.out.println("STARTING PARSER");
-		System.out.println("Parser:");
-		Parser parser = new Parser(tokenList);
-		System.out.println("AbstractTree:");
-		parser.parse();
 	}
 
+	public void compile() {
+	//Symboltabelle
+	
 
+		tree.compile(symbolTable);
+		for(Entry<String, AbstractDescr> entry : symbolTable.get(0).entrySet()) {
+			entry.getValue().print();
+		}
+
+	}
+	
+	public static int newLabel() {
+		return label++;
+	}
+	
+	public static void write(String operation) {
+		try {
+			System.out.println("Writing " + operation);
+			writer.write(operation + System.getProperty("line.separator"));
+			writer.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  
+	}
 }

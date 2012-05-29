@@ -1,8 +1,11 @@
 package nodes;
 
-import java.util.HashMap;
+import java.util.Map;
 
-import ci_compiler.AbstractDescr;
+import descriptors.AbstractDescr;
+import descriptors.TypeDescr;
+import descriptors.VarDescr;
+
 
 public class VarNode extends AbstractNode {
 
@@ -38,8 +41,29 @@ public class VarNode extends AbstractNode {
 	}
 
 	@Override
-	public AbstractDescr compile(HashMap<String, AbstractDescr> symbolTable) {
-		// TODO Auto-generated method stub
+	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
+		AbstractDescr typeD = null;
+		if(type instanceof IdentNode) {
+			typeD = new TypeDescr(1, ci_compiler.Compiler.level, ((IdentNode)type).getIdent());
+			
+		} else {
+			// Case of Array and Record
+			typeD = type.compile(symbolTable);
+		}
+		 
+		if(identList instanceof ListNode) {
+			for(AbstractNode elem : ((ListNode)identList).getList()) {
+				AbstractDescr varD= new VarDescr(ci_compiler.Compiler.level, ci_compiler.Compiler.address , typeD);
+				symbolTable.get(ci_compiler.Compiler.level).put(((IdentNode) elem).getIdent(), varD);
+				ci_compiler.Compiler.address += typeD.getSize();
+				
+			}
+		} else {
+			AbstractDescr varD= new VarDescr(ci_compiler.Compiler.level, ci_compiler.Compiler.address , typeD);
+			symbolTable.get(ci_compiler.Compiler.level).put(((IdentNode) identList).getIdent(), varD);
+			ci_compiler.Compiler.address += typeD.getSize();
+			varD.print();
+		}
 		return null;
 	}
 

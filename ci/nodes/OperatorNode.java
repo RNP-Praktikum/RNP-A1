@@ -1,8 +1,9 @@
 package nodes;
 
-import java.util.HashMap;
+import java.util.Map;
 
-import ci_compiler.AbstractDescr;
+import descriptors.AbstractDescr;
+import static ci_compiler.Compiler.*;
 
 public class OperatorNode extends AbstractNode {
 
@@ -28,8 +29,14 @@ public class OperatorNode extends AbstractNode {
 	}
 
 	@Override
-	public AbstractDescr compile(HashMap<String, AbstractDescr> symbolTable) {
-		// TODO Auto-generated method stub
+	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
+		left.compile(symbolTable);
+		right.compile(symbolTable);
+		if(operator.equals("+")) write("ADD");
+		if(operator.equals("-")) write("SUB");
+		if(operator.equals("*")) write("MUL");
+		if(operator.equals("/")) write("DIV");
+		//TODO kleienr gleich usw
 		return null;
 	}
 

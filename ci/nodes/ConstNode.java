@@ -1,8 +1,9 @@
 package nodes;
 
-import java.util.HashMap;
+import java.util.Map;
 
-import ci_compiler.AbstractDescr;
+import descriptors.AbstractDescr;
+import descriptors.ConstDescr;
 
 public class ConstNode extends AbstractNode {
 
@@ -38,9 +39,9 @@ public class ConstNode extends AbstractNode {
 	}
 
 	@Override
-	public AbstractDescr compile(HashMap<String, AbstractDescr> symbolTable) {
-		// TODO Auto-generated method stub
-		return null;
+	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
+		AbstractDescr constD = expression.compile(symbolTable);
+		return constD;
 	}
 
 	@Override
