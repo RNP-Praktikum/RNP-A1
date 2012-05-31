@@ -52,6 +52,7 @@ public class Interpreter {
 		AbstractNode tree = parser.parse();
 		Compiler myComp = new Compiler(tree);
 		myComp.compile();
+		
 	}
 
 }

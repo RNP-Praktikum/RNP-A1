@@ -26,8 +26,9 @@ public class IdentNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		write("PUSHI, " + ((VarDescr)symbolTable.get(level).get(ident)).getAddress());
-		return null;
+		AbstractDescr identD = symbolTable.get(level).get(ident);
+		write("PUSHI, " + ((VarDescr)identD).getAddress());
+		return identD;
 	}
 
 	@Override

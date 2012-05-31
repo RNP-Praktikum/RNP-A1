@@ -22,8 +22,8 @@ public class ContNode extends AbstractNode {
 	@Override
 	public AbstractDescr compile(
 			Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		if (node instanceof IdentNode) {
-			node.compile(symbolTable);
+		node.compile(symbolTable);
+		if (! (node instanceof ConstNode)) {
 			write("CONT, 1");
 		}
 		return null;

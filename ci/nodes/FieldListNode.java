@@ -9,6 +9,22 @@ public class FieldListNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	AbstractNode identList, type;
 
+	public AbstractNode getIdentList() {
+		return identList;
+	}
+
+	public void setIdentList(AbstractNode identList) {
+		this.identList = identList;
+	}
+
+	public AbstractNode getType() {
+		return type;
+	}
+
+	public void setType(AbstractNode type) {
+		this.type = type;
+	}
+
 	public FieldListNode() {
 		super();
 		this.identList = null;

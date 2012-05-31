@@ -23,6 +23,7 @@ public class ModuleNode extends AbstractNode {
 		write("PUSHS, "  + ((IdentNode)ident).getIdent());
 		declarations.compile(symbolTable);
 		statementSequence.compile(symbolTable);
+		write("STOP");
 		return null;
 	}
 

@@ -33,8 +33,12 @@ public class AssignmentNode extends AbstractNode {
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
 		expression.compile(symbolTable);
-		//TODO selector 
-		write("PUSHI, " + ((VarDescr)symbolTable.get(level).get(((IdentNode)ident).getIdent())).getAddress());
+		if (ident != null) {
+			write("PUSHI, " + ((VarDescr)symbolTable.get(level).get(((IdentNode)ident).getIdent())).getAddress());
+		}
+		if (selector != null) {
+			selector.compile(symbolTable);
+		}
 		write("ASSIGN, 1");
 		return null;
 	}

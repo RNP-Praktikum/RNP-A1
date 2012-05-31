@@ -1,0 +1,16 @@
+module m1;
+
+var
+i, j, k : int;
+arr: Array[5] of Array[10] of int;
+rec: Record
+		a: int;
+		b, c: Array[10] of int
+		END;
+
+l: int;
+
+begin
+rec.b[3] := arr[2][4]
+
+end m1.

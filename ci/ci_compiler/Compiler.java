@@ -40,6 +40,7 @@ public class Compiler {
 
 		tree.compile(symbolTable);
 		for(Entry<String, AbstractDescr> entry : symbolTable.get(0).entrySet()) {
+			System.out.print(entry.getKey() + ": ");
 			entry.getValue().print();
 		}
 

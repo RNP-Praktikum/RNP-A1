@@ -49,6 +49,7 @@ public class VarNode extends AbstractNode {
 		} else {
 			// Case of Array and Record
 			typeD = type.compile(symbolTable);
+			
 		}
 		 
 		if(identList instanceof ListNode) {

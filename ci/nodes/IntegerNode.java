@@ -3,6 +3,7 @@ package nodes;
 import java.util.Map;
 
 import descriptors.AbstractDescr;
+import descriptors.ConstDescr;
 import static ci_compiler.Compiler.*;
 public class IntegerNode extends AbstractNode {
 	
@@ -24,8 +25,8 @@ public class IntegerNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		write("PUSHI, " + value);
-		return null;
+		//write("PUSHI, " + value);
+		return new ConstDescr(level, value);
 	}
 
 	@Override

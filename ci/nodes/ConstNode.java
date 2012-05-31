@@ -1,6 +1,7 @@
 package nodes;
 
 import java.util.Map;
+import static ci_compiler.Compiler.*;
 
 import descriptors.AbstractDescr;
 import descriptors.ConstDescr;
@@ -41,6 +42,7 @@ public class ConstNode extends AbstractNode {
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
 		AbstractDescr constD = expression.compile(symbolTable);
+		symbolTable.get(level).put(((IdentNode)ident).getIdent(), constD);
 		return constD;
 	}
 
