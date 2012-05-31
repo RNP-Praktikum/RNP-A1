@@ -3,7 +3,7 @@ package nodes;
 import java.util.Map;
 import static ci_compiler.Compiler.*;
 
-import descriptors.AbstractDescr;
+import descriptors.*;
 
 public class ContNode extends AbstractNode {
 	
@@ -22,11 +22,11 @@ public class ContNode extends AbstractNode {
 	@Override
 	public AbstractDescr compile(
 			Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		node.compile(symbolTable);
-		if (! (node instanceof ConstNode)) {
+		AbstractDescr descr = node.compile(symbolTable);
+		if (! (descr instanceof ConstDescr)) {
 			write("CONT, 1");
 		}
-		return null;
+		return descr;
 	}
 
 	@Override

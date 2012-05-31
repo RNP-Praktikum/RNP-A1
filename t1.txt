@@ -1,16 +1,25 @@
-module m1;
+module m3llll;
 
-var
-i, j, k : int;
-arr: Array[5] of Array[10] of int;
-rec: Record
-		a: int;
-		b, c: Array[10] of int
-		END;
-
-l: int;
-
+const
+ c1 = 10;
+ c2 = 20;
+ 
+type
+ arr5 = Array[5] of int;
+ arr2 = arr5;
+ rec = Record
+ 		a: int;
+ 		b: arr5
+ 		end;
+ a = Array[5] of rec;
+ 
+var 
+ i,j : int;
+ arr: Array[5] of int;
+ 
 begin
-rec.b[3] := arr[2][4]
+j:=c1;
+ i := 10 + 5;
+ arr[3] := i
 
-end m1.
+end m3llll.

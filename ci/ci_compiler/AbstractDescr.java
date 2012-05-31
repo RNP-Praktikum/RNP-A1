@@ -40,6 +40,10 @@ implements
 
 	abstract public void print();
 
+	public static String getSpaces() {
+		return spaces;
+	}
+
 	/**
 	 * Diese Variable steuert die Einrückung bei der Ausgabe
 	 */
@@ -53,7 +57,7 @@ implements
 		spaces = spaces.substring(2);
 	}
 
-	private void indent() {
+	public void indent() {
 		spaces = spaces + "  ";
 	}
 

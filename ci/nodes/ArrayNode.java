@@ -29,7 +29,10 @@ public class ArrayNode extends AbstractNode {
 		AbstractDescr indexD = indexExpression.compile(symbolTable);
 		AbstractDescr typeD = null;
 		if (type instanceof IdentNode) {
-			typeD = new TypeDescr(1, level, ((IdentNode)type).getIdent());
+			typeD = searchSymbolTable(level, ((IdentNode)type).getIdent());
+			if (typeD == null) {
+				typeD = new TypeDescr(1, level, ((IdentNode)type).getIdent());
+			}
 		} else {
 			typeD = type.compile(symbolTable);
 		}

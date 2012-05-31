@@ -3,7 +3,7 @@ package nodes;
 import java.util.HashMap;
 import java.util.Map;
 
-import descriptors.AbstractDescr;
+import descriptors.*;
 import static ci_compiler.Compiler.*;
 
 public class ModuleNode extends AbstractNode {
@@ -20,8 +20,14 @@ public class ModuleNode extends AbstractNode {
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
 		symbolTable.put(ci_compiler.Compiler.level, new HashMap<String, AbstractDescr>());
+		symbolTable.get(level).put("int", new TypeDescr(1,level, "int"));
 		write("PUSHS, "  + ((IdentNode)ident).getIdent());
+		int startLabel = newLabel();
+		write("JMP, " + startLabel);
+		write("LABEL, "+ startLabel);
 		declarations.compile(symbolTable);
+		write("PUSHI, " + (address));
+		write("SETSP");
 		statementSequence.compile(symbolTable);
 		write("STOP");
 		return null;

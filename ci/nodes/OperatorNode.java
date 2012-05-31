@@ -84,11 +84,17 @@ public class OperatorNode extends AbstractNode {
 			write("ADD");
 		}
 		if (operator.equals(".")) {
-			Map<String, AbstractDescr> map = ((RecordDescr) ((VarDescr) symbolTable
+			Map<String, AbstractDescr> map = null;
+			if (left instanceof IdentNode){
+				map = ((RecordDescr) ((VarDescr) symbolTable
 					.get(level).get(((IdentNode) left).getIdent())).getType())
 					.getRecsymbolTable();
+			} else {
+				AbstractDescr outerDescr = ((VarDescr)leftD).getType();
+				AbstractDescr innerD = ((RecordDescr)outerDescr).getRecsymbolTable().get(((IdentNode)right));
+				map = ((RecordDescr)((VarDescr)innerD).getType()).getRecsymbolTable();
+			}
 			if(right instanceof IdentNode){
-				write("right ist IdentNode");
 				write("PUSHI, "
 						+ ((VarDescr) map.get(((IdentNode) right).getIdent()))
 								.getAddress());

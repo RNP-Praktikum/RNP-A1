@@ -50,6 +50,10 @@ implements
 	 */
 	private static String spaces = "";
 
+	public static String getSpaces() {
+		return spaces;
+	}
+
 	/**
 	 * Diese Methode ist eine Darstellungshilfe für den abstrakten Syntaxbaum.
 	 * Die Einrückung wird aufgehoben.

@@ -1,6 +1,7 @@
 package nodes;
 
 import java.util.Map;
+import static ci_compiler.Compiler.*;
 
 import descriptors.AbstractDescr;
 import descriptors.TypeDescr;
@@ -44,7 +45,7 @@ public class VarNode extends AbstractNode {
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
 		AbstractDescr typeD = null;
 		if(type instanceof IdentNode) {
-			typeD = new TypeDescr(1, ci_compiler.Compiler.level, ((IdentNode)type).getIdent());
+			typeD = searchSymbolTable(level, ((IdentNode)type).getIdent());
 			
 		} else {
 			// Case of Array and Record
@@ -54,15 +55,15 @@ public class VarNode extends AbstractNode {
 		 
 		if(identList instanceof ListNode) {
 			for(AbstractNode elem : ((ListNode)identList).getList()) {
-				AbstractDescr varD= new VarDescr(ci_compiler.Compiler.level, ci_compiler.Compiler.address , typeD);
-				symbolTable.get(ci_compiler.Compiler.level).put(((IdentNode) elem).getIdent(), varD);
-				ci_compiler.Compiler.address += typeD.getSize();
+				AbstractDescr varD= new VarDescr(level, address , typeD);
+				symbolTable.get(level).put(((IdentNode) elem).getIdent(), varD);
+				address += typeD.getSize();
 				
 			}
 		} else {
-			AbstractDescr varD= new VarDescr(ci_compiler.Compiler.level, ci_compiler.Compiler.address , typeD);
-			symbolTable.get(ci_compiler.Compiler.level).put(((IdentNode) identList).getIdent(), varD);
-			ci_compiler.Compiler.address += typeD.getSize();
+			AbstractDescr varD= new VarDescr(level, address , typeD);
+			symbolTable.get(level).put(((IdentNode) identList).getIdent(), varD);
+			address += typeD.getSize();
 			varD.print();
 		}
 		return null;
@@ -73,7 +74,7 @@ public class VarNode extends AbstractNode {
 		trace("VarNode");
 		identList.print();
 		trace("TypeNode: ");
-		type.print();
+		if (type != null) type.print();
 		unindent();
 		unindent();
 	}

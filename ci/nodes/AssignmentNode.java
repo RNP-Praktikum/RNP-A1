@@ -4,6 +4,7 @@ import java.util.Map;
 import static ci_compiler.Compiler.*;
 
 import descriptors.AbstractDescr;
+import descriptors.ConstDescr;
 import descriptors.VarDescr;
 
 public class AssignmentNode extends AbstractNode {
@@ -32,7 +33,8 @@ public class AssignmentNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		expression.compile(symbolTable);
+		AbstractDescr exprD = expression.compile(symbolTable);
+		if (expression instanceof IntegerNode) write("PUSHI, " + ((ConstDescr)exprD).getValue());
 		if (ident != null) {
 			write("PUSHI, " + ((VarDescr)symbolTable.get(level).get(((IdentNode)ident).getIdent())).getAddress());
 		}

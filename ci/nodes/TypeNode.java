@@ -1,8 +1,9 @@
 package nodes;
 
 import java.util.Map;
+import static ci_compiler.Compiler.*;
 
-import descriptors.AbstractDescr;
+import descriptors.*;
 
 public class TypeNode extends AbstractNode {
 
@@ -39,8 +40,18 @@ public class TypeNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-	
-		return null;
+		AbstractDescr typeD = null;
+		if (type instanceof IdentNode){
+			if (symbolTable.get(level).containsKey(((IdentNode)type).getIdent())) {
+				typeD = symbolTable.get(level).get(((IdentNode)type).getIdent());
+			} else {
+				typeD = new TypeDescr(1, level, ((IdentNode)ident).getIdent());
+			}
+		} else {
+			typeD = type.compile(symbolTable);
+		}
+		symbolTable.get(level).put(((IdentNode)ident).getIdent(), typeD);
+		return typeD;
 	}
 
 	@Override

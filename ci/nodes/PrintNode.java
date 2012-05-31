@@ -3,7 +3,7 @@ package nodes;
 import java.util.Map;
 import static ci_compiler.Compiler.*;
 
-import descriptors.AbstractDescr;
+import descriptors.*;
 
 public class PrintNode extends AbstractNode {
 	
@@ -30,7 +30,8 @@ public class PrintNode extends AbstractNode {
 	@Override
 	public AbstractDescr compile(
 			Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		expression.compile(symbolTable);
+		AbstractDescr descr = expression.compile(symbolTable);
+		if (descr instanceof ConstDescr) write("PUSHI, "+ ((ConstDescr)descr).getValue());
 		write("PRINT");
 		return null;
 	}

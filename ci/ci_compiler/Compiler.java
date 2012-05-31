@@ -61,4 +61,14 @@ public class Compiler {
 		}
   
 	}
+	
+	public static AbstractDescr searchSymbolTable(int level, String ident) {
+		boolean stop = true;
+		AbstractDescr descr = null;
+		for (int i = level; i >= 0 || stop; i--){
+			descr = symbolTable.get(i).get(ident);
+			if (descr != null) stop = false;
+		}
+		return descr;
+	}
 }

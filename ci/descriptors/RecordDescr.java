@@ -1,6 +1,7 @@
 package descriptors;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class RecordDescr extends AbstractDescr {
 
@@ -27,8 +28,13 @@ public class RecordDescr extends AbstractDescr {
 	}
 	public void print(){
 		trace("RecordDescr: size: " + size + " level: " + level);
-		Iterator<AbstractDescr> it = recsymbolTable.values().iterator();
-		while (it.hasNext()) it.next().print();
+		for(Entry<String, AbstractDescr> entry: recsymbolTable.entrySet()){
+			System.out.print(AbstractDescr.getSpaces() + entry.getKey() + ": "); entry.getValue().print();
+		}
+//		Iterator<AbstractDescr> it = recsymbolTable.values().iterator();
+//		while (it.hasNext()) {
+//			it.next().print();
+//		}
 		unindent();
 	}
 }

@@ -25,7 +25,6 @@ public class IntegerNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		//write("PUSHI, " + value);
 		return new ConstDescr(level, value);
 	}
 

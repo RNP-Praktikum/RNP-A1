@@ -28,12 +28,16 @@ public class RecordNode extends AbstractNode {
 		Map<String, AbstractDescr> map = new HashMap<String,AbstractDescr>();
 		int size = 0;
 		int address = 0;
-		level++;
 		for(AbstractNode fieldList: ((ListNode)fieldLists).getList()) {
 			AbstractDescr typeD = null;
 			AbstractNode type = ((FieldListNode)fieldList).getType();
+			System.out.println("Type: "+type);
 			if (type instanceof IdentNode) {
-				typeD = new TypeDescr(1, level, ((IdentNode)type).getIdent());
+				typeD = searchSymbolTable(level,((IdentNode)type).getIdent());
+				System.out.println("TypeD: "+ typeD);
+				if (typeD == null) {
+					typeD = new TypeDescr(1, level, ((IdentNode)type).getIdent());
+				}
 			} else {
 				typeD = type.compile(symbolTable);
 			}
@@ -43,7 +47,6 @@ public class RecordNode extends AbstractNode {
 				size += typeD.getSize();
 			}
 		}
-		level--;
 		return new RecordDescr(size, map);
 	}
 
