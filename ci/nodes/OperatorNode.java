@@ -90,7 +90,12 @@ public class OperatorNode extends AbstractNode {
 					.get(level).get(((IdentNode) left).getIdent())).getType())
 					.getRecsymbolTable();
 			} else {
-				AbstractDescr recD = ((VarDescr)leftD).getType();
+				AbstractDescr recD = null;
+				if (leftD instanceof RecordDescr) {
+					recD = leftD;
+				} else {
+					recD = ((VarDescr)leftD).getType();
+				}
 				map = ((RecordDescr)recD).getRecsymbolTable();
 			}
 			if(right instanceof IdentNode){
