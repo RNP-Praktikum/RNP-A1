@@ -2,13 +2,14 @@ package descriptors;
 
 public class VarDescr extends AbstractDescr {
 
-	static final int SIZE = 0;
+	private static final long serialVersionUID = 1L;
+	//static final int SIZE = 0;
 	AbstractDescr type;
 	int address;
 	
 	
 	public VarDescr(int level, int address, AbstractDescr type) {
-		super(SIZE, level);
+		super(type.getSize(), level);
 		this.type = type;
 		this.address = address;
 		// TODO Auto-generated constructor stub

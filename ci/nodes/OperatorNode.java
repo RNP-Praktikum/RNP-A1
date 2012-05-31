@@ -90,9 +90,8 @@ public class OperatorNode extends AbstractNode {
 					.get(level).get(((IdentNode) left).getIdent())).getType())
 					.getRecsymbolTable();
 			} else {
-				AbstractDescr outerDescr = ((VarDescr)leftD).getType();
-				AbstractDescr innerD = ((RecordDescr)outerDescr).getRecsymbolTable().get(((IdentNode)right));
-				map = ((RecordDescr)((VarDescr)innerD).getType()).getRecsymbolTable();
+				AbstractDescr recD = ((VarDescr)leftD).getType();
+				map = ((RecordDescr)recD).getRecsymbolTable();
 			}
 			if(right instanceof IdentNode){
 				write("PUSHI, "

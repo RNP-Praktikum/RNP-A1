@@ -34,14 +34,17 @@ public class AssignmentNode extends AbstractNode {
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
 		AbstractDescr exprD = expression.compile(symbolTable);
+		int size = 1;
 		if (expression instanceof IntegerNode) write("PUSHI, " + ((ConstDescr)exprD).getValue());
 		if (ident != null) {
 			write("PUSHI, " + ((VarDescr)symbolTable.get(level).get(((IdentNode)ident).getIdent())).getAddress());
+			size = ((VarDescr)symbolTable.get(level).get(((IdentNode)ident).getIdent())).getSize();
 		}
 		if (selector != null) {
-			selector.compile(symbolTable);
+			AbstractDescr selectD = selector.compile(symbolTable);
+			size = selectD.getSize();
 		}
-		write("ASSIGN, 1");
+		write("ASSIGN, " + size);
 		return null;
 	}
 
