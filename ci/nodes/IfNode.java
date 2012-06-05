@@ -2,7 +2,7 @@ package nodes;
 
 import java.util.List;
 import java.util.Map;
-
+import static ci_compiler.Compiler.*;
 import descriptors.AbstractDescr;
 
 
@@ -15,35 +15,24 @@ public class IfNode extends AbstractNode {
 
 	AbstractNode condition;
 	AbstractNode thenPart, elsePart;
-	List<AbstractNode> elsifList;
 
 	public IfNode() {
 		super(0,0);
 		condition = null;
 		thenPart = null;
 		elsePart = null;
-		elsifList = null;
 	};
 
-	public IfNode(AbstractNode fe, AbstractNode fst1,List<AbstractNode>elsif, AbstractNode fst2, int line, int column) {
+	public IfNode(AbstractNode fe, AbstractNode fst1,AbstractNode fst2, int line, int column) {
 		super(line, column);
 		condition = fe;
 		thenPart = fst1;
 		elsePart = fst2;
-		elsifList = elsif;
 	};
 
 	public void setCondition(AbstractNode fe) {
 		condition = fe;
 	};
-
-	public List<AbstractNode> getElsifList() {
-		return elsifList;
-	}
-
-	public void setElsifList(List<AbstractNode> elsifList) {
-		this.elsifList = elsifList;
-	}
 
 	public void setThenPart(AbstractNode fst1) {
 		thenPart = fst1;
@@ -66,21 +55,19 @@ public class IfNode extends AbstractNode {
 	};
 
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-//		int l1, l2;
-//
-//		trace("IfNode");
-//		l1 = CodeGen.newLabel();
-//		l2 = CodeGen.newLabel();
-//		condition.compile(symbolTable);
-//		CodeGen.outInstr(new BranchFalseInstruction(l1));
-//		if (thenPart != null)
-//			thenPart.compile(symbolTable);
-//		CodeGen.outInstr(new JumpInstruction(l2));
-//		CodeGen.outInstr(new LabelInstruction(l1));
-//		if (elsePart != null)
-//			elsePart.compile(symbolTable);
-//		CodeGen.outInstr(new LabelInstruction(l2));
-//		unindent();
+		int l1, l2;
+
+		l1 = newLabel();
+		l2 = newLabel();
+		condition.compile(symbolTable);
+		write("BF, " + l1);			//springe zu else wenn false
+		if (thenPart != null)
+			thenPart.compile(symbolTable);
+		write("JMP, " + l2);		//springe zum Ende nach then-Part
+		write("LABEL, " + l1);		//else-Part start
+		if (elsePart != null)
+			elsePart.compile(symbolTable);
+		write("LABEL, " + l2);		//Ende
 		return null;
 	};
 
@@ -91,14 +78,6 @@ public class IfNode extends AbstractNode {
 			trace("then");
 			thenPart.print();
 			unindent();}
-		if(elsifList != null) {
-			trace("elsif");
-			for(AbstractNode node : elsifList) {
-				
-				node.print();
-			}
-			unindent();
-		}
 		if (elsePart != null) {
 			trace("else");
 			elsePart.print();

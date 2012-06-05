@@ -1,7 +1,7 @@
 package nodes;
 
 import java.util.Map;
-
+import static ci_compiler.Compiler.*;
 import descriptors.AbstractDescr;
 
 public class WhileNode extends AbstractNode {
@@ -42,7 +42,15 @@ public class WhileNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		// TODO Auto-generated method stub
+		int start = newLabel();
+		int end = newLabel();
+		
+		write("LABEL, " + start);
+		condition.compile(symbolTable);
+		write("BF, "+ end);
+		doPart.compile(symbolTable);
+		write("JMP, " + start);
+		write("LABEL, " + end);
 		return null;
 	}
 

@@ -33,12 +33,16 @@ public class OperatorNode extends AbstractNode {
 	@Override
 	public AbstractDescr compile(
 			Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		AbstractDescr result = null;
+		AbstractDescr result = null, leftD = null;
 		
-			AbstractDescr leftD = left.compile(symbolTable);
+		if (left != null) {
+			leftD = left.compile(symbolTable);
 			if (leftD instanceof ConstDescr) {
 				write("PUSHI, " + ((ConstDescr) leftD).getValue());
 			}
+		} else {
+			write("PUSHI, 0");
+		}
 		
 		
 		if (! (right instanceof IdentNode)) {
@@ -62,6 +66,18 @@ public class OperatorNode extends AbstractNode {
 			write("MUL");
 		if (operator.equals("/"))
 			write("DIV");
+		if (operator.equals("<="))
+			write("LE");
+		if (operator.equals("<"))
+			write("LT");
+		if (operator.equals(">="))
+			write("GE");
+		if (operator.equals(">"))
+			write("GT");
+		if (operator.equals("="))
+			write("EQ");
+		if (operator.equals("#"))
+			write("NEQ");
 		if (operator.equals("[")) {
 			if (left instanceof IdentNode){
 			write("PUSHI, "

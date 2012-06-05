@@ -1,6 +1,7 @@
 module m5;
 
 var
+i: int;
  r1, r2 : record
            a,b,c : int;
            d : record 
@@ -17,5 +18,5 @@ begin
  Print r1.d.y;
  r2 := r1;
  Print r2.d.y;
- Print 10000       
+ Print 10000    
 end m5.

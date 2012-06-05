@@ -627,7 +627,6 @@ public class Parser {
 
 	static AbstractNode ifStatement() {
 		AbstractNode conditionNode = null, thenNode = null, elseNode = null;
-		List<AbstractNode> elsifList = new LinkedList<AbstractNode>();
 		int l = 0, c = 0;
 		if (nexttoken.getName().equals("IF")) {
 			outStr("IF");
@@ -639,37 +638,45 @@ public class Parser {
 				outStr("THEN");
 				insymbol();
 				thenNode = statementSequence();
-				while (nexttoken.getName().equals("ELSIF")) {
-					AbstractNode cond1 = null, then1 = null;
-					outStr("ELSIF");
-					insymbol();
-					int column = nexttoken.getColumn(), line = nexttoken
-							.getLine();
-					cond1 = expression();
-					if (nexttoken.getName().equals("THEN")) {
-						outStr("THEN");
-						insymbol();
-						then1 = statementSequence();
-					} else {
-						error("'THEN' expected", nexttoken.getLine(),
-								nexttoken.getColumn());
-					}
-					elsifList.add(new IfNode(cond1, then1, null, null, line,
-							column));
+				if (nexttoken.getName().equals("ELSIF")) {
+				elseNode = ifStatement();
 				}
-				if (nexttoken.getName().equals("ELSE")) {
+				else if (nexttoken.getName().equals("ELSE")) {
 					outStr("ELSE");
 					insymbol();
 					elseNode = statementSequence();
-				}
-				if (nexttoken.getName().equals("END")) {
-					outStr("END");
-					insymbol();
-				} else {
-					error("'END' expected", nexttoken.getLine(),
+				} 
+					if (nexttoken.getName().equals("END")) {
+						outStr("END");
+						insymbol();
+					} else {
+						error("'END' expected", nexttoken.getLine(),
 							nexttoken.getColumn());
+					
 				}
 			} else {
+				error("'THEN' expected", nexttoken.getLine(),
+						nexttoken.getColumn());
+			}
+		} else if (nexttoken.getName().equals("ELSIF")){
+			outStr("ELSIF");
+			insymbol();
+			l = nexttoken.getLine();
+			c = nexttoken.getColumn();
+			conditionNode = expression();
+			if (nexttoken.getName().equals("THEN")) {
+				outStr("THEN");
+				insymbol();
+				thenNode = statementSequence();
+				if (nexttoken.getName().equals("ELSIF")) {
+					elseNode = ifStatement();
+				}
+				else if (nexttoken.getName().equals("ELSE")) {
+					outStr("ELSE");
+					insymbol();
+					elseNode = statementSequence();
+				} 	
+			}else {
 				error("'THEN' expected", nexttoken.getLine(),
 						nexttoken.getColumn());
 			}
@@ -677,7 +684,7 @@ public class Parser {
 			error("IfStatement error", nexttoken.getLine(),
 					nexttoken.getColumn());
 		}
-		return new IfNode(conditionNode, thenNode, elsifList, elseNode, l, c);
+		return new IfNode(conditionNode, thenNode, elseNode, l, c);
 	}
 
 	static AbstractNode whileStatement() {

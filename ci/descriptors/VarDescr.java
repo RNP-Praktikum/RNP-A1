@@ -2,8 +2,6 @@ package descriptors;
 
 public class VarDescr extends AbstractDescr {
 
-	private static final long serialVersionUID = 1L;
-	//static final int SIZE = 0;
 	AbstractDescr type;
 	int address;
 	

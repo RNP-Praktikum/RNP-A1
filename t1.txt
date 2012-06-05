@@ -1,25 +1,42 @@
-module m3llll;
+module m2;
 
-const
- c1 = 10;
- c2 = 20;
- 
-type
- arr5 = Array[5] of int;
- arr2 = arr5;
- rec = Record
- 		a: int;
- 		b: arr5
- 		end;
- a = Array[5] of rec;
- 
-var 
- i,j : int;
- arr: Array[5] of int;
- 
+var
+i, j, k : int;
+
 begin
-j:=c1;
- i := 10 + 5;
- arr[3] := i
-
-end m3llll.
+ i := 10;
+ j := 20;
+ k := 30;
+ 
+ while i > 0 do
+   Print i;
+   i := i-1
+  end; 
+  
+ repeat
+  k := i + 1;
+  Print k;
+  i := i + 1
+ until i = 5; 
+ 
+ if k = 5
+ then k := 10; Print k
+ end; 
+ Print 10;
+ 
+ if k > j 
+ then Print 0 
+ else j := -100; Print j 
+ end; 
+ Print -100;
+ 
+ k := 10;
+ if k = 1
+ then Print k
+ elsif k = 2 then print 2
+ elsif k = 3 then print 3
+ elsif k = 10 then Print k
+ else Print 999
+ end
+ 
+ end m2.

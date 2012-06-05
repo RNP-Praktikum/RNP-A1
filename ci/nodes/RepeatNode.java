@@ -1,6 +1,7 @@
 package nodes;
 
 import java.util.Map;
+import static ci_compiler.Compiler.*;
 
 import descriptors.AbstractDescr;
 
@@ -43,7 +44,13 @@ public class RepeatNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		// TODO Auto-generated method stub
+		int start = newLabel();
+		
+		write("LABEL, " + start);
+		repeatPart.compile(symbolTable);
+		condition.compile(symbolTable);
+		write("BF, " + start);
+		
 		return null;
 	}
 
