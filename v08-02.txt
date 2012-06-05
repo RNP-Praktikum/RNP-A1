@@ -1,0 +1,40 @@
+module m;
+
+var
+
+i : integer;
+
+procedure p1();
+
+ var j : integer;
+
+ procedure p11();
+  var k : integer;
+  
+  procedure p111();
+   var l : integer;
+   
+   begin //p111
+    l := 11;
+    k := 22;
+    j := 33;
+    i := 44;
+   end p111;
+   
+  begin //p11 
+   k := 55;
+   j := 66;
+   i := 77;
+   p111();
+  end p11;
+ 
+ begin //p1
+  j := 88;
+  i := 99;
+  p11();
+ end p1;
+     
+begin //main 
+i := 100;
+p1();
+end m.

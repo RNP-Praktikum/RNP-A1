@@ -1,0 +1,14 @@
+module m;
+
+var i : int;
+
+procedure p1();
+var i,j,k : int;
+begin i := 99 end p1;
+
+begin 
+
+i := 100;
+p1();
+print i
+end m.

@@ -1,0 +1,277 @@
+module m;
+
+var i : integer;
+
+procedure p1();
+var i,j,k : integer;
+begin i := 99; end p1;
+
+begin 
+
+i := 100;
+p1();
+print i;
+end m.
+
+PUSHS, m
+JMP, 0
+LABEL, 1
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 1
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 1
+SETSL
+GETSP
+PUSHI, 3
+ADD
+SETSP
+PUSHI, 99
+PUSHI, 0
+GETFP
+ADD
+ASSIGN, 1
+LABEL, 2
+GETFP
+SETSP
+PUSHI, 1
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 6
+RET
+LABEL, 0
+PUSHI, 1
+SETSP
+PUSHI, 100
+PUSHI, 0
+ASSIGN, 1
+INIT, 6
+CALL, 1
+PUSHI, 0
+CONT, 1
+PRINT
+STOP
+
+rsive Descent - Version 1.01
+  ProgNode m
+    VardecNode 
+      VarNode 
+        IdfNode i
+        IdfNode integer
+    ProcDecNode 
+      ProcNode p1
+        VardecNode 
+          VarNode 
+            IdfNode i
+            IdfNode j
+            IdfNode k
+            IdfNode integer
+        Listnode
+          AssNode
+            IdfNode i
+            IntNode 99
+    Listnode
+      AssNode
+        IdfNode i
+        IntNode 100
+      CallNode 
+        IdfNode p1
+      PrintNode 
+        ContNode 
+          IdfNode i
+
+== abstract tree rausschreiben ==
+== CodeGen abstract tree wieder einlesen ==
+== CodeGen auf gehts ==
+  ProgNode m 0
+PUSHS, m
+JMP, 0
+    VardecNode 
+      VarNode 
+    ProcDecNode 
+      ProcNode p1 1 1
+        VardecNode 
+          VarNode 
+LABEL, 1
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 1
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 1
+SETSL
+GETSP
+PUSHI, 3
+ADD
+SETSP
+        Listnode
+          AssNode
+            IntNode 99
+PUSHI, 99
+            IdfNode i 1
+PUSHI, 0
+GETFP
+ADD
+ASSIGN, 1
+LABEL, 2
+GETFP
+SETSP
+PUSHI, 1
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 6
+RET
+LABEL, 0
+PUSHI, 1
+SETSP
+    Listnode
+      AssNode
+        IntNode 100
+PUSHI, 100
+        IdfNode i 0
+PUSHI, 0
+ASSIGN, 1
+      CallNode 
+INIT, 6
+CALL, 1
+      PrintNode 
+        ContNode 
+          IdfNode i 0
+PUSHI, 0
+CONT, 1
+PRINT
++++ FixUp program length = 46
+position 1 0
+position 41 1
++++ Ende Fixup
+STOP
+====== Symboltabelle
+    real
+  SimpleTypeDescr: real size: 1 level: 0
+    char
+  SimpleTypeDescr: char size: 1 level: 0
+    integer
+  SimpleTypeDescr: integer size: 1 level: 0
+    p1
+  ProcdureDescr: p1start: 1 lengthparblock: 0framesize: 3
+    string
+  SimpleTypeDescr: string size: 1 level: 0
+    boolean
+  SimpleTypeDescr: boolean size: 1 level: 0
+    i
+  VarDescr: 0 level: 0
+    SimpleTypeDescr: integer size: 1 level: 0
+== CodeGen code für Interpretierer rausschreiben ==
+== code für Interpretierer wieder einlesen ==
+*** dump instructions begin
+0 Interpret StrInstr m
+1 Interpret JUMP 34
+2 Interpret LabelVal 1
+3 Interpret PushRegister RK
+4 Interpret PushRegister FP
+5 Interpret IntVal 1
+6 Interpret PushRegister SL
+7 Interpret GetSP
+8 Interpret SetFP
+9 Interpret GetFP 
+10 Interpret IntVal 1
+11 Interpret SetSL
+12 Interpret GetSP
+13 Interpret IntVal 3
+14 Interpret ADD
+15 Interpret SetSP
+16 Interpret IntVal 99
+17 Interpret IntVal 0
+18 Interpret GetFP 
+19 Interpret ADD
+20 Interpret ASSIGN 1
+21 Interpret LabelVal 2
+22 Interpret GetFP 
+23 Interpret SetSP
+24 Interpret IntVal 1
+25 Interpret PopRegister SL
+26 Interpret PopRegister FP
+27 Interpret PopRegister RK
+28 Interpret GetSP
+29 Interpret IntVal 0
+30 Interpret SUB
+31 Interpret SetSP
+32 Interpret ReduceStack 6
+33 Interpret ReturnInstruction 
+34 Interpret LabelVal 0
+35 Interpret IntVal 1
+36 Interpret SetSP
+37 Interpret IntVal 100
+38 Interpret IntVal 0
+39 Interpret ASSIGN 1
+40 Interpret InitStack 6
+41 Interpret Call 2
+42 Interpret IntVal 0
+43 Interpret ContInstruction 1
+44 Interpret PrintInstruction
+45 Interpret StopInstruction
+*** dump instructions end
+0 Interpret StrInstr m
+1 Interpret JMP 34
+34 Interpret LabelVal 0
+35 Interpret IntVal 1
+36 Interpret SetSP
+37 Interpret IntVal 100
+38 Interpret IntVal 0
+addr(0) := 100
+40 Interpret InitStack 6
+41 Interpret Call 2
+2 Interpret LabelVal 1
+3 Interpret PushRegister RK
+4 Interpret PushRegister FP
+5 Interpret IntVal 1
+6 Interpret PushRegister SL
+7 Interpret GetSP 4
+8 Interpret SetFP
+9 Interpret GetFP 4
+10 Interpret IntVal 1
+11 Interpret SetSL1 4
+12 Interpret GetSP 4
+13 Interpret IntVal 3
+4 + 3
+15 Interpret SetSP
+16 Interpret IntVal 99
+17 Interpret IntVal 0
+18 Interpret GetFP 4
+0 + 4
+addr(4) := 99
+21 Interpret LabelVal 2
+22 Interpret GetFP 4
+23 Interpret SetSP
+24 Interpret IntVal 1
+25 Interpret PopRegister SL
+26 Interpret PopRegister FP
+27 Interpret PopRegister RK
+28 Interpret GetSP 1
+29 Interpret IntVal 0
+1 - 0
+31 Interpret SetSP
+32 Interpret ReduceStack 6
+33 Interpret ReturnInstruction 42
+42 Interpret IntVal 0
+43 Interpret ContInstruction Addr = 0 value = 100
+100
+45 Interpret StopInstruction
+Und Tschüss!
+Und das ist die Variablenbelegung:
+integer(0) = 100

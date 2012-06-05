@@ -1,0 +1,743 @@
+module m;
+
+var
+
+i : integer;
+
+procedure p1();
+
+ var j : integer;
+
+ procedure p11();
+  var k : integer;
+  
+  procedure p111();
+   var l : integer;
+   
+   begin //p111
+    l := 11;
+    k := 22;
+    j := 33;
+    i := 44;
+   end p111;
+   
+  begin //p11 
+   k := 55;
+   j := 66;
+   i := 77;
+   p111();
+  end p11;
+ 
+ begin //p1
+  j := 88;
+  i := 99;
+  p11();
+ end p1;
+     
+begin //main 
+i := 100;
+p1();
+end m.
+
+PUSHS, m
+JMP, 0
+LABEL, 3
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 3
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 3
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+PUSHI, 11
+PUSHI, 0
+GETFP
+ADD
+ASSIGN, 1
+PUSHI, 22
+PUSHI, 0
+PUSHI, 2
+GETSL
+ADD
+ASSIGN, 1
+PUSHI, 33
+PUSHI, 0
+PUSHI, 1
+GETSL
+ADD
+ASSIGN, 1
+PUSHI, 44
+PUSHI, 0
+ASSIGN, 1
+LABEL, 4
+GETFP
+SETSP
+PUSHI, 3
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 2
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 2
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 2
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+PUSHI, 55
+PUSHI, 0
+GETFP
+ADD
+ASSIGN, 1
+PUSHI, 66
+PUSHI, 0
+PUSHI, 1
+GETSL
+ADD
+ASSIGN, 1
+PUSHI, 77
+PUSHI, 0
+ASSIGN, 1
+INIT, 4
+CALL, 3
+LABEL, 5
+GETFP
+SETSP
+PUSHI, 2
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 1
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 1
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 1
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+PUSHI, 88
+PUSHI, 0
+GETFP
+ADD
+ASSIGN, 1
+PUSHI, 99
+PUSHI, 0
+ASSIGN, 1
+INIT, 4
+CALL, 2
+LABEL, 6
+GETFP
+SETSP
+PUSHI, 1
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 0
+PUSHI, 1
+SETSP
+PUSHI, 100
+PUSHI, 0
+ASSIGN, 1
+INIT, 4
+CALL, 1
+STOP
+
+Recursive Descent - Version 1.01
+  ProgNode m
+    VardecNode 
+      VarNode 
+        IdfNode i
+        IdfNode integer
+    ProcDecNode 
+      ProcNode p1
+        VardecNode 
+          VarNode 
+            IdfNode j
+            IdfNode integer
+        ProcDecNode 
+          ProcNode p11
+            VardecNode 
+              VarNode 
+                IdfNode k
+                IdfNode integer
+            ProcDecNode 
+              ProcNode p111
+                VardecNode 
+                  VarNode 
+                    IdfNode l
+                    IdfNode integer
+                Listnode
+                  AssNode
+                    IdfNode l
+                    IntNode 11
+                  AssNode
+                    IdfNode k
+                    IntNode 22
+                  AssNode
+                    IdfNode j
+                    IntNode 33
+                  AssNode
+                    IdfNode i
+                    IntNode 44
+            Listnode
+              AssNode
+                IdfNode k
+                IntNode 55
+              AssNode
+                IdfNode j
+                IntNode 66
+              AssNode
+                IdfNode i
+                IntNode 77
+              CallNode 
+                IdfNode p111
+        Listnode
+          AssNode
+            IdfNode j
+            IntNode 88
+          AssNode
+            IdfNode i
+            IntNode 99
+          CallNode 
+            IdfNode p11
+    Listnode
+      AssNode
+        IdfNode i
+        IntNode 100
+      CallNode 
+        IdfNode p1
+
+== abstract tree rausschreiben ==
+== CodeGen abstract tree wieder einlesen ==
+== CodeGen auf gehts ==
+  ProgNode m 0
+PUSHS, m
+JMP, 0
+    VardecNode 
+      VarNode 
+    ProcDecNode 
+      ProcNode p1 1 1
+        VardecNode 
+          VarNode 
+        ProcDecNode 
+          ProcNode p11 1 2
+            VardecNode 
+              VarNode 
+            ProcDecNode 
+              ProcNode p111 1 3
+                VardecNode 
+                  VarNode 
+LABEL, 3
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 3
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 3
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+                Listnode
+                  AssNode
+                    IntNode 11
+PUSHI, 11
+                    IdfNode l 3
+PUSHI, 0
+GETFP
+ADD
+ASSIGN, 1
+                  AssNode
+                    IntNode 22
+PUSHI, 22
+                    IdfNode k 2
+PUSHI, 0
+PUSHI, 2
+GETSL
+ADD
+ASSIGN, 1
+                  AssNode
+                    IntNode 33
+PUSHI, 33
+                    IdfNode j 1
+PUSHI, 0
+PUSHI, 1
+GETSL
+ADD
+ASSIGN, 1
+                  AssNode
+                    IntNode 44
+PUSHI, 44
+                    IdfNode i 0
+PUSHI, 0
+ASSIGN, 1
+LABEL, 4
+GETFP
+SETSP
+PUSHI, 3
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 2
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 2
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 2
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+            Listnode
+              AssNode
+                IntNode 55
+PUSHI, 55
+                IdfNode k 2
+PUSHI, 0
+GETFP
+ADD
+ASSIGN, 1
+              AssNode
+                IntNode 66
+PUSHI, 66
+                IdfNode j 1
+PUSHI, 0
+PUSHI, 1
+GETSL
+ADD
+ASSIGN, 1
+              AssNode
+                IntNode 77
+PUSHI, 77
+                IdfNode i 0
+PUSHI, 0
+ASSIGN, 1
+              CallNode 
+INIT, 4
+CALL, 3
+LABEL, 5
+GETFP
+SETSP
+PUSHI, 2
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 1
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 1
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 1
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+        Listnode
+          AssNode
+            IntNode 88
+PUSHI, 88
+            IdfNode j 1
+PUSHI, 0
+GETFP
+ADD
+ASSIGN, 1
+          AssNode
+            IntNode 99
+PUSHI, 99
+            IdfNode i 0
+PUSHI, 0
+ASSIGN, 1
+          CallNode 
+INIT, 4
+CALL, 2
+LABEL, 6
+GETFP
+SETSP
+PUSHI, 1
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 0
+PUSHI, 1
+SETSP
+    Listnode
+      AssNode
+        IntNode 100
+PUSHI, 100
+        IdfNode i 0
+PUSHI, 0
+ASSIGN, 1
+      CallNode 
+INIT, 4
+CALL, 1
++++ FixUp program length = 138
+position 1 0
+position 78 3
+position 115 2
+position 136 1
++++ Ende Fixup
+STOP
+====== Symboltabelle
+    real
+  SimpleTypeDescr: real size: 1 level: 0
+    char
+  SimpleTypeDescr: char size: 1 level: 0
+    integer
+  SimpleTypeDescr: integer size: 1 level: 0
+    p1
+  ProcdureDescr: p1start: 1 lengthparblock: 0framesize: 1
+    string
+  SimpleTypeDescr: string size: 1 level: 0
+    boolean
+  SimpleTypeDescr: boolean size: 1 level: 0
+    i
+  VarDescr: 0 level: 0
+    SimpleTypeDescr: integer size: 1 level: 0
+== CodeGen code für Interpretierer rausschreiben ==
+== code für Interpretierer wieder einlesen ==
+*** dump instructions begin
+0 Interpret StrInstr m
+1 Interpret JUMP 129
+2 Interpret LabelVal 3
+3 Interpret PushRegister RK
+4 Interpret PushRegister FP
+5 Interpret IntVal 3
+6 Interpret PushRegister SL
+7 Interpret GetSP
+8 Interpret SetFP
+9 Interpret GetFP 
+10 Interpret IntVal 3
+11 Interpret SetSL
+12 Interpret GetSP
+13 Interpret IntVal 1
+14 Interpret ADD
+15 Interpret SetSP
+16 Interpret IntVal 11
+17 Interpret IntVal 0
+18 Interpret GetFP 
+19 Interpret ADD
+20 Interpret ASSIGN 1
+21 Interpret IntVal 22
+22 Interpret IntVal 0
+23 Interpret IntVal 2
+24 Interpret GetSL
+25 Interpret ADD
+26 Interpret ASSIGN 1
+27 Interpret IntVal 33
+28 Interpret IntVal 0
+29 Interpret IntVal 1
+30 Interpret GetSL
+31 Interpret ADD
+32 Interpret ASSIGN 1
+33 Interpret IntVal 44
+34 Interpret IntVal 0
+35 Interpret ASSIGN 1
+36 Interpret LabelVal 4
+37 Interpret GetFP 
+38 Interpret SetSP
+39 Interpret IntVal 3
+40 Interpret PopRegister SL
+41 Interpret PopRegister FP
+42 Interpret PopRegister RK
+43 Interpret GetSP
+44 Interpret IntVal 0
+45 Interpret SUB
+46 Interpret SetSP
+47 Interpret ReduceStack 4
+48 Interpret ReturnInstruction 
+49 Interpret LabelVal 2
+50 Interpret PushRegister RK
+51 Interpret PushRegister FP
+52 Interpret IntVal 2
+53 Interpret PushRegister SL
+54 Interpret GetSP
+55 Interpret SetFP
+56 Interpret GetFP 
+57 Interpret IntVal 2
+58 Interpret SetSL
+59 Interpret GetSP
+60 Interpret IntVal 1
+61 Interpret ADD
+62 Interpret SetSP
+63 Interpret IntVal 55
+64 Interpret IntVal 0
+65 Interpret GetFP 
+66 Interpret ADD
+67 Interpret ASSIGN 1
+68 Interpret IntVal 66
+69 Interpret IntVal 0
+70 Interpret IntVal 1
+71 Interpret GetSL
+72 Interpret ADD
+73 Interpret ASSIGN 1
+74 Interpret IntVal 77
+75 Interpret IntVal 0
+76 Interpret ASSIGN 1
+77 Interpret InitStack 4
+78 Interpret Call 2
+79 Interpret LabelVal 5
+80 Interpret GetFP 
+81 Interpret SetSP
+82 Interpret IntVal 2
+83 Interpret PopRegister SL
+84 Interpret PopRegister FP
+85 Interpret PopRegister RK
+86 Interpret GetSP
+87 Interpret IntVal 0
+88 Interpret SUB
+89 Interpret SetSP
+90 Interpret ReduceStack 4
+91 Interpret ReturnInstruction 
+92 Interpret LabelVal 1
+93 Interpret PushRegister RK
+94 Interpret PushRegister FP
+95 Interpret IntVal 1
+96 Interpret PushRegister SL
+97 Interpret GetSP
+98 Interpret SetFP
+99 Interpret GetFP 
+100 Interpret IntVal 1
+101 Interpret SetSL
+102 Interpret GetSP
+103 Interpret IntVal 1
+104 Interpret ADD
+105 Interpret SetSP
+106 Interpret IntVal 88
+107 Interpret IntVal 0
+108 Interpret GetFP 
+109 Interpret ADD
+110 Interpret ASSIGN 1
+111 Interpret IntVal 99
+112 Interpret IntVal 0
+113 Interpret ASSIGN 1
+114 Interpret InitStack 4
+115 Interpret Call 49
+116 Interpret LabelVal 6
+117 Interpret GetFP 
+118 Interpret SetSP
+119 Interpret IntVal 1
+120 Interpret PopRegister SL
+121 Interpret PopRegister FP
+122 Interpret PopRegister RK
+123 Interpret GetSP
+124 Interpret IntVal 0
+125 Interpret SUB
+126 Interpret SetSP
+127 Interpret ReduceStack 4
+128 Interpret ReturnInstruction 
+129 Interpret LabelVal 0
+130 Interpret IntVal 1
+131 Interpret SetSP
+132 Interpret IntVal 100
+133 Interpret IntVal 0
+134 Interpret ASSIGN 1
+135 Interpret InitStack 4
+136 Interpret Call 92
+137 Interpret StopInstruction
+*** dump instructions end
+0 Interpret StrInstr m
+1 Interpret JMP 129
+129 Interpret LabelVal 0
+130 Interpret IntVal 1
+131 Interpret SetSP
+132 Interpret IntVal 100
+133 Interpret IntVal 0
+addr(0) := 100
+135 Interpret InitStack 4
+136 Interpret Call 92
+92 Interpret LabelVal 1
+93 Interpret PushRegister RK
+94 Interpret PushRegister FP
+95 Interpret IntVal 1
+96 Interpret PushRegister SL
+97 Interpret GetSP 4
+98 Interpret SetFP
+99 Interpret GetFP 4
+100 Interpret IntVal 1
+101 Interpret SetSL1 4
+102 Interpret GetSP 4
+103 Interpret IntVal 1
+4 + 1
+105 Interpret SetSP
+106 Interpret IntVal 88
+107 Interpret IntVal 0
+108 Interpret GetFP 4
+0 + 4
+addr(4) := 88
+111 Interpret IntVal 99
+112 Interpret IntVal 0
+addr(0) := 99
+114 Interpret InitStack 4
+115 Interpret Call 49
+49 Interpret LabelVal 2
+50 Interpret PushRegister RK
+51 Interpret PushRegister FP
+52 Interpret IntVal 2
+53 Interpret PushRegister SL
+54 Interpret GetSP 8
+55 Interpret SetFP
+56 Interpret GetFP 8
+57 Interpret IntVal 2
+58 Interpret SetSL2 8
+59 Interpret GetSP 8
+60 Interpret IntVal 1
+8 + 1
+62 Interpret SetSP
+63 Interpret IntVal 55
+64 Interpret IntVal 0
+65 Interpret GetFP 8
+0 + 8
+addr(8) := 55
+68 Interpret IntVal 66
+69 Interpret IntVal 0
+70 Interpret IntVal 1
+71 Interpret GetSL1 4
+0 + 4
+addr(4) := 66
+74 Interpret IntVal 77
+75 Interpret IntVal 0
+addr(0) := 77
+77 Interpret InitStack 4
+78 Interpret Call 2
+2 Interpret LabelVal 3
+3 Interpret PushRegister RK
+4 Interpret PushRegister FP
+5 Interpret IntVal 3
+6 Interpret PushRegister SL
+7 Interpret GetSP 12
+8 Interpret SetFP
+9 Interpret GetFP 12
+10 Interpret IntVal 3
+11 Interpret SetSL3 12
+12 Interpret GetSP 12
+13 Interpret IntVal 1
+12 + 1
+15 Interpret SetSP
+16 Interpret IntVal 11
+17 Interpret IntVal 0
+18 Interpret GetFP 12
+0 + 12
+addr(12) := 11
+21 Interpret IntVal 22
+22 Interpret IntVal 0
+23 Interpret IntVal 2
+24 Interpret GetSL2 8
+0 + 8
+addr(8) := 22
+27 Interpret IntVal 33
+28 Interpret IntVal 0
+29 Interpret IntVal 1
+30 Interpret GetSL1 4
+0 + 4
+addr(4) := 33
+33 Interpret IntVal 44
+34 Interpret IntVal 0
+addr(0) := 44
+36 Interpret LabelVal 4
+37 Interpret GetFP 12
+38 Interpret SetSP
+39 Interpret IntVal 3
+40 Interpret PopRegister SL
+41 Interpret PopRegister FP
+42 Interpret PopRegister RK
+43 Interpret GetSP 9
+44 Interpret IntVal 0
+9 - 0
+46 Interpret SetSP
+47 Interpret ReduceStack 4
+48 Interpret ReturnInstruction 79
+79 Interpret LabelVal 5
+80 Interpret GetFP 8
+81 Interpret SetSP
+82 Interpret IntVal 2
+83 Interpret PopRegister SL
+84 Interpret PopRegister FP
+85 Interpret PopRegister RK
+86 Interpret GetSP 5
+87 Interpret IntVal 0
+5 - 0
+89 Interpret SetSP
+90 Interpret ReduceStack 4
+91 Interpret ReturnInstruction 116
+116 Interpret LabelVal 6
+117 Interpret GetFP 4
+118 Interpret SetSP
+119 Interpret IntVal 1
+120 Interpret PopRegister SL
+121 Interpret PopRegister FP
+122 Interpret PopRegister RK
+123 Interpret GetSP 1
+124 Interpret IntVal 0
+1 - 0
+126 Interpret SetSP
+127 Interpret ReduceStack 4
+128 Interpret ReturnInstruction 137
+137 Interpret StopInstruction
+Und Tschüss!
+Und das ist die Variablenbelegung:
+integer(0) = 44

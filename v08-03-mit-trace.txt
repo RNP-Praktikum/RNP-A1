@@ -1,0 +1,1085 @@
+module m;
+
+var
+
+i : integer;
+
+procedure p1();
+
+ var j : integer;
+
+ procedure p11();
+  var k : integer;
+  
+  procedure p111();
+   var l : integer;
+   
+   begin //p111
+    print "enter p111";
+    print "leave p111";
+   end p111;
+   
+  begin //p11 
+   print "enter p11";
+   p111();
+   print "leave p11";
+  end p11;
+ 
+ procedure p12();
+  var k : integer;
+  
+  procedure p121();
+   var l : integer;
+   
+   begin //p121
+    print "enter p121";
+    p1();
+    print "leave p121";
+   end p111;
+   
+  begin //p12 
+   print "enter p12";
+   if i = 0 then i := i+1; p121(); else p11(); end;
+   print "leave p12";
+  end p12;
+ 
+ begin //p1
+   print "enter p1";
+   p12();
+   print "leave p1";
+ end p1;
+     
+begin //main 
+i := 0;
+p1();
+end m.
+
+PUSHS, m
+JMP, 0
+LABEL, 3
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 3
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 3
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+PUSHS, enter p111
+PRINT
+PUSHS, leave p111
+PRINT
+LABEL, 4
+GETFP
+SETSP
+PUSHI, 3
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 2
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 2
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 2
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+PUSHS, enter p11
+PRINT
+INIT, 4
+CALL, 3
+PUSHS, leave p11
+PRINT
+LABEL, 5
+GETFP
+SETSP
+PUSHI, 2
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 7
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 3
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 3
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+PUSHS, enter p121
+PRINT
+INIT, 4
+CALL, 1
+PUSHS, leave p121
+PRINT
+LABEL, 8
+GETFP
+SETSP
+PUSHI, 3
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 6
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 2
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 2
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+PUSHS, enter p12
+PRINT
+PUSHI, 0
+CONT, 1
+PUSHI, 0
+EQ
+BF, 10
+PUSHI, 0
+CONT, 1
+PUSHI, 1
+ADD
+PUSHI, 0
+ASSIGN, 1
+INIT, 4
+CALL, 7
+JMP, 11
+LABEL, 10
+INIT, 4
+CALL, 2
+LABEL, 11
+PUSHS, leave p12
+PRINT
+LABEL, 9
+GETFP
+SETSP
+PUSHI, 2
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 1
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 1
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 1
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+PUSHS, enter p1
+PRINT
+INIT, 4
+CALL, 6
+PUSHS, leave p1
+PRINT
+LABEL, 12
+GETFP
+SETSP
+PUSHI, 1
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 0
+PUSHI, 1
+SETSP
+PUSHI, 0
+PUSHI, 0
+ASSIGN, 1
+INIT, 4
+CALL, 1
+STOP
+
+Recursive Descent - Version 1.01
+  ProgNode m
+    VardecNode 
+      VarNode 
+        IdfNode i
+        IdfNode integer
+    ProcDecNode 
+      ProcNode p1
+        VardecNode 
+          VarNode 
+            IdfNode j
+            IdfNode integer
+        ProcDecNode 
+          ProcNode p11
+            VardecNode 
+              VarNode 
+                IdfNode k
+                IdfNode integer
+            ProcDecNode 
+              ProcNode p111
+                VardecNode 
+                  VarNode 
+                    IdfNode l
+                    IdfNode integer
+                Listnode
+                  PrintNode 
+                    CharNode enter p111
+                  PrintNode 
+                    CharNode leave p111
+            Listnode
+              PrintNode 
+                CharNode enter p11
+              CallNode 
+                IdfNode p111
+              PrintNode 
+                CharNode leave p11
+          ProcNode p12
+            VardecNode 
+              VarNode 
+                IdfNode k
+                IdfNode integer
+            ProcDecNode 
+              ProcNode p121
+                VardecNode 
+                  VarNode 
+                    IdfNode l
+                    IdfNode integer
+                Listnode
+                  PrintNode 
+                    CharNode enter p121
+                  CallNode 
+                    IdfNode p1
+                  PrintNode 
+                    CharNode leave p121
+            Listnode
+              PrintNode 
+                CharNode enter p12
+              IfNode 
+                BinNode 18
+                  ContNode 
+                    IdfNode i
+                  IntNode 0
+                Listnode
+                  AssNode
+                    IdfNode i
+                    BinNode 1
+                      ContNode 
+                        IdfNode i
+                      IntNode 1
+                  CallNode 
+                    IdfNode p121
+                Listnode
+                  CallNode 
+                    IdfNode p11
+              PrintNode 
+                CharNode leave p12
+        Listnode
+          PrintNode 
+            CharNode enter p1
+          CallNode 
+            IdfNode p12
+          PrintNode 
+            CharNode leave p1
+    Listnode
+      AssNode
+        IdfNode i
+        IntNode 0
+      CallNode 
+        IdfNode p1
+
+== abstract tree rausschreiben ==
+== CodeGen abstract tree wieder einlesen ==
+== CodeGen auf gehts ==
+  ProgNode m 0
+PUSHS, m
+JMP, 0
+    VardecNode 
+      VarNode 
+    ProcDecNode 
+      ProcNode p1 1 1
+        VardecNode 
+          VarNode 
+        ProcDecNode 
+          ProcNode p11 1 2
+            VardecNode 
+              VarNode 
+            ProcDecNode 
+              ProcNode p111 1 3
+                VardecNode 
+                  VarNode 
+LABEL, 3
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 3
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 3
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+                Listnode
+                  PrintNode 
+                    CharNode enter p111
+PUSHS, enter p111
+PRINT
+                  PrintNode 
+                    CharNode leave p111
+PUSHS, leave p111
+PRINT
+LABEL, 4
+GETFP
+SETSP
+PUSHI, 3
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 2
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 2
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 2
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+            Listnode
+              PrintNode 
+                CharNode enter p11
+PUSHS, enter p11
+PRINT
+              CallNode 
+INIT, 4
+CALL, 3
+              PrintNode 
+                CharNode leave p11
+PUSHS, leave p11
+PRINT
+LABEL, 5
+GETFP
+SETSP
+PUSHI, 2
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+          ProcNode p12 1 6
+            VardecNode 
+              VarNode 
+            ProcDecNode 
+              ProcNode p121 1 7
+                VardecNode 
+                  VarNode 
+LABEL, 7
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 3
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 3
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+                Listnode
+                  PrintNode 
+                    CharNode enter p121
+PUSHS, enter p121
+PRINT
+                  CallNode 
+INIT, 4
+CALL, 1
+                  PrintNode 
+                    CharNode leave p121
+PUSHS, leave p121
+PRINT
+LABEL, 8
+GETFP
+SETSP
+PUSHI, 3
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 6
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 2
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 2
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+            Listnode
+              PrintNode 
+                CharNode enter p12
+PUSHS, enter p12
+PRINT
+              IfNode
+                BinNode 18
+                  ContNode 
+                    IdfNode i 0
+PUSHI, 0
+CONT, 1
+                  IntNode 0
+PUSHI, 0
+EQ
+BF, 10
+                Listnode
+                  AssNode
+                    BinNode 1
+                      ContNode 
+                        IdfNode i 0
+PUSHI, 0
+CONT, 1
+                      IntNode 1
+PUSHI, 1
+ADD
+                    IdfNode i 0
+PUSHI, 0
+ASSIGN, 1
+                  CallNode 
+INIT, 4
+CALL, 7
+JMP, 11
+LABEL, 10
+                Listnode
+                  CallNode 
+INIT, 4
+CALL, 2
+LABEL, 11
+              PrintNode 
+                CharNode leave p12
+PUSHS, leave p12
+PRINT
+LABEL, 9
+GETFP
+SETSP
+PUSHI, 2
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 1
+PUSHREG, RK
+PUSHREG, FP
+PUSHI, 1
+PUSHREG, SL
+GETSP
+SETFP
+GETFP
+PUSHI, 1
+SETSL
+GETSP
+PUSHI, 1
+ADD
+SETSP
+        Listnode
+          PrintNode 
+            CharNode enter p1
+PUSHS, enter p1
+PRINT
+          CallNode 
+INIT, 4
+CALL, 6
+          PrintNode 
+            CharNode leave p1
+PUSHS, leave p1
+PRINT
+LABEL, 12
+GETFP
+SETSP
+PUSHI, 1
+POPREG, SL
+POPREG, FP
+POPREG, RK
+GETSP
+PUSHI, 0
+SUB
+SETSP
+REDUCE, 4
+RET
+LABEL, 0
+PUSHI, 1
+SETSP
+    Listnode
+      AssNode
+        IntNode 0
+PUSHI, 0
+        IdfNode i 0
+PUSHI, 0
+ASSIGN, 1
+      CallNode 
+INIT, 4
+CALL, 1
++++ FixUp program length = 190
+position 1 0
+position 50 3
+position 83 1
+position 119 10
+position 127 7
+position 128 11
+position 131 2
+position 165 6
+position 188 1
++++ Ende Fixup
+STOP
+====== Symboltabelle
+    real
+  SimpleTypeDescr: real size: 1 level: 0
+    char
+  SimpleTypeDescr: char size: 1 level: 0
+    integer
+  SimpleTypeDescr: integer size: 1 level: 0
+    p1
+  ProcdureDescr: p1start: 1 lengthparblock: 0framesize: 1
+    string
+  SimpleTypeDescr: string size: 1 level: 0
+    boolean
+  SimpleTypeDescr: boolean size: 1 level: 0
+    i
+  VarDescr: 0 level: 0
+    SimpleTypeDescr: integer size: 1 level: 0
+== CodeGen code für Interpretierer rausschreiben ==
+== code für Interpretierer wieder einlesen ==
+*** dump instructions begin
+0 Interpret StrInstr m
+1 Interpret JUMP 181
+2 Interpret LabelVal 3
+3 Interpret PushRegister RK
+4 Interpret PushRegister FP
+5 Interpret IntVal 3
+6 Interpret PushRegister SL
+7 Interpret GetSP
+8 Interpret SetFP
+9 Interpret GetFP 
+10 Interpret IntVal 3
+11 Interpret SetSL
+12 Interpret GetSP
+13 Interpret IntVal 1
+14 Interpret ADD
+15 Interpret SetSP
+16 Interpret StrInstr enter p111
+17 Interpret PrintInstruction
+18 Interpret StrInstr leave p111
+19 Interpret PrintInstruction
+20 Interpret LabelVal 4
+21 Interpret GetFP 
+22 Interpret SetSP
+23 Interpret IntVal 3
+24 Interpret PopRegister SL
+25 Interpret PopRegister FP
+26 Interpret PopRegister RK
+27 Interpret GetSP
+28 Interpret IntVal 0
+29 Interpret SUB
+30 Interpret SetSP
+31 Interpret ReduceStack 4
+32 Interpret ReturnInstruction 
+33 Interpret LabelVal 2
+34 Interpret PushRegister RK
+35 Interpret PushRegister FP
+36 Interpret IntVal 2
+37 Interpret PushRegister SL
+38 Interpret GetSP
+39 Interpret SetFP
+40 Interpret GetFP 
+41 Interpret IntVal 2
+42 Interpret SetSL
+43 Interpret GetSP
+44 Interpret IntVal 1
+45 Interpret ADD
+46 Interpret SetSP
+47 Interpret StrInstr enter p11
+48 Interpret PrintInstruction
+49 Interpret InitStack 4
+50 Interpret Call 2
+51 Interpret StrInstr leave p11
+52 Interpret PrintInstruction
+53 Interpret LabelVal 5
+54 Interpret GetFP 
+55 Interpret SetSP
+56 Interpret IntVal 2
+57 Interpret PopRegister SL
+58 Interpret PopRegister FP
+59 Interpret PopRegister RK
+60 Interpret GetSP
+61 Interpret IntVal 0
+62 Interpret SUB
+63 Interpret SetSP
+64 Interpret ReduceStack 4
+65 Interpret ReturnInstruction 
+66 Interpret LabelVal 7
+67 Interpret PushRegister RK
+68 Interpret PushRegister FP
+69 Interpret IntVal 3
+70 Interpret PushRegister SL
+71 Interpret GetSP
+72 Interpret SetFP
+73 Interpret GetFP 
+74 Interpret IntVal 3
+75 Interpret SetSL
+76 Interpret GetSP
+77 Interpret IntVal 1
+78 Interpret ADD
+79 Interpret SetSP
+80 Interpret StrInstr enter p121
+81 Interpret PrintInstruction
+82 Interpret InitStack 4
+83 Interpret Call 148
+84 Interpret StrInstr leave p121
+85 Interpret PrintInstruction
+86 Interpret LabelVal 8
+87 Interpret GetFP 
+88 Interpret SetSP
+89 Interpret IntVal 3
+90 Interpret PopRegister SL
+91 Interpret PopRegister FP
+92 Interpret PopRegister RK
+93 Interpret GetSP
+94 Interpret IntVal 0
+95 Interpret SUB
+96 Interpret SetSP
+97 Interpret ReduceStack 4
+98 Interpret ReturnInstruction 
+99 Interpret LabelVal 6
+100 Interpret PushRegister RK
+101 Interpret PushRegister FP
+102 Interpret IntVal 2
+103 Interpret PushRegister SL
+104 Interpret GetSP
+105 Interpret SetFP
+106 Interpret GetFP 
+107 Interpret IntVal 2
+108 Interpret SetSL
+109 Interpret GetSP
+110 Interpret IntVal 1
+111 Interpret ADD
+112 Interpret SetSP
+113 Interpret StrInstr enter p12
+114 Interpret PrintInstruction
+115 Interpret IntVal 0
+116 Interpret ContInstruction 1
+117 Interpret IntVal 0
+118 Interpret EQUALS
+119 Interpret BF 129
+120 Interpret IntVal 0
+121 Interpret ContInstruction 1
+122 Interpret IntVal 1
+123 Interpret ADD
+124 Interpret IntVal 0
+125 Interpret ASSIGN 1
+126 Interpret InitStack 4
+127 Interpret Call 66
+128 Interpret JUMP 132
+129 Interpret LabelVal 10
+130 Interpret InitStack 4
+131 Interpret Call 33
+132 Interpret LabelVal 11
+133 Interpret StrInstr leave p12
+134 Interpret PrintInstruction
+135 Interpret LabelVal 9
+136 Interpret GetFP 
+137 Interpret SetSP
+138 Interpret IntVal 2
+139 Interpret PopRegister SL
+140 Interpret PopRegister FP
+141 Interpret PopRegister RK
+142 Interpret GetSP
+143 Interpret IntVal 0
+144 Interpret SUB
+145 Interpret SetSP
+146 Interpret ReduceStack 4
+147 Interpret ReturnInstruction 
+148 Interpret LabelVal 1
+149 Interpret PushRegister RK
+150 Interpret PushRegister FP
+151 Interpret IntVal 1
+152 Interpret PushRegister SL
+153 Interpret GetSP
+154 Interpret SetFP
+155 Interpret GetFP 
+156 Interpret IntVal 1
+157 Interpret SetSL
+158 Interpret GetSP
+159 Interpret IntVal 1
+160 Interpret ADD
+161 Interpret SetSP
+162 Interpret StrInstr enter p1
+163 Interpret PrintInstruction
+164 Interpret InitStack 4
+165 Interpret Call 99
+166 Interpret StrInstr leave p1
+167 Interpret PrintInstruction
+168 Interpret LabelVal 12
+169 Interpret GetFP 
+170 Interpret SetSP
+171 Interpret IntVal 1
+172 Interpret PopRegister SL
+173 Interpret PopRegister FP
+174 Interpret PopRegister RK
+175 Interpret GetSP
+176 Interpret IntVal 0
+177 Interpret SUB
+178 Interpret SetSP
+179 Interpret ReduceStack 4
+180 Interpret ReturnInstruction 
+181 Interpret LabelVal 0
+182 Interpret IntVal 1
+183 Interpret SetSP
+184 Interpret IntVal 0
+185 Interpret IntVal 0
+186 Interpret ASSIGN 1
+187 Interpret InitStack 4
+188 Interpret Call 148
+189 Interpret StopInstruction
+*** dump instructions end
+0 Interpret StrInstr m
+1 Interpret JMP 181
+181 Interpret LabelVal 0
+182 Interpret IntVal 1
+183 Interpret SetSP
+184 Interpret IntVal 0
+185 Interpret IntVal 0
+addr(0) := 0
+187 Interpret InitStack 4
+188 Interpret Call 148
+148 Interpret LabelVal 1
+149 Interpret PushRegister RK
+150 Interpret PushRegister FP
+151 Interpret IntVal 1
+152 Interpret PushRegister SL
+153 Interpret GetSP 4
+154 Interpret SetFP
+155 Interpret GetFP 4
+156 Interpret IntVal 1
+157 Interpret SetSL1 4
+158 Interpret GetSP 4
+159 Interpret IntVal 1
+4 + 1
+161 Interpret SetSP
+162 Interpret StrInstr enter p1
+enter p1
+164 Interpret InitStack 4
+165 Interpret Call 99
+99 Interpret LabelVal 6
+100 Interpret PushRegister RK
+101 Interpret PushRegister FP
+102 Interpret IntVal 2
+103 Interpret PushRegister SL
+104 Interpret GetSP 8
+105 Interpret SetFP
+106 Interpret GetFP 8
+107 Interpret IntVal 2
+108 Interpret SetSL2 8
+109 Interpret GetSP 8
+110 Interpret IntVal 1
+8 + 1
+112 Interpret SetSP
+113 Interpret StrInstr enter p12
+enter p12
+115 Interpret IntVal 0
+116 Interpret ContInstruction Addr = 0 value = 0
+117 Interpret IntVal 0
+0 == 0
+119 Interpret BF 129
+120 Interpret IntVal 0
+121 Interpret ContInstruction Addr = 0 value = 0
+122 Interpret IntVal 1
+0 + 1
+124 Interpret IntVal 0
+addr(0) := 1
+126 Interpret InitStack 4
+127 Interpret Call 66
+66 Interpret LabelVal 7
+67 Interpret PushRegister RK
+68 Interpret PushRegister FP
+69 Interpret IntVal 3
+70 Interpret PushRegister SL
+71 Interpret GetSP 12
+72 Interpret SetFP
+73 Interpret GetFP 12
+74 Interpret IntVal 3
+75 Interpret SetSL3 12
+76 Interpret GetSP 12
+77 Interpret IntVal 1
+12 + 1
+79 Interpret SetSP
+80 Interpret StrInstr enter p121
+enter p121
+82 Interpret InitStack 4
+83 Interpret Call 148
+148 Interpret LabelVal 1
+149 Interpret PushRegister RK
+150 Interpret PushRegister FP
+151 Interpret IntVal 1
+152 Interpret PushRegister SL
+153 Interpret GetSP 16
+154 Interpret SetFP
+155 Interpret GetFP 16
+156 Interpret IntVal 1
+157 Interpret SetSL1 16
+158 Interpret GetSP 16
+159 Interpret IntVal 1
+16 + 1
+161 Interpret SetSP
+162 Interpret StrInstr enter p1
+enter p1
+164 Interpret InitStack 4
+165 Interpret Call 99
+99 Interpret LabelVal 6
+100 Interpret PushRegister RK
+101 Interpret PushRegister FP
+102 Interpret IntVal 2
+103 Interpret PushRegister SL
+104 Interpret GetSP 20
+105 Interpret SetFP
+106 Interpret GetFP 20
+107 Interpret IntVal 2
+108 Interpret SetSL2 20
+109 Interpret GetSP 20
+110 Interpret IntVal 1
+20 + 1
+112 Interpret SetSP
+113 Interpret StrInstr enter p12
+enter p12
+115 Interpret IntVal 0
+116 Interpret ContInstruction Addr = 0 value = 1
+117 Interpret IntVal 0
+1 == 0
+119 Interpret BF 129
+129 Interpret LabelVal 10
+130 Interpret InitStack 4
+131 Interpret Call 33
+33 Interpret LabelVal 2
+34 Interpret PushRegister RK
+35 Interpret PushRegister FP
+36 Interpret IntVal 2
+37 Interpret PushRegister SL
+38 Interpret GetSP 24
+39 Interpret SetFP
+40 Interpret GetFP 24
+41 Interpret IntVal 2
+42 Interpret SetSL2 24
+43 Interpret GetSP 24
+44 Interpret IntVal 1
+24 + 1
+46 Interpret SetSP
+47 Interpret StrInstr enter p11
+enter p11
+49 Interpret InitStack 4
+50 Interpret Call 2
+2 Interpret LabelVal 3
+3 Interpret PushRegister RK
+4 Interpret PushRegister FP
+5 Interpret IntVal 3
+6 Interpret PushRegister SL
+7 Interpret GetSP 28
+8 Interpret SetFP
+9 Interpret GetFP 28
+10 Interpret IntVal 3
+11 Interpret SetSL3 28
+12 Interpret GetSP 28
+13 Interpret IntVal 1
+28 + 1
+15 Interpret SetSP
+16 Interpret StrInstr enter p111
+enter p111
+18 Interpret StrInstr leave p111
+leave p111
+20 Interpret LabelVal 4
+21 Interpret GetFP 28
+22 Interpret SetSP
+23 Interpret IntVal 3
+24 Interpret PopRegister SL
+25 Interpret PopRegister FP
+26 Interpret PopRegister RK
+27 Interpret GetSP 25
+28 Interpret IntVal 0
+25 - 0
+30 Interpret SetSP
+31 Interpret ReduceStack 4
+32 Interpret ReturnInstruction 51
+51 Interpret StrInstr leave p11
+leave p11
+53 Interpret LabelVal 5
+54 Interpret GetFP 24
+55 Interpret SetSP
+56 Interpret IntVal 2
+57 Interpret PopRegister SL
+58 Interpret PopRegister FP
+59 Interpret PopRegister RK
+60 Interpret GetSP 21
+61 Interpret IntVal 0
+21 - 0
+63 Interpret SetSP
+64 Interpret ReduceStack 4
+65 Interpret ReturnInstruction 132
+132 Interpret LabelVal 11
+133 Interpret StrInstr leave p12
+leave p12
+135 Interpret LabelVal 9
+136 Interpret GetFP 20
+137 Interpret SetSP
+138 Interpret IntVal 2
+139 Interpret PopRegister SL
+140 Interpret PopRegister FP
+141 Interpret PopRegister RK
+142 Interpret GetSP 17
+143 Interpret IntVal 0
+17 - 0
+145 Interpret SetSP
+146 Interpret ReduceStack 4
+147 Interpret ReturnInstruction 166
+166 Interpret StrInstr leave p1
+leave p1
+168 Interpret LabelVal 12
+169 Interpret GetFP 16
+170 Interpret SetSP
+171 Interpret IntVal 1
+172 Interpret PopRegister SL
+173 Interpret PopRegister FP
+174 Interpret PopRegister RK
+175 Interpret GetSP 13
+176 Interpret IntVal 0
+13 - 0
+178 Interpret SetSP
+179 Interpret ReduceStack 4
+180 Interpret ReturnInstruction 84
+84 Interpret StrInstr leave p121
+leave p121
+86 Interpret LabelVal 8
+87 Interpret GetFP 12
+88 Interpret SetSP
+89 Interpret IntVal 3
+90 Interpret PopRegister SL
+91 Interpret PopRegister FP
+92 Interpret PopRegister RK
+93 Interpret GetSP 9
+94 Interpret IntVal 0
+9 - 0
+96 Interpret SetSP
+97 Interpret ReduceStack 4
+98 Interpret ReturnInstruction 128
+128 Interpret JMP 132
+132 Interpret LabelVal 11
+133 Interpret StrInstr leave p12
+leave p12
+135 Interpret LabelVal 9
+136 Interpret GetFP 8
+137 Interpret SetSP
+138 Interpret IntVal 2
+139 Interpret PopRegister SL
+140 Interpret PopRegister FP
+141 Interpret PopRegister RK
+142 Interpret GetSP 5
+143 Interpret IntVal 0
+5 - 0
+145 Interpret SetSP
+146 Interpret ReduceStack 4
+147 Interpret ReturnInstruction 166
+166 Interpret StrInstr leave p1
+leave p1
+168 Interpret LabelVal 12
+169 Interpret GetFP 4
+170 Interpret SetSP
+171 Interpret IntVal 1
+172 Interpret PopRegister SL
+173 Interpret PopRegister FP
+174 Interpret PopRegister RK
+175 Interpret GetSP 1
+176 Interpret IntVal 0
+1 - 0
+178 Interpret SetSP
+179 Interpret ReduceStack 4
+180 Interpret ReturnInstruction 189
+189 Interpret StopInstruction
+Und Tschüss!
+Und das ist die Variablenbelegung:
+integer(0) = 1
+

@@ -1,0 +1,55 @@
+module m;
+
+var
+
+i : integer;
+
+procedure p1();
+
+ var j : integer;
+
+ procedure p11();
+  var k : integer;
+  
+  procedure p111();
+   var l : integer;
+   
+   begin //p111
+    print "enter p111";
+    print "leave p111";
+   end p111;
+   
+  begin //p11 
+   print "enter p11";
+   p111();
+   print "leave p11";
+  end p11;
+ 
+ procedure p12();
+  var k : integer;
+  
+  procedure p121();
+   var l : integer;
+   
+   begin //p121
+    print "enter p121";
+    p1();
+    print "leave p121";
+   end p111;
+   
+  begin //p12 
+   print "enter p12";
+   if i = 0 then i := i+1; p121(); else p11(); end;
+   print "leave p12";
+  end p12;
+ 
+ begin //p1
+   print "enter p1";
+   p12();
+   print "leave p1";
+ end p1;
+     
+begin //main 
+i := 0;
+p1();
+end m.
