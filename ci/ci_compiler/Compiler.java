@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import nodes.AbstractNode;
 
-import descriptors.AbstractDescr;
+import descriptors.*;
 
 
 public class Compiler {
@@ -65,10 +65,21 @@ public class Compiler {
 	public static AbstractDescr searchSymbolTable(int level, String ident) {
 		boolean stop = true;
 		AbstractDescr descr = null;
-		for (int i = level; i >= 0 || stop; i--){
+		for (int i = level; (i >= 0 && stop); i--){
 			descr = symbolTable.get(i).get(ident);
 			if (descr != null) stop = false;
 		}
 		return descr;
+	}
+	
+	public static void printSymbolTable() {
+		for(Entry<Integer, Map<String, AbstractDescr>> levelEntry : symbolTable.entrySet()){
+			System.out.println(levelEntry.getKey());
+			for(Entry<String, AbstractDescr> entry : levelEntry.getValue().entrySet()) {
+			System.out.print(entry.getKey() + ": ");
+			entry.getValue().print();
+			}
+		}
+		
 	}
 }

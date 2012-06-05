@@ -1,8 +1,10 @@
 package nodes;
 
-import java.util.Map;
+import java.util.*;
+import static ci_compiler.Compiler.*;
 
 import descriptors.AbstractDescr;
+import descriptors.ProcedureDescr;
 
 public class ProcedureHeadingNode extends AbstractNode {
 	
@@ -23,8 +25,21 @@ public class ProcedureHeadingNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		// TODO Auto-generated method stub
-		return null;
+		int savedAddress= address;
+		address = -3;
+		level++;
+		List<AbstractDescr> params = new LinkedList<AbstractDescr>();
+		if (symbolTable.get(level) == null) symbolTable.put(level, new HashMap<String, AbstractDescr>());
+		if (formalParameters != null) {
+			for (AbstractNode elem: ((ListNode)formalParameters).getList()){
+				AbstractDescr descr = elem.compile(symbolTable);
+				params.addAll(((ProcedureDescr)descr).getParams());
+			}
+		}
+		int lengthParBlock = Math.abs(address)-3;
+		address = savedAddress;
+		level--;
+		return new ProcedureDescr(((IdentNode)ident).getIdent(), 0, lengthParBlock,0, params);
 	}
 
 	@Override

@@ -168,8 +168,6 @@ public class Parser {
 
 	static AbstractNode type() {
 		AbstractNode node = null;
-		System.out.println(nexttoken.getName());
-		System.out.println(nexttoken.getType());
 		if (nexttoken.getType().equals("Ident")) {
 			node = new IdentNode(nexttoken.getName(), nexttoken.getLine(),
 					nexttoken.getColumn());
@@ -239,7 +237,9 @@ public class Parser {
 				if (nexttoken.getName().equals("(")) {
 					outStr("(");
 					insymbol();
-					formalParameters = formalParameters();
+					if (!nexttoken.getName().equals(")")) {
+						formalParameters = formalParameters();
+					}
 				} else {
 					error("Missing '('", nexttoken.getLine(),
 							nexttoken.getColumn());
@@ -351,7 +351,6 @@ public class Parser {
 									constNodes.add(new ConstNode(identNode,
 											expressionNode, line, column));
 									insymbol();
-									System.out.println("iM hERE");
 								} else {
 									error("';' expected", nexttoken.getLine(),
 											nexttoken.getColumn());
@@ -513,7 +512,6 @@ public class Parser {
 					outStr(";");
 					insymbol();
 					decl = declarations();
-					outStr("HELLOOO");
 					if (nexttoken.getName().equals("BEGIN")) {
 						outStr("BEGIN MODULE");
 						insymbol();
@@ -522,8 +520,6 @@ public class Parser {
 						if (nexttoken.getName().equals("END")) {
 							outStr("END MODULE");
 							insymbol();
-							outStr(identName);
-							outStr(nexttoken.getName());
 							if (nexttoken.getType().equals("Ident")
 									&& identName.equals(nexttoken.getName())) {
 								outStr(nexttoken.getName());
@@ -563,7 +559,6 @@ public class Parser {
 	static AbstractNode assignment(Yytoken ident) {
 		// Ident bereits in statement() abgearbeitet
 		AbstractNode selectorNode = selector(ident);
-		System.out.println("---" + selectorNode);
 		AbstractNode expressionNode = null;
 		int line = 0, column = 0;
 		if (nexttoken.getName().equals(":=")) {
@@ -572,7 +567,6 @@ public class Parser {
 			outStr(":=");
 			insymbol();
 			expressionNode = expression();
-			System.out.println("Expression: " + expressionNode);
 		} else {
 			error("':=' expected", nexttoken.getLine(), nexttoken.getColumn());
 		}
@@ -807,13 +801,11 @@ public class Parser {
 		int column = nexttoken.getColumn();
 		while (nexttoken.getName().equals(".")
 				|| nexttoken.getName().equals("[")) {
-			System.out.println("in while-schleife"+ nexttoken.getName());
 			if (nexttoken.getName().equals(".")) {
 				insymbol();
 				if (nexttoken.getType().equals("Ident")) {
 					outStr("." + nexttoken.getName());
 					if (node == null){
-						System.out.println("in if");
 					node = new OperatorNode(".", new IdentNode(ident.getName(), ident.getLine(), ident.getColumn()), new IdentNode(
 							nexttoken.getName(), line, column), line, column);
 					} else  {
@@ -827,11 +819,9 @@ public class Parser {
 				}
 			} else if (nexttoken.getName().equals("[")) {
 				insymbol();
-				System.out.println("nexttoken: " + nexttoken.getName());
 				if (node == null){
 				node = new OperatorNode("[", new IdentNode(ident.getName(), ident.getLine(), ident.getColumn()), expression(), line, column);
 				} else {
-					System.out.println("in else");
 					node = new OperatorNode("[", node, expression(), line, column);
 				}
 				if (nexttoken.getName().equals("]")) {
@@ -841,10 +831,6 @@ public class Parser {
 							nexttoken.getColumn());
 				}
 			}
-		}
-		if (node != null){
-		System.out.println("left "+((OperatorNode)node).getLeft());
-		System.out.println("right "+((OperatorNode)node).getRight());
 		}
 		return ((OperatorNode)node);
 	}
@@ -868,11 +854,9 @@ public class Parser {
 			Yytoken ident = nexttoken;
 			insymbol();
 			OperatorNode selectorNode = selector(ident);
-			System.out.println("right side. " + selectorNode);
 			if (selectorNode != null) {
 				//selectorNode.setLeft(node);
 				node = new ContNode(selectorNode, line, column);
-				System.out.println("Node: " + node);
 			} else {
 				node = new ContNode(node, line, column);
 			}

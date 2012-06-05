@@ -7,7 +7,7 @@ type
  t1 = array[10] of int;
  t2 = record
        a, b : t1;
-       c : int;
+       c : int
       end;
       
 var

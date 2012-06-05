@@ -1,6 +1,7 @@
 package nodes;
 
 import java.util.*;
+import static ci_compiler.Compiler.*;
 
 import descriptors.AbstractDescr;
 
@@ -10,11 +11,12 @@ public class DeclarationsNode extends AbstractNode {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	List<AbstractNode> constList,typeList,varList;
+	List<AbstractNode> constList, typeList, varList;
 	List<AbstractNode> procedureDeclaration;
-	
+
 	public DeclarationsNode(List<AbstractNode> constList,
-			List<AbstractNode> typeList, List<AbstractNode> varList, List<AbstractNode> procedureDeclaration, int line, int column) {
+			List<AbstractNode> typeList, List<AbstractNode> varList,
+			List<AbstractNode> procedureDeclaration, int line, int column) {
 		super(line, column);
 		this.constList = constList;
 		this.typeList = typeList;
@@ -29,8 +31,7 @@ public class DeclarationsNode extends AbstractNode {
 		this.varList = null;
 		this.procedureDeclaration = null;
 	}
-	
-	
+
 	public List<AbstractNode> getProcedureDeclaration() {
 		return procedureDeclaration;
 	}
@@ -64,14 +65,21 @@ public class DeclarationsNode extends AbstractNode {
 	}
 
 	@Override
-	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		for(AbstractNode elem : constList) {
+	public AbstractDescr compile(
+			Map<Integer, Map<String, AbstractDescr>> symbolTable) {
+		if (symbolTable.get(level) == null) {
+			symbolTable.put(level, new HashMap<String, AbstractDescr>());
+		}
+		for (AbstractNode elem : constList) {
 			elem.compile(symbolTable);
 		}
-		for(AbstractNode elem : typeList) {
+		for (AbstractNode elem : typeList) {
 			elem.compile(symbolTable);
 		}
-		for(AbstractNode elem : varList) {
+		for (AbstractNode elem : varList) {
+			elem.compile(symbolTable);
+		}
+		for (AbstractNode elem : procedureDeclaration) {
 			elem.compile(symbolTable);
 		}
 		return null;
@@ -79,27 +87,35 @@ public class DeclarationsNode extends AbstractNode {
 
 	@Override
 	public void print() {
-		trace("CONST");
-		for(AbstractNode node : constList) {
-			node.print();
+
+		if (!constList.isEmpty()) {
+			trace("CONST");
+			for (AbstractNode node : constList) {
+				node.print();
+			}
+			unindent();
 		}
-		unindent();
-		trace("TYPE");
-		for(AbstractNode node : typeList) {
-			node.print();
+		if (!typeList.isEmpty()) {
+			trace("TYPE");
+			for (AbstractNode node : typeList) {
+				node.print();
+			}
+			unindent();
 		}
-		unindent();
-		trace("VAR");
-		for(AbstractNode node : varList) {
-			node.print();
+		if (!varList.isEmpty()) {
+			trace("VAR");
+			for (AbstractNode node : varList) {
+				node.print();
+			}
+			unindent();
 		}
-		unindent();
-		trace("PROC DECLARATIONS");
-		for(AbstractNode node : procedureDeclaration) {
-			node.print();
+		if (!procedureDeclaration.isEmpty()) {
+			trace("PROC DECLARATIONS");
+			for (AbstractNode node : procedureDeclaration) {
+				node.print();
+			}
+			unindent();
 		}
-		
-		
 
 	}
 

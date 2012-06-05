@@ -37,8 +37,17 @@ public class AssignmentNode extends AbstractNode {
 		int size = 1;
 		if (expression instanceof IntegerNode) write("PUSHI, " + ((ConstDescr)exprD).getValue());
 		if (ident != null) {
-			write("PUSHI, " + ((VarDescr)symbolTable.get(level).get(((IdentNode)ident).getIdent())).getAddress());
-			size = ((VarDescr)symbolTable.get(level).get(((IdentNode)ident).getIdent())).getSize();
+			AbstractDescr descr = searchSymbolTable(level, ((IdentNode)ident).getIdent());
+			write("PUSHI, " + ((VarDescr)descr).getAddress());
+			if (descr.getLevel() == level) {
+				write("GETFP");
+				write("ADD");
+			} else {
+				write("PUSHI, " + descr.getLevel());
+				write("GETSL");
+				write("ADD");
+			}
+			size = descr.getSize();
 		}
 		if (selector != null) {
 			AbstractDescr selectD = selector.compile(symbolTable);

@@ -1,8 +1,10 @@
 package nodes;
 
+import static ci_compiler.Compiler.*;
+
 import java.util.Map;
 
-import descriptors.AbstractDescr;
+import descriptors.*;
 
 public class ProcedureDeclarationNode extends AbstractNode {
 
@@ -52,8 +54,60 @@ public class ProcedureDeclarationNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		AbstractDescr headD = procedureHeading.compile(symbolTable);
+		
+		level++;
+		int savedAddress = address;
+		address = 0;
+		((ProcedureBodyNode)procedureBody).getDeclarations().compile(symbolTable);
+		int frameSize = address;
+		int start = newLabel();
+		write("LABEL, " + start);
+		
+		//Register retten
+		write("PUSHREG, RK");
+		write("PUSHREG, FP");
+		write("PUSHI, " + level);
+		write("PUSHREG, SL");
+		//FP neu setzen
+		write("GETSP");
+		write("SETFP");
+		//SL setzen
+		write("GETFP");
+		write("PUSHI, " + level);
+		write("SETSL");
+		//SP setzen
+		write("GETSP");
+		write("PUSHI, " + frameSize);
+		write("ADD");
+		write("SETSP");
+		//Statements
+		((ProcedureBodyNode)procedureBody).getStatementSequence().compile(symbolTable);
+		//Exit
+		//SP restaurieren
+		write("GETFP");
+		write("SETSP");
+		//SL, FP und RK restaurieren
+		write("PUSHI, "+level);
+		write("POPREG, SL");
+		write("POPREG, FP");
+		write("POPREG, RK");
+		
+		address = savedAddress;
+		level--;
+		AbstractDescr procD = new ProcedureDescr(((ProcedureDescr)headD).getName(), frameSize,((ProcedureDescr)headD).getLengthparblock(), start, ((ProcedureDescr)headD).getParams() );
+		symbolTable.get(level).put(((ProcedureDescr)procD).getName(), procD);
+		
+		//Parameter vom SP abziehen
+		write("GETSP");
+		write("PUSHI, " + ((ProcedureDescr)procD).getLengthparblock());
+		write("SUB");
+		write("SETSP");
+		
+		write("REDUCE, " + (((ProcedureDescr)procD).getFramesize() + ((ProcedureDescr)procD).getLengthparblock() + 3  ));
+		write("RET");
+		return procD;
 	}
 
 	@Override

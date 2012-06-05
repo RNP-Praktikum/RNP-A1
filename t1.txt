@@ -1,42 +1,15 @@
-module m2;
+module m;
 
-var
-i, j, k : int;
+var i, x: int;
+	a, b: Array[5] of int;
 
-begin
- i := 10;
- j := 20;
- k := 30;
- 
- while i > 0 do
-   Print i;
-   i := i-1
-  end; 
-  
- repeat
-  k := i + 1;
-  Print k;
-  i := i + 1
- until i = 5; 
- 
- if k = 5
- then k := 10; Print k
- end; 
- Print 10;
- 
- if k > j 
- then Print 0 
- else j := -100; Print j 
- end; 
- Print -100;
- 
- k := 10;
- if k = 1
- then Print k
- elsif k = 2 then print 2
- elsif k = 3 then print 3
- elsif k = 10 then Print k
- else Print 999
- end
- 
- end m2.
+procedure p1(a2: Array[5] of int);
+
+begin b := a2; end p1;
+
+begin 
+
+a[2] := 100;
+p1(a);
+print b
+end m.

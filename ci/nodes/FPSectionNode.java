@@ -1,8 +1,9 @@
 package nodes;
 
-import java.util.Map;
+import java.util.*;
+import static ci_compiler.Compiler.*;
 
-import descriptors.AbstractDescr;
+import descriptors.*;
 
 public class FPSectionNode extends AbstractNode {
 	
@@ -26,8 +27,19 @@ public class FPSectionNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		// TODO Auto-generated method stub
-		return null;
+		List<AbstractDescr> list = new LinkedList<AbstractDescr>();
+		if (!isVar) {
+			AbstractDescr typeD = type.compile(symbolTable);
+			for (AbstractNode elem: ((ListNode)identList).getList()) {
+				address -= typeD.getSize();
+				write("                  put parameter " + level);
+				AbstractDescr varD = new VarDescr(level, address, typeD);
+				list.add(varD);
+				symbolTable.get(level).put(((IdentNode)elem).getIdent(), varD);
+				printSymbolTable();
+			}
+		}
+		return new ProcedureDescr("", 0, 0, 0, list);
 	}
 
 	@Override

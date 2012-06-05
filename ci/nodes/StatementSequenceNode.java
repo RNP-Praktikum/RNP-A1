@@ -50,13 +50,13 @@ public class StatementSequenceNode extends AbstractNode {
 
 	@Override
 	public void print() {
-		// trace(StatementSequence);
+		trace("Statements");
 		if(statements != null) {
 			for(AbstractNode statement : statements) {
 				if(statement != null) statement.print();
 			}
 		}
-		//unindent();
+		unindent();
 	}
 
 }

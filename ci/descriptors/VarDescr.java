@@ -35,7 +35,7 @@ public class VarDescr extends AbstractDescr {
 
 	@Override
 	public void print() {
-		trace("varDescr: address: " + address +" Size: " + size);
+		trace("varDescr: address: " + address +" Size: " + size + " level: " + level);
 		type.print();
 		unindent();
 	}

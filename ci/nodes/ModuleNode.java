@@ -13,19 +13,20 @@ public class ModuleNode extends AbstractNode {
 	 */
 	private static final long serialVersionUID = -1414274589538425495L;
 	AbstractNode ident, declarations, statementSequence;
-	//TODO Module Ident das gleiche wie end Ident????
-	
-	
-	
+
+	// TODO Module Ident das gleiche wie end Ident????
+
 	@Override
-	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		symbolTable.put(ci_compiler.Compiler.level, new HashMap<String, AbstractDescr>());
-		symbolTable.get(level).put("int", new TypeDescr(1,level, "int"));
-		write("PUSHS, "  + ((IdentNode)ident).getIdent());
+	public AbstractDescr compile(
+			Map<Integer, Map<String, AbstractDescr>> symbolTable) {
+		symbolTable.put(ci_compiler.Compiler.level,
+				new HashMap<String, AbstractDescr>());
+		symbolTable.get(level).put("int", new TypeDescr(1, level, "int"));
+		write("PUSHS, " + ((IdentNode) ident).getIdent());
 		int startLabel = newLabel();
 		write("JMP, " + startLabel);
-		write("LABEL, "+ startLabel);
 		declarations.compile(symbolTable);
+		write("LABEL, " + startLabel);
 		write("PUSHI, " + (address));
 		write("SETSP");
 		statementSequence.compile(symbolTable);
@@ -40,8 +41,8 @@ public class ModuleNode extends AbstractNode {
 		this.declarations = declarations;
 		this.statementSequence = statementSequence;
 	}
-	
-	public ModuleNode(){
+
+	public ModuleNode() {
 		super();
 		this.ident = null;
 		this.declarations = null;
@@ -51,14 +52,19 @@ public class ModuleNode extends AbstractNode {
 	@Override
 	public void print() {
 		trace("Module ");
-		if(ident != null) {ident.print();}
+		if (ident != null) {
+			ident.print();
+		}
 		trace("Declarations");
-			
-			if(declarations != null) {declarations.print();}
-		trace("Statements");
-			if(statementSequence != null){statementSequence.print();}
-			unindent();
 
+		if (declarations != null) {
+			declarations.print();
+		}
+		unindent();
+		if (statementSequence != null) {
+			statementSequence.print();
+		}
+		unindent();
 
 	}
 

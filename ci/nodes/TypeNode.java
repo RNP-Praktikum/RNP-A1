@@ -50,6 +50,7 @@ public class TypeNode extends AbstractNode {
 		} else {
 			typeD = type.compile(symbolTable);
 		}
+
 		symbolTable.get(level).put(((IdentNode)ident).getIdent(), typeD);
 		return typeD;
 	}
