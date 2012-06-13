@@ -1,21 +1,21 @@
 module m9;
 
 var
- i, j, k : integer;
+ i, j, k : int;
  
-procedure p1(var j : integer);
- var i : integer;
+procedure p1(var j : int);
+ var i : int;
  
- procedure p11(j : integer);
+ procedure p11(j : int);
  begin
-  i := j*10;
+  i := j*10
  end p11;
 
 begin
  i := 99;
  p11(i);
  j := i * 10;
- k := 2 * k;
+ k := 2 * k
 end p1;
 
 begin
@@ -25,5 +25,5 @@ begin
  p1(k); 
  Print i; Print 10;
  Print j; Print 20;
- Print k; Print 19800;
+ Print k; Print 19800
 end m9.   

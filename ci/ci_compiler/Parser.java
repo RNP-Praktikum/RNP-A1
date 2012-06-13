@@ -585,10 +585,18 @@ public class Parser {
 		List<AbstractNode> params = new LinkedList<AbstractNode>();
 		int line = nexttoken.getLine();
 		int column = nexttoken.getColumn();
-		params.add(expression());
+		AbstractNode exprNode = expression();
+		if (exprNode instanceof ContNode) {
+			exprNode = ((ContNode)exprNode).getNode();
+		}
+		params.add(exprNode);
 		while (nexttoken.getName().equals(",")) {
 			insymbol();
-			params.add(expression());
+			exprNode = expression();
+			if (exprNode instanceof ContNode) {
+				exprNode = ((ContNode)exprNode).getNode();
+			}
+			params.add(exprNode);
 		}
 		return new ListNode(params, line, column);
 	}

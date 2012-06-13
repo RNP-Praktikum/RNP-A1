@@ -48,11 +48,15 @@ public class AssignmentNode extends AbstractNode {
 				write("ADD");
 			}
 			size = descr.getSize();
+			if (((VarDescr)descr).isVarPar()) {
+				write("CONT, 1");
+			}
 		}
 		if (selector != null) {
 			AbstractDescr selectD = selector.compile(symbolTable);
 			size = selectD.getSize();
 		}
+
 		write("ASSIGN, " + size);
 		return null;
 	}

@@ -55,13 +55,13 @@ public class VarNode extends AbstractNode {
 		 
 		if(identList instanceof ListNode) {
 			for(AbstractNode elem : ((ListNode)identList).getList()) {
-				AbstractDescr varD= new VarDescr(level, address , typeD);
+				AbstractDescr varD= new VarDescr(level, address , false, typeD);
 				symbolTable.get(level).put(((IdentNode) elem).getIdent(), varD);
 				address += typeD.getSize();
 				
 			}
 		} else {
-			AbstractDescr varD= new VarDescr(level, address , typeD);
+			AbstractDescr varD= new VarDescr(level, address , false, typeD);
 			symbolTable.get(level).put(((IdentNode) identList).getIdent(), varD);
 			address += typeD.getSize();
 			varD.print();

@@ -7,7 +7,7 @@ import descriptors.*;
 import descriptors.AbstractDescr;
 
 public class IdentNode extends AbstractNode {
-	
+
 	/**
 	 * 
 	 */
@@ -29,7 +29,7 @@ public class IdentNode extends AbstractNode {
 		AbstractDescr identD = searchSymbolTable(level, ident);
 		printSymbolTable();
 		if (identD instanceof VarDescr) {
-			write("PUSHI, " + ((VarDescr)identD).getAddress());
+				write("PUSHI, " + ((VarDescr)identD).getAddress());
 			if (identD.getLevel() == level) {
 				write("GETFP");
 				write("ADD");
@@ -39,7 +39,6 @@ public class IdentNode extends AbstractNode {
 				write("ADD");
 			}
 		}
-		
 		return identD;
 	}
 
@@ -58,7 +57,5 @@ public class IdentNode extends AbstractNode {
 	public void setIdent(String ident) {
 		this.ident = ident;
 	}
-	
-	
 
 }

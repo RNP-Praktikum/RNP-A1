@@ -1,21 +1,21 @@
 module m8;
 
 var
- i, j, k : integer;
+ i, j, k : int;
  
-procedure p1(i : integer; var j : integer);
+procedure p1(i : int; var j : int);
 begin
- j := i*10;
+ j := i*10
 end p1;
 
-procedure p2(i : integer);
+procedure p2(i : int);
 begin
- p1(i, k);
+ p1(i, k)
 end p2;
 
-procedure p3(j : integer);
+procedure p3(j : int);
 begin
- p2(j);
+ p2(j)
 end p3;
 
 begin
@@ -25,5 +25,5 @@ begin
  p3(k);
  Print i; Print 10;
  Print j; Print 20;
- Print k; Print 300;
+ Print k; Print 300
 end m8.  

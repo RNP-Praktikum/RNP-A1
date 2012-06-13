@@ -4,13 +4,23 @@ public class VarDescr extends AbstractDescr {
 
 	AbstractDescr type;
 	int address;
+	boolean isVarPar;
 	
 	
-	public VarDescr(int level, int address, AbstractDescr type) {
+	public VarDescr(int level, int address, boolean isVarPar, AbstractDescr type) {
 		super(type.getSize(), level);
+		this.isVarPar = isVarPar;
 		this.type = type;
 		this.address = address;
 		// TODO Auto-generated constructor stub
+	}
+
+	public boolean isVarPar() {
+		return isVarPar;
+	}
+
+	public void setVarPar(boolean isVarPar) {
+		this.isVarPar = isVarPar;
 	}
 
 	public int getAddress() {
@@ -35,7 +45,7 @@ public class VarDescr extends AbstractDescr {
 
 	@Override
 	public void print() {
-		trace("varDescr: address: " + address +" Size: " + size + " level: " + level);
+		trace("varDescr: isVar: " + isVarPar + " address: " + address +" Size: " + size + " level: " + level);
 		type.print();
 		unindent();
 	}

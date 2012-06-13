@@ -45,16 +45,24 @@ public class ProcedureCallNode extends AbstractNode {
 
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
-		List<AbstractNode> list = ((ListNode)parameterList).getList();
 		AbstractDescr procD = searchSymbolTable(level, ((IdentNode)ident).getIdent());
 		write("INIT, " + (((ProcedureDescr)procD).getFramesize() + ((ProcedureDescr)procD).getLengthparblock() + 4  ));
+		if (! (parameterList == null)) {
+		List<AbstractNode> list = ((ListNode)parameterList).getList();
+		ListIterator<AbstractDescr> paramIt = ((ProcedureDescr)procD).getParams().listIterator(((ProcedureDescr)procD).getParams().size());
 		for(ListIterator<AbstractNode> it = list.listIterator(list.size());it.hasPrevious();){
 			AbstractNode elem = it.previous();
+			AbstractDescr paramD = paramIt.previous();
 			AbstractDescr elemD = elem.compile(symbolTable);
+			if ((elemD instanceof VarDescr) && !((VarDescr)paramD).isVarPar()) {
+				write("CONT, " + paramD.getSize());
+			}
 			if (elemD instanceof ConstDescr)
 				write("PUSHI, " + ((ConstDescr)elemD).getValue());
-			
-			int size = elemD.getSize();
+			int size = 1;
+			if (!(elemD == null)) {
+				size = elemD.getSize();
+			}
 			write("GETSP");
 			write("ASSIGN, " + size);
 			write("GETSP");
@@ -62,7 +70,7 @@ public class ProcedureCallNode extends AbstractNode {
 			write("ADD");
 			write("SETSP");
 		}
-	
+		}
 		
 		write("CALL, " + ((ProcedureDescr)procD).getStart());
 		return procD;

@@ -42,7 +42,7 @@ public class RecordNode extends AbstractNode {
 				typeD = type.compile(symbolTable);
 			}
 			for(AbstractNode ident : ((ListNode)((FieldListNode)fieldList).getIdentList()).getList()) {
-				map.put(((IdentNode)ident).getIdent(), new VarDescr(level, address, typeD));
+				map.put(((IdentNode)ident).getIdent(), new VarDescr(level, address, false, typeD));
 				address += typeD.getSize();
 				size += typeD.getSize();
 			}

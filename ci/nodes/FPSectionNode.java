@@ -28,17 +28,13 @@ public class FPSectionNode extends AbstractNode {
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
 		List<AbstractDescr> list = new LinkedList<AbstractDescr>();
-		if (!isVar) {
 			AbstractDescr typeD = type.compile(symbolTable);
 			for (AbstractNode elem: ((ListNode)identList).getList()) {
 				address -= typeD.getSize();
-				write("                  put parameter " + level);
-				AbstractDescr varD = new VarDescr(level, address, typeD);
+				AbstractDescr varD = new VarDescr(level, address, isVar, typeD);
 				list.add(varD);
 				symbolTable.get(level).put(((IdentNode)elem).getIdent(), varD);
-				printSymbolTable();
 			}
-		}
 		return new ProcedureDescr("", 0, 0, 0, list);
 	}
 

@@ -1,23 +1,23 @@
 module m7;
 
 var
- i, j, k : integer;
+ i, j, k : int;
  
 procedure p1();
 begin
- i := k * 10;
+ i := k * 10
 end p1;
 
-procedure p2(i, j : integer);
+procedure p2(i, j : int);
 begin
  Print i+j;
- Print 3030;
+ Print 3030
 end p2;
 
-procedure p3(var i : integer; j : integer);
+procedure p3(var i : int; j : int);
 begin
  i := j - 500;
- j := 99;
+ j := 99
 end p3;
 
 begin
@@ -34,5 +34,5 @@ begin
  p3(k, k);
  Print i; Print 300;
  Print j; Print 20;
- Print k; Print 9500;
+ Print k; Print 9500
 end m7.  
