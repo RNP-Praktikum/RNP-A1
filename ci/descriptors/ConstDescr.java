@@ -5,7 +5,7 @@ public class ConstDescr extends AbstractDescr {
 	int value;
 	
 	public ConstDescr(int level, int value) {
-		super(0, level);
+		super(1, level);
 		this.value = value;
 	}
 	

@@ -65,6 +65,8 @@ public class ProcedureDeclarationNode extends AbstractNode {
 		int start = newLabel();
 		write("LABEL, " + start);
 		
+		((ProcedureDescr)searchSymbolTable(level,((ProcedureDescr)headD).getName())).setStart(start);
+		
 		//Register retten
 		write("PUSHREG, RK");
 		write("PUSHREG, FP");

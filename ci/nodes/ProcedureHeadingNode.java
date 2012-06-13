@@ -39,7 +39,9 @@ public class ProcedureHeadingNode extends AbstractNode {
 		int lengthParBlock = Math.abs(address)-3;
 		address = savedAddress;
 		level--;
-		return new ProcedureDescr(((IdentNode)ident).getIdent(), 0, lengthParBlock,0, params);
+		AbstractDescr procD = new ProcedureDescr(((IdentNode)ident).getIdent(), 0, lengthParBlock,0, params);
+		symbolTable.get(level).put(((IdentNode)ident).getIdent(), procD);
+		return procD;
 	}
 
 	@Override

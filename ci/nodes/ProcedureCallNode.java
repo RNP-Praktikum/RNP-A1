@@ -54,6 +54,9 @@ public class ProcedureCallNode extends AbstractNode {
 			AbstractNode elem = it.previous();
 			AbstractDescr paramD = paramIt.previous();
 			AbstractDescr elemD = elem.compile(symbolTable);
+			if ((elemD instanceof VarDescr) && ((VarDescr)elemD).isVarPar()) {
+				write("CONT, 1");
+			}
 			if ((elemD instanceof VarDescr) && !((VarDescr)paramD).isVarPar()) {
 				write("CONT, " + paramD.getSize());
 			}

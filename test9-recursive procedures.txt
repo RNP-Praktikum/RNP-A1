@@ -1,7 +1,7 @@
 module m10;
 
 var
- i  : int;
+ x, i  : int;
  
 procedure factorial(var i : int; j : int);
 

@@ -24,10 +24,12 @@ public class ContNode extends AbstractNode {
 			Map<Integer, Map<String, AbstractDescr>> symbolTable) {
 		AbstractDescr descr = node.compile(symbolTable);
 		if (! (descr instanceof ConstDescr) ) {
-			if (!((descr instanceof VarDescr) && ((VarDescr)descr).isVarPar())) {
+			if (((descr instanceof VarDescr) && ((VarDescr)descr).isVarPar())) {
+				write("CONT, 1");
+			}
 				int size = descr.getSize();
 				write("CONT, " + size);
-			}
+				
 		}
 		return descr;
 	}
