@@ -2,54 +2,54 @@ module m;
 
 var
 
-i : integer;
+i : int;
 
 procedure p1();
 
- var j : integer;
+ var j : int;
 
  procedure p11();
-  var k : integer;
+  var k : int;
   
   procedure p111();
-   var l : integer;
+   var l : int;
    
-   begin //p111
-    print "enter p111";
-    print "leave p111";
+   begin 
+    print 111;
+    print 111
    end p111;
    
-  begin //p11 
-   print "enter p11";
+  begin
+   print 11;
    p111();
-   print "leave p11";
+   print 11
   end p11;
  
  procedure p12();
-  var k : integer;
+  var k : int;
   
   procedure p121();
-   var l : integer;
+   var l : int;
    
-   begin //p121
-    print "enter p121";
+   begin 
+    print 121;
     p1();
-    print "leave p121";
+    print 121
    end p111;
    
-  begin //p12 
-   print "enter p12";
-   if i = 0 then i := i+1; p121(); else p11(); end;
-   print "leave p12";
+  begin 
+   print 12;
+   if i = 0 then i := i+1; p121() else p11() end;
+   print 12
   end p12;
  
- begin //p1
-   print "enter p1";
+ begin
+   print 1;
    p12();
-   print "leave p1";
+   print 1
  end p1;
      
-begin //main 
+begin 
 i := 0;
-p1();
+p1()
 end m.

@@ -6,16 +6,14 @@ var
 procedure p1(var j : int);
  var i : int;
  
- procedure p11(k : int);
+ procedure p11(j : int);
  begin
-  i := j*10;
-  j := i
+  i := j*10
  end p11;
 
 begin
  i := 99;
  p11(i);
- print i;
  j := i * 10;
  k := 2 * k
 end p1;

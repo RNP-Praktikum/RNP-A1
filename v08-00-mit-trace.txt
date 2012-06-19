@@ -1,16 +1,16 @@
 module m;
 
-var i : integer;
+var i : int;
 
 procedure p1();
-var i,j,k : integer;
+var i,j,k : int;
 begin i := 99; end p1;
 
 begin 
 
 i := 100;
 p1();
-print i;
+print i
 end m.
 
 PUSHS, m

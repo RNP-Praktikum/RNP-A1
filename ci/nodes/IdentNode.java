@@ -27,7 +27,7 @@ public class IdentNode extends AbstractNode {
 	@Override
 	public AbstractDescr compile(Map<Integer, Map<String, AbstractDescr>> symbolTable) {
 		AbstractDescr identD = searchSymbolTable(level, ident);
-		printSymbolTable();
+//		printSymbolTable();
 		if (identD instanceof VarDescr) {
 				write("PUSHI, " + ((VarDescr)identD).getAddress());
 			if (identD.getLevel() == level) {

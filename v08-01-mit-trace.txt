@@ -2,34 +2,34 @@ module m;
 
 var
 
-i,j,k : integer;
+i,j,k : int;
 
-procedure p1(); // 1 lokale Variable
+procedure p1(); 
 
-var l : integer;
+var l : int;
 
 begin
 l := 10;
 i := l;
-l := i*l;
+l := i*l
 end p1;
 
-procedure p2(x,z : integer); // 1 value Parameter
+procedure p2(x,z : int); 
 
 var z1, z2 : integer;
 
 begin
 z1 := z;
 z2 := x;
-p1();
+p1()
 end p2;
 
-procedure p3(var z : integer); // 1 var-Parameter
-var i : integer;
+procedure p3(var z : int); 
+var i : int;
 begin 
 z := 99;
 i := z;
-p2(100, 200);
+p2(100, 200)
 end p3;
 
 begin 
@@ -38,7 +38,7 @@ p1();
 p2(88, 99);
 p3(j);
 print i;
-print j;
+print j
 end m.
 
 PUSHS, m
